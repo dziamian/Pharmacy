@@ -57,6 +57,15 @@ export default {
     },
     setActive (menuItem) {
       this.activeItem = menuItem;
+    },
+    makeToast(title, description, variant, autoHideDelay = 5000) {
+        this.$bvToast.toast(description, {
+            title: title,
+            variant: variant,
+            autoHideDelay: autoHideDelay,
+            appendToast: false,
+            toaster: "b-toaster-bottom-right"
+        });
     }
   }
 }

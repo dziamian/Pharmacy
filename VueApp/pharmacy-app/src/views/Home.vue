@@ -51,6 +51,8 @@ export default {
         this.newProducts.forEach(product => {
           product.image = api._getBaseURL() + product.image;
         });
+      } catch(e) {
+        this.$parent.makeToast('Server connection', 'Couldn\'t connect to server.', 'danger');
       } finally {
         this.loading = false;
       }
