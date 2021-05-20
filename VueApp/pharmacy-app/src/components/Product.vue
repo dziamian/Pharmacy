@@ -1,6 +1,6 @@
 <template>
     <div style="margin:5px; padding:5px">
-        <span v-if="product.supply > 0" class="tag">UNAVAILABLE</span>
+        <span v-if="product.supply <= 0" class="tag">UNAVAILABLE</span>
         <img v-bind:src="product.image"/> <!-- TODO: link-->
         <h3 class="text-dark">{{product.name}}</h3>
         <p class="price">{{getCost(product.cost)}} {{priceLabel}}</p>
@@ -34,7 +34,7 @@ export default {
     font-size: .8rem;
     font-weight: 900;
     top: -80px;
-    left: 0;
+    left: -20px;
     text-transform: uppercase;
     z-index: 2;
     -webkit-transform: rotate(-90deg) translateX(-100%) translateY(-100%);

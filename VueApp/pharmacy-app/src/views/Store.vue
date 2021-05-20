@@ -9,33 +9,31 @@
                     <div class="col-lg-6">
                         <h3 class="label mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
                         <vue-slider 
-                            v-model="priceRange"
-                            :min="0" 
-                            :max="maxPrice" 
+                            v-model="filter.settings.priceRange"
+                            :min="init.minPrice" 
+                            :max="init.maxPrice" 
                             :enable-cross="false" 
                             :tooltip="'none'" 
                             :tooltip-placement="'bottom'"
                         />
                         <div class="p-2">
-                            <b-input-group :append="priceLabel" style="float: left;">
+                            <b-input-group class="price-input-group" :append="init.priceLabel" style="float: left;">
                                 <b-form-input 
-                                    v-model="priceRange[0]"
-                                    class="price-input"
+                                    v-model.number="filter.settings.priceRange[0]"
                                     type="number"  
                                     placeholder="Min" 
-                                    :min="0" 
-                                    :max="maxPrice" 
+                                    :min="init.minPrice" 
+                                    :max="init.maxPrice" 
                                     :formatter="formatter"
                                 />
                             </b-input-group>
-                            <b-input-group :append="priceLabel" style="float: right;">
+                            <b-input-group class="price-input-group" :append="init.priceLabel" style="float: right;">
                                 <b-form-input 
-                                    v-model="priceRange[1]"
-                                    class="price-input"
+                                    v-model.number="filter.settings.priceRange[1]"
                                     type="number" 
                                     placeholder="Max" 
-                                    :min="0" 
-                                    :max="maxPrice" 
+                                    :min="init.minPrice" 
+                                    :max="init.maxPrice" 
                                     :formatter="formatter"
                                 />
                             </b-input-group>
@@ -44,7 +42,7 @@
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
                         <b-dropdown text="REFERENCE">
-                            <b-dropdown-item v-for="reference in references" :key="reference.name" @click="reference.action">
+                            <b-dropdown-item :active="index == filter.settings.reference" v-for="(reference, index) in params.references" :key="index" @click="filter.settings.reference = index">
                                 {{reference.name}}
                             </b-dropdown-item>
                         </b-dropdown>
@@ -52,7 +50,7 @@
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="categories-title h6 text-uppercase text-black d-block">Filter by Categories</h3>
                         <b-form-group>
-                            <b-form-tags id="tags" v-model="activeTags" style="text-align: left;">
+                            <b-form-tags id="tags" v-model="filter.settings.tags" style="text-align: left;">
                                 <template v-slot="{ tags, disabled, addTag, removeTag }">
                                     <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
                                         <li v-for="tag in tags" :key="tag" class="list-inline-item">
@@ -86,16 +84,19 @@
             </b-card>
         </b-collapse>
         <div class="container">
-            <b-row>
-                <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in paginatedProducts" :key="index">
-                    <product :product="product" :priceLabel="priceLabel" />
+            <b-row v-if="pagination.products.length > 0">
+                <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in pagination.products"  :key="index">
+                    <product :product="product" :priceLabel="init.priceLabel" />
                 </b-col>
             </b-row>
+            <b-row v-else class="justify-content-md-center">
+                <h3 class="text-dark">We have no items to display</h3>
+            </b-row>
             <b-pagination
-                v-model="currentPage"
+                v-model="pagination.settings.currentPage"
                 @change="onPageChanged"
                 :total-rows="productRows"
-                :per-page="perPage"
+                :per-page="pagination.settings.perPage"
                 align="center">
             </b-pagination>
         </div>
@@ -116,33 +117,47 @@ export default {
         Product
     },
     data() {
+        let minPrice = 0;
         let maxPrice = 500;
         return {
             loading: true,
-            maxPrice: maxPrice,
-            priceRange: [0, maxPrice],
-            priceLabel: 'zł',
-            references: [{
-                name: 'Name, A to Z',
-                action: this.referenceFilter
-            }, {
-                name: 'Name, Z to A',
-                action: this.referenceFilter
-            }, {
-                name: 'Price, Low to High',
-                action: this.referenceFilter
-            }, {
-                name: 'Price, High to Low',
-                action: this.referenceFilter
-            }],
-            activeTags: [],
-            tags: ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'],
-            paginatedProducts: [],
-            filteredProducts: [],
-            products: [],
-            perPage: 12,
-            currentPage: 1,
-            index: 0
+            init: {
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+                priceLabel: 'zł',
+            },
+            params: {
+                products: [],
+                tags: ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'],
+                references: [{
+                    name: 'Name, A to Z',
+                    condition: (p1, p2) => (p1.name > p2.name) ? 1 : -1
+                }, { 
+                    name: 'Name, Z to A',
+                    condition: (p1, p2) => (p1.name < p2.name) ? 1 : -1
+                }, {
+                    name: 'Price, Low to High',
+                    condition: (p1, p2) => (p1.cost > p2.cost) ? 1 : -1
+                }, {
+                    name: 'Price, High to Low',
+                    condition: (p1, p2) => (p1.cost < p2.cost) ? 1 : -1
+                }]
+            },
+            filter: {
+                products: [],
+                settings: {
+                    priceRange: [0, maxPrice],
+                    tags: [],
+                    reference: 0,
+                }
+            },
+            pagination: {
+                products: [],
+                settings: {
+                    perPage: 3,
+                    currentPage: 1
+                }
+            }
         };
     },
     async created() {
@@ -150,10 +165,10 @@ export default {
     },
     computed: {
         availableOptions() {
-            return this.tags.filter(opt => this.activeTags.indexOf(opt) === -1);
+            return this.params.tags.filter(opt => this.filter.settings.tags.indexOf(opt) === -1);
         },
         productRows() {
-            return this.products.length;
+            return this.filter.products.length;
         }
     },
     methods: {
@@ -161,8 +176,8 @@ export default {
             this.loading = true;
 
             try {
-                this.products = await api.getAllProducts();
-                this.products.forEach(product => {
+                this.params.products = await api.getAllProducts();
+                this.params.products.forEach(product => {
                     product.image = api._getBaseURL() + product.image;
                 });
             } finally {
@@ -171,37 +186,54 @@ export default {
             }
         },
         formatter(value) {
-            if (value < this.min) {
-                return this.min;
+            if (!value || value < this.init.minPrice) {
+                return this.init.minPrice;
             }
-            if (value > this.max) {
-                return this.max;
+            if (value > this.init.maxPrice) {
+                return this.init.maxPrice;
             }
             return value;
         },
         initPagination(){
-            this.filteredProducts = [...this.products];
-            this.paginate(this.perPage, 0);
+            this.filter.products = [...this.params.products];
+            this.paginate(this.pagination.settings.perPage, 0);
         },
         onOptionClick({option, addTag}) {
             addTag(option);
         },
         paginate(pageSize, pageNumber) {
-            let productsToParse = this.filteredProducts;
-            this.paginatedProducts = productsToParse.slice(
+            let productsToParse = this.filter.products;
+            this.pagination.products = productsToParse.slice(
                 pageNumber * pageSize,
                 (pageNumber + 1) * pageSize
             );
         },
         onPageChanged(page) {
-            this.paginate(this.perPage, page - 1);
+            this.paginate(this.pagination.settings.perPage, page - 1);
         },
-        referenceFilter() {
+        filterProducts(settings) {
+            this.filter.products = this.params.products.filter((product) => {
+                return settings.priceRange[0] * 100 <= product.cost 
+                    && settings.priceRange[1] * 100 >= product.cost;
+            });
 
+            this.filter.products.sort(this.params.references[settings.reference].condition);
+
+            let currentPage = 1;
+            this.pagination.settings.currentPage = currentPage;
+            this.paginate(this.pagination.settings.perPage, currentPage - 1);
         }
     },
     mounted () {
         this.$parent.setActive('store');
+    },
+    watch: {
+        'filter.settings': {
+            handler(settings) {
+                this.filterProducts(settings);
+            },
+            deep: true
+        }
     }
 }
 </script>
@@ -240,5 +272,9 @@ li.list-inline-item {
 
 .list-inline-item:not(:last-child) {
     margin-right: 0px;
+}
+
+.price-input-group {
+    min-width: 112px;
 }
 </style>
