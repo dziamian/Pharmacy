@@ -1,3 +1,4 @@
+<!--TODO:-->
 <template>
     <div>
         <b-form-group>
@@ -35,7 +36,7 @@
 
 <script>
 export default {
-    name: 'TaggedInput',
+    name: 'TagFilter',
     data () {
         return {
             values: []
@@ -49,13 +50,17 @@ export default {
     methods: {
         onOptionClick({option, addTag}) {
             addTag(option);
-            this.search = '';
         }
     },
     props: {
         label: String,
         buttonTitle: String,
         options: Array
+    },
+    watch: {
+        values(v) {
+            this.$emit('activeTags', v);
+        }
     }
 }
 </script>

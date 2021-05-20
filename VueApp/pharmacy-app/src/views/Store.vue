@@ -3,75 +3,101 @@
         <div style="text-align: center;">
             <b-button v-b-toggle.collapse-2>FILTERS</b-button>
         </div>
-        <b-collapse id="collapse-2" class="mt-2" style="width: 75%; margin: auto;">
+        <b-collapse id="collapse-2" class="mt-2">
             <b-card>
                 <div class="row">
                     <div class="col-lg-6">
-                        <h3 class="mb-3 h6 text-uppercase text-black d-block" style="text-align: center;">Filter by Price</h3>
-                        <vue-slider v-model="value" :min="0" :max="500" :enable-cross="false" :tooltip="'none'" :tooltip-placement="'bottom'"></vue-slider>
+                        <h3 class="label mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
+                        <vue-slider 
+                            v-model="priceRange"
+                            :min="0" 
+                            :max="maxPrice" 
+                            :enable-cross="false" 
+                            :tooltip="'none'" 
+                            :tooltip-placement="'bottom'"
+                        />
                         <div class="p-2">
-                            <b-input-group append="zł" style="float: left;">
-                                <b-form-input v-model="value[0]" class="price-input" type="number" placeholder="Min" v-bind:min="minValue" v-bind:max="maxValue" :formatter="formatter"></b-form-input>
+                            <b-input-group :append="priceLabel" style="float: left;">
+                                <b-form-input 
+                                    v-model="priceRange[0]"
+                                    class="price-input"
+                                    type="number"  
+                                    placeholder="Min" 
+                                    :min="0" 
+                                    :max="maxPrice" 
+                                    :formatter="formatter"
+                                />
                             </b-input-group>
-                            <b-input-group append="zł" style="float: right;">
-                                <b-form-input v-model="value[1]" class="price-input" type="number" placeholder="Max" v-bind:min="minValue" v-bind:max="maxValue" :formatter="formatter"></b-form-input>
+                            <b-input-group :append="priceLabel" style="float: right;">
+                                <b-form-input 
+                                    v-model="priceRange[1]"
+                                    class="price-input"
+                                    type="number" 
+                                    placeholder="Max" 
+                                    :min="0" 
+                                    :max="maxPrice" 
+                                    :formatter="formatter"
+                                />
                             </b-input-group>
                         </div>
                     </div>
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
                         <b-dropdown text="REFERENCE">
-                            <b-dropdown-item>Name, A to Z</b-dropdown-item>
-                            <b-dropdown-item>Name, Z to A</b-dropdown-item>
-                            <b-dropdown-item>Price, Low to High</b-dropdown-item>
-                            <b-dropdown-item>Price, High to Low</b-dropdown-item>
+                            <b-dropdown-item v-for="reference in references" :key="reference.name" @click="reference.action">
+                                {{reference.name}}
+                            </b-dropdown-item>
                         </b-dropdown>
                     </div>
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="categories-title h6 text-uppercase text-black d-block">Filter by Categories</h3>
-                        <tagged-input buttonTitle="CATEGORIES" v-bind:options="tags">
-                        </tagged-input>
+                        <b-form-group>
+                            <b-form-tags id="tags" v-model="activeTags" style="text-align: left;">
+                                <template v-slot="{ tags, disabled, addTag, removeTag }">
+                                    <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+                                        <li v-for="tag in tags" :key="tag" class="list-inline-item">
+                                            <b-form-tag 
+                                                @remove="removeTag(tag)" 
+                                                :title="tag" 
+                                                :disabled="disabled" 
+                                                variant="info">
+                                                    {{tag}}
+                                            </b-form-tag>
+                                        </li>
+                                    </ul>
+
+                                    <b-dropdown size="sm" block menu-class="w-100">
+                                        <template #button-content>
+                                            <b-icon icon="tag-fill"></b-icon>
+                                            CATEGORIES
+                                        </template>
+                                        <b-dropdown-item-button v-for="option in availableOptions" :key="option" @click="onOptionClick({option, addTag})">
+                                            {{option}}
+                                        </b-dropdown-item-button>
+                                        <b-dropdown-text v-if="availableOptions.length === 0">
+                                            No more categories...
+                                        </b-dropdown-text>
+                                    </b-dropdown>
+                                </template>
+                            </b-form-tags>
+                        </b-form-group>
                     </div>
                 </div>
             </b-card>
         </b-collapse>
         <div class="container">
-            <div class="row" margin="15px">
-                <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                    <img src="@/assets/images/example.png"/>
-                    <h3 class="text-dark">Dices</h3>
-                    <p class="price">$55.00</p>
-                </div>
-                <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                    <img src="@/assets/images/example.png"/>
-                    <h3 class="text-dark">Dices</h3>
-                    <p class="price">$55.00</p>
-                </div>
-                <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                    <img src="@/assets/images/example.png"/>
-                    <h3 class="text-dark">Dices</h3>
-                    <p class="price">$55.00</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <nav aria-label="page selector">
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                            <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <b-row>
+                <b-col v-for="(product, index) in paginatedProducts" :key="index">
+                    <product :product="product" :priceLabel="priceLabel" />
+                </b-col>
+            </b-row>
+            <b-pagination
+                v-model="currentPage"
+                @change="onPageChanged"
+                :total-rows="productRows"
+                :per-page="perPage"
+                align="center">
+            </b-pagination>
         </div>
     </div>
 </template>
@@ -80,27 +106,55 @@
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
-import TaggedInput from '@/components/TaggedInput'
+import Product from '@/components/Product'
 
 import api from '@/services/PharmacyApiService'
 
 export default {
     components: {
         VueSlider,
-        TaggedInput
+        Product
     },
     data() {
+        let maxPrice = 500;
         return {
             loading: true,
-            minValue: 0,
-            maxValue: 500,
-            value: [75, 300],
+            maxPrice: maxPrice,
+            priceRange: [0, maxPrice],
+            priceLabel: 'zł',
+            references: [{
+                name: 'Name, A to Z',
+                action: this.referenceFilter
+            }, {
+                name: 'Name, Z to A',
+                action: this.referenceFilter
+            }, {
+                name: 'Price, Low to High',
+                action: this.referenceFilter
+            }, {
+                name: 'Price, High to Low',
+                action: this.referenceFilter
+            }],
+            activeTags: [],
             tags: ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'],
-            products: []
+            paginatedProducts: [],
+            filteredProducts: [],
+            products: [],
+            perPage: 3,
+            currentPage: 1,
+            index: 0
         };
     },
     async created() {
-        this.getAllProducts();   
+        this.getAllProducts();
+    },
+    computed: {
+        availableOptions() {
+            return this.tags.filter(opt => this.activeTags.indexOf(opt) === -1);
+        },
+        productRows() {
+            return this.products.length;
+        }
     },
     methods: {
         async getAllProducts() {
@@ -112,17 +166,38 @@ export default {
                     product.image = api._getBaseURL() + product.image;
                 });
             } finally {
+                this.initPagination();
                 this.loading = false;
             }
         },
         formatter(value) {
-            if (value < this.minValue) {
-                return this.minValue;
-            } else if (value > this.maxValue) {
-                return this.maxValue;
-            } else {
-                return value;
+            if (value < this.min) {
+                return this.min;
             }
+            if (value > this.max) {
+                return this.max;
+            }
+            return value;
+        },
+        initPagination(){
+            this.filteredProducts = [...this.products];
+            this.paginate(this.perPage, 0);
+        },
+        onOptionClick({option, addTag}) {
+            addTag(option);
+        },
+        paginate(pageSize, pageNumber) {
+            let productsToParse = this.filteredProducts;
+            this.paginatedProducts = productsToParse.slice(
+                pageNumber * pageSize,
+                (pageNumber + 1) * pageSize
+            );
+        },
+        onPageChanged(page) {
+            this.paginate(this.perPage, page - 1);
+        },
+        referenceFilter() {
+
         }
     },
     mounted () {
@@ -133,16 +208,37 @@ export default {
 
 <style scoped>
 
-.input-group {
-    width: 22%;
+#collapse-2 {
+    width: 75%;
+    margin: auto;
 }
 
 .categories-title {
     margin-bottom: 0.8rem !important;
 }
 
-img{
-    width: 200px;
-    height: 200px;
+img {
+    width: 360px;
+    height: 280px;
+}
+
+.label {
+    text-align: center;
+}
+
+.input-group {
+    width: 22%;
+}
+
+ul.list-inline {
+    list-style-type: none;
+}
+
+li.list-inline-item {
+    margin: 0 0 0 0;
+}
+
+.list-inline-item:not(:last-child) {
+    margin-right: 0px;
 }
 </style>

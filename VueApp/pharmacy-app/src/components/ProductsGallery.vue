@@ -20,7 +20,7 @@
                 <img src="@/assets/images/example.png" width="360" height="280" />
                 <figcaption>
                     <span class="title">{{product.name}}</span><br>
-                    <span class="subtitle">{{getCost(product.cost)}} zł</span>
+                    <span class="subtitle">{{getCost(product.cost)}} {{priceLabel}}</span>
                 </figcaption>
             </figure>
         </slide>
@@ -42,7 +42,8 @@ export default {
         }
     },
     props: {
-        products: Array
+        products: Array,
+        priceLabel: String
     },
     updated() {
         this.$refs.newProductsExplorer.goSlide(this.$refs.newProductsExplorer.currentIndex);

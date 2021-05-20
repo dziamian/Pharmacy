@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <products-gallery v-bind:products="newProducts">
+        <products-gallery :products="newProducts" priceLabel="zł">
         </products-gallery>
       </div>
     </div>
