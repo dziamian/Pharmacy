@@ -1,5 +1,5 @@
 <template>
-    <div class="col-sm-4 col-lg-4 text-center item mb-4" style="margin:5px; padding:5px">
+    <div style="margin:5px; padding:5px">
         <span v-if="product.supply > 0" class="tag">UNAVAILABLE</span>
         <img v-bind:src="product.image"/> <!-- TODO: link-->
         <h3 class="text-dark">{{product.name}}</h3>
@@ -27,19 +27,19 @@ export default {
 <style scoped>
 .tag {
     position: absolute;
-    background: #e86b00;
+    background: #f50202;
     color: #fff;
     letter-spacing: .2em;
     padding: 7px 20px;
     font-size: .8rem;
     font-weight: 900;
-    top: 0;
+    top: -80px;
     left: 0;
     text-transform: uppercase;
     z-index: 2;
-    -webkit-transform: rotate(-90deg) translateX(-100%) translateY(-70%);
-    -ms-transform: rotate(-90deg) translateX(-100%) translateY(-70%);
-    transform: rotate(-90deg) translateX(-100%) translateY(-70%);
+    -webkit-transform: rotate(-90deg) translateX(-100%) translateY(-100%);
+    -ms-transform: rotate(-90deg) translateX(-100%) translateY(-100%);
+    transform: rotate(-90deg) translateX(-100%) translateY(-100%);
 }
 
 img {

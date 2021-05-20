@@ -87,7 +87,7 @@
         </b-collapse>
         <div class="container">
             <b-row>
-                <b-col v-for="(product, index) in paginatedProducts" :key="index">
+                <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in paginatedProducts" :key="index">
                     <product :product="product" :priceLabel="priceLabel" />
                 </b-col>
             </b-row>
@@ -140,7 +140,7 @@ export default {
             paginatedProducts: [],
             filteredProducts: [],
             products: [],
-            perPage: 3,
+            perPage: 12,
             currentPage: 1,
             index: 0
         };
