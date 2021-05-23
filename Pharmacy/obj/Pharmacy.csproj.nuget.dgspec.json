@@ -38,6 +38,26 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[10.1.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[10.1.0, )"
+            },
+            "FluentValidation.ValidatorAttribute": {
+              "target": "Package",
+              "version": "[8.6.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.Certificate": {
               "target": "Package",
               "version": "[3.1.14, )"
@@ -45,6 +65,14 @@
             "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
               "version": "[3.1.14, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.15, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.5, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
