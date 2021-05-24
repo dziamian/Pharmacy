@@ -1,9 +1,11 @@
 <template>
     <div style="margin:5px; padding:5px">
         <span v-if="product.supply <= 0" class="tag">UNAVAILABLE</span>
-        <img v-bind:src="product.image"/> <!-- TODO: link-->
-        <h3 class="text-dark">{{product.name}}</h3>
-        <p class="price">{{getCost(product.cost)}} {{priceLabel}}</p>
+        <a v-bind:href="'#/store/product/' + product.id">
+            <img v-bind:src="product.image"/>
+            <h3 class="text-dark">{{product.name}}</h3>
+            <p class="price">{{getCost(product.cost)}} {{priceLabel}}</p>
+        </a>
     </div>
 </template>
 
@@ -45,6 +47,11 @@ export default {
 img {
     width: 280px;
     height: 240px;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
 }
 
 </style>

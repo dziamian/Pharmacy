@@ -19,6 +19,7 @@
         </div>
         <products-gallery :products="newProducts" priceLabel="zł">
         </products-gallery>
+        <Footer></Footer>
       </div>
     </div>
   </main>
@@ -26,12 +27,14 @@
 
 <script>
 import ProductsGallery from '@/components/ProductsGallery'
+import Footer from '@/components/Footer'
 
 import api from '@/services/PharmacyApiService'
 
 export default {
   components: {
-    ProductsGallery
+    ProductsGallery,
+    Footer
   },
   data () {
 	  return {

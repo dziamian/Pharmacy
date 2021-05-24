@@ -36,8 +36,7 @@ namespace Pharmacy.Controllers
             return new OkObjectResult(new 
             { 
                 Message = "Secured Message",
-                user.FirstName,
-                user.LastName,
+                user.Name,
                 user.Email,
                 user.PhoneNumber
             });

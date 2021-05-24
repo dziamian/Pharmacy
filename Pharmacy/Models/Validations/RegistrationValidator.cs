@@ -13,8 +13,7 @@ namespace Pharmacy.Models.Validations
         {
             RuleFor(dto => dto.Email).NotEmpty().WithMessage("Email cannot be empty");
             RuleFor(dto => dto.Password).NotEmpty().WithMessage("Password cannot be empty");
-            RuleFor(dto => dto.FirstName).NotEmpty().WithMessage("FirstName cannot be empty");
-            RuleFor(dto => dto.LastName).NotEmpty().WithMessage("LastName cannot be empty");
+            RuleFor(dto => dto.Name).NotEmpty().WithMessage("Name cannot be empty");
         }
     }
 }

@@ -16,6 +16,9 @@ export default {
     getNewProducts() {
         return this.execute('get', '/api/products');
     },
+    getProduct(id) {
+        return this.execute('get', '/api/products/' + id);
+    },
     _getBaseURL() {
         return axios.defaults.baseURL;
     }

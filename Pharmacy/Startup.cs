@@ -51,6 +51,8 @@ namespace Pharmacy
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
+            services.Configure<GoogleAuthSettings>(Configuration.GetSection(nameof(GoogleAuthSettings)));
+
             var jwtSettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
             services.Configure<JwtIssuerOptions>(options =>

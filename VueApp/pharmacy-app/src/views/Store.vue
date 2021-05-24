@@ -83,7 +83,7 @@
                 </div>
             </b-card>
         </b-collapse>
-        <div class="container">
+        <div class="container mt-5">
             <b-row v-if="pagination.products.length > 0">
                 <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in pagination.products"  :key="index">
                     <product :product="product" :priceLabel="init.priceLabel" />
@@ -100,6 +100,7 @@
                 align="center">
             </b-pagination>
         </div>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -109,12 +110,15 @@ import 'vue-slider-component/theme/default.css'
 
 import Product from '@/components/Product'
 
+import Footer from '@/components/Footer'
+
 import api from '@/services/PharmacyApiService'
 
 export default {
     components: {
         VueSlider,
-        Product
+        Product,
+        Footer
     },
     data() {
         let minPrice = 0;
