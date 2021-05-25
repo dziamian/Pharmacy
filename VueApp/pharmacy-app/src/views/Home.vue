@@ -55,7 +55,7 @@ export default {
           product.image = api._getBaseURL() + product.image;
         });
       } catch(e) {
-        this.$parent.makeToast('Server connection', 'Couldn\'t connect to server.', 'danger');
+        this.$parent.makeToast('Connection failed', 'No server response.', 'danger');
       } finally {
         this.loading = false;
       }

@@ -1,25 +1,16 @@
-const axios = window.axios; 
+import axios from '@/plugins/axios'
 
 export default {
-    async execute(method, resource, data) {
-        return axios({
-            method,
-            url: resource,
-            data
-        }).then(response => {
-            return response.data;
-        });
-    },
     getAllProducts() {
-        return this.execute('get', '/api/products');
+        return axios.execute('get', '/api/products');
     },
     getNewProducts() {
-        return this.execute('get', '/api/products');
+        return axios.execute('get', '/api/products');
     },
     getProduct(id) {
-        return this.execute('get', '/api/products/' + id);
+        return axios.execute('get', '/api/products/' + id);
     },
     _getBaseURL() {
-        return axios.defaults.baseURL;
+        return axios.instance.defaults.baseURL;
     }
 }

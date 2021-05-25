@@ -25,7 +25,8 @@
               v-if="user == null" 
               v-b-modal.sign-in-modal 
               class="mr-1" 
-              variant="outline-dark">
+              variant="outline-dark"
+              @click="login">
                 <b-icon icon="person-circle"/>&nbsp;Sign in
             </b-button>
             <b-button v-if="user != null" variant="outline-dark">
@@ -38,8 +39,8 @@
     </div>
     <router-view/>
     <b-modal id="sign-in-modal" centered title="Sign in">
-        Test
-      </b-modal>
+      Test
+    </b-modal>
   </div>
 </template>
 
@@ -49,12 +50,19 @@ export default {
   data () {
     return {
       user: null,
+      errors: null,
       activeItem: 'home'
     }
   },
   methods: {
     login () {
-
+      this.$store.dispatch('auth/authRequest', { userName: "test@test.com", password: "password" }).then(result => {
+        console.log(result);
+        //do some stuff...
+      }).catch((err) => {
+        console.log(err.response.data.login_failure[0]);
+        this.errors = err;
+      });
     },
     async logout () {
 

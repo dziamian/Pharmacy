@@ -12,6 +12,7 @@ const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function(config) {
+    //const authToken = store.
     return config;
   },
   function(error) {
@@ -47,4 +48,15 @@ Plugin.install = function(Vue, options) {
 
 Vue.use(Plugin);
 
-export default Plugin;
+export default {
+  instance: _axios,
+  execute: async function(method, resource, data) {
+    return _axios({
+      method,
+      url: resource,
+      data
+    }).then(response => {
+      return response.data;
+    });
+  }
+};

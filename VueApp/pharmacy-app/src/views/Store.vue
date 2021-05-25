@@ -55,9 +55,12 @@
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
                         <b-dropdown text="REFERENCE">
-                            <b-dropdown-item :active="index == filter.settings.reference" v-for="(reference, index) in params.references" :key="index" @click="filter.settings.reference = index">
-                                {{reference.name}}
-                            </b-dropdown-item>
+                            <template v-for="(reference, index) in params.references">
+                                <b-dropdown-item :active="index == filter.settings.reference" :key="index" @click="filter.settings.reference = index">
+                                    {{reference.name}}
+                                </b-dropdown-item>
+                                <b-dropdown-divider v-if="reference.divider" :key="'0'+index" />
+                            </template>
                         </b-dropdown>
                     </div>
                     <div class="col-lg-3" style="text-align: center;">
@@ -156,7 +159,8 @@ export default {
                     condition: (p1, p2) => (p1.name > p2.name) ? 1 : -1
                 }, { 
                     name: 'Name, Z to A',
-                    condition: (p1, p2) => (p1.name < p2.name) ? 1 : -1
+                    condition: (p1, p2) => (p1.name < p2.name) ? 1 : -1,
+                    divider: true
                 }, {
                     name: 'Price, Low to High',
                     condition: (p1, p2) => (p1.cost > p2.cost) ? 1 : -1
