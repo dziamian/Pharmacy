@@ -14,11 +14,11 @@
             <div class="col-lg-3 mx-auto mb-5 mb-lg-0 text-center">
                 <h3 class="footer-heading mb-4">Quick Links</h3>
                 <ul class="list-unstyled">
-                    <li><a href="#">Painkillers</a></li>
-                    <li><a href="#">Antibiotic</a></li>
-                    <li><a href="#">Antiseptic</a></li>
-                    <li><a href="#">Bandage</a></li>
-                    <li><a href="#">Health</a></li>
+                    <li><router-link to="/">Painkillers</router-link></li>
+                    <li><router-link to="/">Antibiotic</router-link></li>
+                    <li><router-link to="/">Antiseptic</router-link></li>
+                    <li><router-link to="/">Bandage</router-link></li>
+                    <li><router-link to="/">Health</router-link></li>
                 </ul>
             </div>
 

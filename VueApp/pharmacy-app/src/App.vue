@@ -21,19 +21,25 @@
             </b-navbar-nav>
 
           <div class="buttons">
-            <b-button class="mr-1" variant="outline-dark">
-              <b-icon icon="search"></b-icon>&nbsp;Search
+            <b-button 
+              v-if="user == null" 
+              v-b-modal.sign-in-modal 
+              class="mr-1" 
+              variant="outline-dark">
+                <b-icon icon="person-circle"/>&nbsp;Sign in
             </b-button>
-            <b-button variant="outline-dark">
-              <b-icon icon="handbag-fill"></b-icon>
+            <b-button v-if="user != null" variant="outline-dark">
+              <b-icon icon="handbag-fill"/>
               <span class="bag-number">2</span>
             </b-button>
           </div>
         </b-navbar>
       </div>
     </div>
-    <router-view>
-    </router-view>
+    <router-view/>
+    <b-modal id="sign-in-modal" centered title="Sign in">
+        Test
+      </b-modal>
   </div>
 </template>
 
@@ -82,6 +88,12 @@ body {
   line-height: 1.7 !important;
 }
 
+body.modal-open {
+  height: 100vh;
+  overflow: hidden;
+  padding-right: 0px !important;
+}
+
 #app {
   font-family: "Rubik";
 }
@@ -90,7 +102,7 @@ body {
   position: sticky;
   top: 0;
   background-color: #fff;
-  z-index: 10000; /* TODO: set right value... */
+  z-index: 100;
 }
 
 .navbar {

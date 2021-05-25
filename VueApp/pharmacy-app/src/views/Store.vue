@@ -1,9 +1,22 @@
 <template>
     <div class="store-section">
-        <div style="text-align: center;">
-            <b-button v-b-toggle.collapse-2>FILTERS</b-button>
+        <div class="search mt-2">
+            <b-input-group>
+                <b-input-group-prepend is-text>
+                    <b-icon icon="search"/>
+                </b-input-group-prepend>
+                <vue-bootstrap-typeahead
+                    :data="filter.products"
+                    v-model="filter.settings.query"
+                    :serializer="p => p.name"
+                    placeholder="Search for product..."
+                />
+                <b-input-group-append>
+                    <b-button v-b-toggle.collapse-2>FILTERS</b-button>
+                </b-input-group-append>
+            </b-input-group>
         </div>
-        <b-collapse id="collapse-2" class="mt-2">
+        <b-collapse id="collapse-2" class="filters mt-2">
             <b-card>
                 <div class="row">
                     <div class="col-lg-6">
@@ -90,7 +103,10 @@
                 </b-col>
             </b-row>
             <b-row v-else class="justify-content-md-center">
-                <h3 class="text-dark">We have no items to display</h3>
+                <p class="h3 mb-2">
+                    <b-icon icon="exclamation-circle-fill" font-scale="1" variant="info"/>
+                    We have found no items.
+                </p>
             </b-row>
             <b-pagination
                 v-model="pagination.settings.currentPage"
@@ -107,6 +123,7 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 
 import Product from '@/components/Product'
 
@@ -117,6 +134,7 @@ import api from '@/services/PharmacyApiService'
 export default {
     components: {
         VueSlider,
+        VueBootstrapTypeahead,
         Product,
         Footer
     },
@@ -153,6 +171,7 @@ export default {
                     priceRange: [0, maxPrice],
                     tags: [],
                     reference: 0,
+                    query: ''
                 }
             },
             pagination: {
@@ -199,7 +218,7 @@ export default {
             return value;
         },
         initPagination(){
-            this.filter.products = [...this.params.products];
+            this.filter.products = this.params.products;
             this.paginate(this.pagination.settings.perPage, 0);
         },
         onOptionClick({option, addTag}) {
@@ -218,7 +237,8 @@ export default {
         filterProducts(settings) {
             this.filter.products = this.params.products.filter((product) => {
                 return settings.priceRange[0] * 100 <= product.cost 
-                    && settings.priceRange[1] * 100 >= product.cost;
+                    && settings.priceRange[1] * 100 >= product.cost
+                    && product.name.includes(settings.query);
             });
 
             this.filter.products.sort(this.params.references[settings.reference].condition);
@@ -244,7 +264,12 @@ export default {
 
 <style scoped>
 
-#collapse-2 {
+.search {
+    width: 75%;
+    margin: auto;
+}
+
+.filters {
     width: 75%;
     margin: auto;
 }
@@ -262,7 +287,7 @@ img {
     text-align: center;
 }
 
-.input-group {
+.price-input-group {
     width: 22%;
 }
 

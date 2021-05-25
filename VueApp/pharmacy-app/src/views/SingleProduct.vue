@@ -1,6 +1,8 @@
 <template>
 <div v-if="loading == true"> <!-- Dodaj animacje do ładowania-->
-
+    
+    <!-- <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon> -->
+    
 </div>
 <div v-else-if="product != ''" class="site-wrap">
     <div class="site-section">
@@ -41,7 +43,7 @@
                         </b-col>
                     </div>
                     <div v-else>
-                        Unavailable <!-- TODO: style -->
+                        <h2 class="text-black">This product is unavailable.</h2>
                     </div>
                 </b-col>
             </b-row>

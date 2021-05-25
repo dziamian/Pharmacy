@@ -1,11 +1,11 @@
 <template>
     <div style="margin:5px; padding:5px">
         <span v-if="product.supply <= 0" class="tag">UNAVAILABLE</span>
-        <a v-bind:href="'#/store/product/' + product.id">
+        <router-link :to="'/store/product/' + product.id">
             <img v-bind:src="product.image"/>
             <h3 class="text-dark">{{product.name}}</h3>
             <p class="price">{{getCost(product.cost)}} {{priceLabel}}</p>
-        </a>
+        </router-link>
     </div>
 </template>
 
