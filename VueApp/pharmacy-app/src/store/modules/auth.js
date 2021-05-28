@@ -14,10 +14,11 @@ export default {
         async authRequest({commit, dispatch}, credentials) {
             return new Promise((resolve, reject) => {
                 commit('authRequest');
-                authService.login(credentials).then(result => {
-                    localStorage.setItem('auth-token', result.auth_token);
-                    commit('authSuccess', result.auth_token);
-                    resolve(result.auth_token);
+                authService.signInWithGoogle().then(result => {
+                    //localStorage.setItem('auth-token', result.auth_token);
+                    //commit('authSuccess', result.auth_token);
+                    resolve(result);
+                    //resolve(result.auth_token);
                 }).catch((err) => {
                     commit('authError', err);
                     localStorage.removeItem('auth-token');

@@ -13,14 +13,14 @@
                         <img v-bind:src="product.image" class="img-fluid p-5">
                     </div>
                 </b-col>
-                <b-col class="col-sm-4 col-lg-5 text-center">
+                <b-col class="col-sm-4 col-lg-6 text-center">
                     <h2 class="text-black">{{product.name}}</h2>
                     <p>{{product.description}}</p>
                 
                     <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
                     
-                    <div v-if="product.supply > 0">
-                        <b-input-group class="mt-3">
+                    <b-row class="item ml-5" v-if="product.supply > 0">
+                        <b-input-group class="ml-5">
                             <b-input-group-prepend>
                                 <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
                             </b-input-group-prepend>
@@ -41,7 +41,7 @@
                         <b-col class="col-sm-4 col-lg-12 mt-4">
                             <b-button variant="primary" size="lg">Add to cart</b-button>
                         </b-col>
-                    </div>
+                    </b-row>
                     <div v-else>
                         <h2 class="text-black">This product is unavailable.</h2>
                     </div>

@@ -5,14 +5,14 @@
             <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
 
                 <div class="block-7">
-                    <h3 class="footer-heading mb-4">About Us</h3>
+                    <h5 class="footer-heading mb-4">About Us</h5>
                     <p>We are a company with many years of experience in the sale of pharmaceutical products, 
                         for which the customer's comfort is the most important.</p>
                 </div>
 
             </div>
             <div class="col-lg-3 mx-auto mb-5 mb-lg-0 text-center">
-                <h3 class="footer-heading mb-4">Quick Links</h3>
+                <h5 class="footer-heading mb-4">Quick Links</h5>
                 <ul class="list-unstyled">
                     <li><router-link to="/">Painkillers</router-link></li>
                     <li><router-link to="/">Antibiotic</router-link></li>
@@ -24,11 +24,11 @@
 
             <div class="col-md-6 col-lg-3 text-center">
                 <div class="block-5 mb-5">
-                    <h3 class="footer-heading mb-4">Contact Info</h3>
+                    <h5 class="footer-heading mb-4">Contact Info</h5>
                     <ul class="list-unstyled">
                         <li class="address">Warszawska 21, 25-521 Kielce, Polska</li>
-                        <li class="phone">+123 456 789</li>
-                        <li class="email">pharmacy@gmail.com</li>
+                        <li class="phone"><a href="tel://48123456789">+48 123 456 789</a></li>
+                        <li class="email"><a href="mailto:pharmacy@gmail.com">pharmacy@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -51,6 +51,13 @@ export default{
 
 <style scoped>
 
+a {
+    color: #8c92a0;
+    text-decoration: none;
+}
 
+a:hover{
+    color: #8c92a0;
+}
 
 </style>

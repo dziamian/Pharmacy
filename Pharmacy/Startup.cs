@@ -30,8 +30,8 @@ namespace Pharmacy
 {
     public class Startup
     {
-        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
-        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+        /*private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));*/
 
         public Startup(IConfiguration configuration)
         {
@@ -49,6 +49,7 @@ namespace Pharmacy
 
             services.AddControllers();
 
+            /*
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
             services.Configure<GoogleAuthSettings>(Configuration.GetSection(nameof(GoogleAuthSettings)));
@@ -93,6 +94,7 @@ namespace Pharmacy
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });
+            */
 
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
 
@@ -108,6 +110,22 @@ namespace Pharmacy
                 });
             });
 
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/pharmacy-313010";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/pharmacy-313010",
+                        ValidateAudience = true,
+                        ValidAudience = "pharmacy-313010",
+                        ValidateLifetime = true
+                    };
+                });
+
+            /*
             var builder = services.AddIdentityCore<Client>(o =>
             {
                 o.Password.RequireDigit = false;
@@ -128,6 +146,7 @@ namespace Pharmacy
             services.AddSingleton(mapper);
 
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            */
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PharmacyDBContext dBContext)

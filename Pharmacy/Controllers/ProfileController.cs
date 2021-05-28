@@ -8,38 +8,47 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pharmacy.Models.Database;
 using Pharmacy.Models.Database.Entities;
 
 namespace Pharmacy.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
+    [Authorize]
+    //[Authorize(Policy = "ApiUser")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        private readonly ClaimsPrincipal _caller;
+        //private readonly ClaimsPrincipal _caller;
         private readonly PharmacyDBContext _dbContext;
 
-        public ProfileController(UserManager<Client> userManager, PharmacyDBContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public ProfileController(PharmacyDBContext dbContext)
         {
-            _caller = httpContextAccessor.HttpContext.User;
+            //_caller = httpContextAccessor.HttpContext.User;
             _dbContext = dbContext;
         }
 
         [HttpGet]
         public IActionResult Home()
         {
-            var userId = _caller.Claims.Single(c => c.Type == "id");
-            var user = _dbContext.Users.Single(c => c.Id == userId.Value); //should be SingleAsync but not working...
+            /*var userId = _caller.Claims.Single(c => c.Type == "id");
+            var user = _dbContext.Users.SingleAsync(c => c.Id == userId.Value).Result;*/
 
-            return new OkObjectResult(new 
+            //var user = _caller.Claims.FirstOrDefault();
+
+            Console.WriteLine(HttpContext.User.Claims.Single(x => x.Type == "firebase"));
+            Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value); //Get UID from Firebase Access Token -> it will be used in our database.
+
+            return Ok();
+
+            /*return new OkObjectResult(new 
             { 
                 Message = "Secured Message",
                 user.Name,
                 user.Email,
                 user.PhoneNumber
-            });
+            });*/
         }
     }
 }

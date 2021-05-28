@@ -119,7 +119,7 @@
                 align="center">
             </b-pagination>
         </div>
-        <Footer></Footer>
+        <Footer/>
     </div>
 </template>
 
@@ -242,7 +242,7 @@ export default {
             this.filter.products = this.params.products.filter((product) => {
                 return settings.priceRange[0] * 100 <= product.cost 
                     && settings.priceRange[1] * 100 >= product.cost
-                    && product.name.includes(settings.query);
+                    && product.name.toLowerCase().includes(settings.query.toLowerCase());
             });
 
             this.filter.products.sort(this.params.references[settings.reference].condition);

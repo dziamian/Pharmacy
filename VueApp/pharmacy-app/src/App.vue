@@ -38,13 +38,17 @@
       </div>
     </div>
     <router-view/>
-    <b-modal id="sign-in-modal" centered title="Sign in">
-      Test
+    <b-modal id="sign-in-modal" centered title="Sign in" hide-footer>
+      
     </b-modal>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/firebase-auth'
+import api from '@/services/PharmacyApiService'
+
 export default {
   name: 'app',
   data () {
@@ -55,14 +59,21 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$store.dispatch('auth/authRequest', { userName: "test@test.com", password: "password" }).then(result => {
-        console.log(result);
-        //do some stuff...
-      }).catch((err) => {
-        console.log(err.response.data.login_failure[0]);
+    async login () {
+      const result = await this.$store.dispatch('auth/authRequest', { email: "test3@test.com", password: "password" }).catch((err) => {
+        console.log(err);
         this.errors = err;
       });
+      console.log(result.credential);
+      console.log(result.user);
+      this.user = firebase.auth().currentUser;
+      console.log(this.user);
+      if (this.user != null) {
+        console.log(this.user.getIdToken(false).then(token => {
+          console.log(token);
+          api.test(token).then(data => console.log(data));
+        }));
+      }
     },
     async logout () {
 
