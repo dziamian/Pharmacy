@@ -25,10 +25,16 @@
               v-if="!user" 
               v-b-modal.sign-in-modal 
               class="mr-1" 
-              variant="outline-dark"
-              @click="signIn">
-                <b-icon icon="person-circle"/>&nbsp;Sign in
+              variant="outline-dark">
+                <b-icon icon="person-circle"/>&nbsp;Log in
             </b-button>
+            <b-button 
+            v-else
+            class="mr-1" 
+            variant="outline-dark"
+            @click="signOut">
+              <b-icon icon="person-circle"/>&nbsp;Log out
+          </b-button>
             <b-button v-if="user" variant="outline-dark">
               <b-icon icon="handbag-fill"/>
               <span class="bag-number">2</span>
@@ -38,37 +44,35 @@
       </div>
     </div>
     <router-view/>
-    <b-modal id="sign-in-modal" centered title="Sign in">
-      <!--
+    <b-modal id="sign-in-modal" centered title="Log in" @ok="handleSignIn" ok-title="Log in">
         <form>
-        <b-form-group
-          label="Email"
-          label-for="email-input"
-          invalid-feedback="Email is required"
-          :state="emailState"
-        >
-          <b-form-input
-            id="email-input"
-            v-model="email"
-            :state="emailState"
-            required
-          ></b-form-input>
+          <b-form-group
+            label="Email"
+            label-for="email-input"
+            invalid-feedback="Email is required"
+            :state="emailState">
+              <b-form-input
+                id="email-input"
+                type="email"
+                v-model="userCredentials.email"
+                :state="emailState"
+                required
+              />
+          </b-form-group>
+          <b-form-group
+            label="Password"
+            label-for="password-input"
+            invalid-feedback="Password is required"
+            :state="passwordState">
+              <b-form-input
+                id="password-input"
+                type="password"
+                v-model="userCredentials.password"
+                :state="passwordState"
+                required
+              />
         </b-form-group>
-        <b-form-group
-        label="Password"
-        label-for="password-input"
-        invalid-feedback="Password is required"
-        :state="passwordState"
-      >
-        <b-form-input
-          id="password-input"
-          v-model="password"
-          :state="passwordState"
-          required
-        ></b-form-input>
-      </b-form-group>
       </form>
-      -->
     </b-modal>
   </div>
 </template>
@@ -80,7 +84,13 @@ export default {
   name: 'app',
   data () {
     return {
-      activeItem: 'home'
+      activeItem: 'home',
+      userCredentials: {
+        email: '',
+        password: ''
+      },
+      emailState: null,
+      passwordState: null
     }
   },
   computed: {
@@ -89,33 +99,30 @@ export default {
     }
   },
   methods: {
-    signIn() {
-      this.$store.dispatch('user/signUp', {
-        email: 'test6@test.com',
-        password: 'password'
-      }).then(() => {
+    signUp() {
+      this.$store.dispatch('user/signUp', this.userCredentials).then(() => {
         console.log("SUCCESSFULLY SIGNED UP.");
-        api.test().then(data => {
+        api.test().then((data) => {
           console.log(data);
         }).catch(error => console.log(error));
-      }).catch(error => {
+      }).catch((error) => {
+        console.log(error.message);
+        console.log(this.$store.getters['user/authStatus'].message);
+      });
+    },
+    signIn() {
+      this.$store.dispatch('user/signIn', this.userCredentials).then(() => {
+        console.log("SUCCESSFULLY SIGNED IN.");
+        api.test().then((data) => {
+          console.log(data);
+        }).catch(error => console.log(error));
+      }).catch((error) => {
         console.log(error.message);
         console.log(this.$store.getters['user/authStatus'].message);
       });
     },
     signOut() {
-
-    },
-    showSignInBox(){
-      this.$bvModal.msgBoxOk('Data was submitted successfully', {
-          title: 'Confirmation',
-          size: 'sm',
-          buttonSize: 'sm',
-          okVariant: 'success',
-          headerClass: 'p-2 border-bottom-0',
-          footerClass: 'p-2 border-top-0',
-          centered: true
-        })
+      this.$store.dispatch('user/signOut');
     },
     isActive (menuItem) {
       return this.activeItem == menuItem;
@@ -131,6 +138,33 @@ export default {
             appendToast: false,
             toaster: "b-toaster-bottom-right"
         });
+    },
+    showSignInBox(){
+      this.$bvModal.msgBoxOk('Data was submitted successfully', {
+          title: 'Confirmation',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+    },
+    resetModal(){
+      this.userCredentials.email = '';
+      this.emailState = null;
+      this.userCredentials.password = '';
+      this.email = null;
+    },
+    handleSignIn(bvModalEvt) {
+        bvModalEvt.preventDefault();
+        this.handleSubmit();
+    },
+    handleSubmit() {
+      this.signIn();
+      this.$nextTick(() => {
+          this.$bvModal.hide('sign-in-modal');
+      })
     }
   }
 }

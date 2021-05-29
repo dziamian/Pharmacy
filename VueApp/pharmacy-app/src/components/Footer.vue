@@ -26,9 +26,9 @@
                 <div class="block-5 mb-5">
                     <h5 class="footer-heading mb-4">Contact Info</h5>
                     <ul class="list-unstyled">
-                        <li class="address">Warszawska 21, 25-521 Kielce, Polska</li>
-                        <li class="phone"><a href="tel://48123456789">+48 123 456 789</a></li>
-                        <li class="email"><a href="mailto:pharmacy@gmail.com">pharmacy@gmail.com</a></li>
+                        <li class="address"> <b-icon icon="map-fill" color="#51eaea"></b-icon>  Warszawska 21, 25-521 Kielce, Polska</li>
+                        <li class="phone"> <b-icon icon="telephone-fill" color="#51eaea"></b-icon> <a href="tel://48123456789">  +48 123 456 789</a></li>
+                        <li class="email"> <b-icon icon="envelope-fill" color="#51eaea"></b-icon> <a href="mailto:pharmacy@gmail.com">  pharmacy@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -60,5 +60,4 @@ a {
 a:hover{
     color: #51eaea;
 }
-
 </style>

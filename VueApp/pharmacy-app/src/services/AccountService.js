@@ -1,4 +1,3 @@
-import axios from '@/plugins/axios'
 import firebase from 'firebase/app'
 import 'firebase/firebase-auth'
 
@@ -23,10 +22,14 @@ export default {
         return firebase.auth()
             .signInWithPopup(googleProvider);
     },
+    signOut() {
+        return firebase.auth().signOut();
+    },
     getCurrentUser() {
         return firebase.auth().currentUser;
     },
     setAuthStateChange(method) {
-        firebase.auth().onAuthStateChanged(method);
+        //firebase.auth().onAuthStateChanged(method);
+        firebase.auth().onIdTokenChanged(method);
     }
 }

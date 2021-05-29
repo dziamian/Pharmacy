@@ -12,10 +12,14 @@ import '@/plugins/gmap'
 
 Vue.config.productionTip = false;
 
-store.dispatch('user/setAuthStateChange');
+const initApp = function () {
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount("#app");
+}
 
-var app = new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+store.dispatch('user/setAuthStateChange', initApp);
+
+//initApp();

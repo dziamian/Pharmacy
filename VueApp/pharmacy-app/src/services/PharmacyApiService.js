@@ -11,9 +11,6 @@ export default {
         return axios.execute('get', '/api/products/' + id);
     },
     test() {
-        /*return axios.instance.get('http://localhost:5000/api/profile/home', { headers: {
-            'Authorization': `Bearer ${access_token}`
-        }})*/
         return axios.execute('get', '/api/profile/home');
     },
     _getBaseURL() {
