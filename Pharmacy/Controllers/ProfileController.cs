@@ -40,7 +40,7 @@ namespace Pharmacy.Controllers
             Console.WriteLine(HttpContext.User.Claims.Single(x => x.Type == "firebase"));
             Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value); //Get UID from Firebase Access Token -> it will be used in our database.
 
-            return Ok();
+            return Ok("XD");
 
             /*return new OkObjectResult(new 
             { 

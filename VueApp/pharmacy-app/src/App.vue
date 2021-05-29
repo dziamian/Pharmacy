@@ -22,14 +22,14 @@
 
           <div class="buttons">
             <b-button 
-              v-if="user == null" 
+              v-if="!user" 
               v-b-modal.sign-in-modal 
               class="mr-1" 
               variant="outline-dark"
-              @click="login">
+              @click="signIn">
                 <b-icon icon="person-circle"/>&nbsp;Sign in
             </b-button>
-            <b-button v-if="user != null" variant="outline-dark">
+            <b-button v-if="user" variant="outline-dark">
               <b-icon icon="handbag-fill"/>
               <span class="bag-number">2</span>
             </b-button>
@@ -38,45 +38,84 @@
       </div>
     </div>
     <router-view/>
-    <b-modal id="sign-in-modal" centered title="Sign in" hide-footer>
-      
+    <b-modal id="sign-in-modal" centered title="Sign in">
+      <!--
+        <form>
+        <b-form-group
+          label="Email"
+          label-for="email-input"
+          invalid-feedback="Email is required"
+          :state="emailState"
+        >
+          <b-form-input
+            id="email-input"
+            v-model="email"
+            :state="emailState"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+        label="Password"
+        label-for="password-input"
+        invalid-feedback="Password is required"
+        :state="passwordState"
+      >
+        <b-form-input
+          id="password-input"
+          v-model="password"
+          :state="passwordState"
+          required
+        ></b-form-input>
+      </b-form-group>
+      </form>
+      -->
     </b-modal>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import 'firebase/firebase-auth'
 import api from '@/services/PharmacyApiService'
 
 export default {
   name: 'app',
   data () {
     return {
-      user: null,
-      errors: null,
       activeItem: 'home'
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters['user/isAuthenticated'];
+    }
+  },
   methods: {
-    async login () {
-      const result = await this.$store.dispatch('auth/authRequest', { email: "test3@test.com", password: "password" }).catch((err) => {
-        console.log(err);
-        this.errors = err;
+    signIn() {
+      this.$store.dispatch('user/signUp', {
+        email: 'test6@test.com',
+        password: 'password'
+      }).then(() => {
+        console.log("SUCCESSFULLY SIGNED UP.");
+        api.test().then(data => {
+          console.log(data);
+        }).catch(error => console.log(error));
+      }).catch(error => {
+        console.log(error.message);
+        console.log(this.$store.getters['user/authStatus'].message);
       });
-      console.log(result.credential);
-      console.log(result.user);
-      this.user = firebase.auth().currentUser;
-      console.log(this.user);
-      if (this.user != null) {
-        console.log(this.user.getIdToken(false).then(token => {
-          console.log(token);
-          api.test(token).then(data => console.log(data));
-        }));
-      }
     },
-    async logout () {
+    signOut() {
 
+    },
+    showSignInBox(){
+      this.$bvModal.msgBoxOk('Data was submitted successfully', {
+          title: 'Confirmation',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
     },
     isActive (menuItem) {
       return this.activeItem == menuItem;

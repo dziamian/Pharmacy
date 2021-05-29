@@ -22,5 +22,11 @@ export default {
     signInWithGoogle() {
         return firebase.auth()
             .signInWithPopup(googleProvider);
+    },
+    getCurrentUser() {
+        return firebase.auth().currentUser;
+    },
+    setAuthStateChange(method) {
+        firebase.auth().onAuthStateChanged(method);
     }
 }

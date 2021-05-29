@@ -12,6 +12,8 @@ import '@/plugins/gmap'
 
 Vue.config.productionTip = false;
 
+store.dispatch('user/setAuthStateChange');
+
 var app = new Vue({
   router,
   store,

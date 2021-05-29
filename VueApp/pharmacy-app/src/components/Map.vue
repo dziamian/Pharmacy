@@ -3,6 +3,7 @@
         :center="{lat:50.87539942130235, lng:20.634027133381906}"
         :zoom="15"
         style="width:640px; height:360px;"
+
     ></gmap-map>  
 </template>
 

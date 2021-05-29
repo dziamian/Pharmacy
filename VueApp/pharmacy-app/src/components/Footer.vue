@@ -54,10 +54,11 @@ export default{
 a {
     color: #8c92a0;
     text-decoration: none;
+    transition: .3s all ease;
 }
 
 a:hover{
-    color: #8c92a0;
+    color: #51eaea;
 }
 
 </style>

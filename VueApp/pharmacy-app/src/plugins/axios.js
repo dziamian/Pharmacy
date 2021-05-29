@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import store from '@/store'
 
 let config = {
   baseURL: "http://localhost:5000",
@@ -11,8 +12,12 @@ let config = {
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
-  function(config) {
-    //const authToken = store.
+  async function(config) {
+    const authToken = await store.getters['user/authToken'];
+    console.log(authToken);
+    if (authToken) {
+      config.headers.Authorization = `Bearer ${authToken}`;
+    }
     return config;
   },
   function(error) {
