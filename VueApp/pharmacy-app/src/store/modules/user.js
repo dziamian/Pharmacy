@@ -15,24 +15,24 @@ const removeToken = function (commit, commitName) {
 
 export default {
     state: {
-        initialized: false,
         authStatus: '',
         token: localStorage.getItem('auth-token') || null
     },
     getters: {
-        isInitialized: (state) => state.initialized,
         isAuthenticated: (state) => !!state.token,
         authStatus: (state) => state.authStatus,
         authToken: (state) => state.token
     },
     actions: {
-        setAuthStateChange({commit, getters}, initApp) {
-            authService.setAuthStateChange(async (user) => {
+        setAuthStateChange({commit, dispatch}, initApp) {
+            const authStateChangeHandler = async function (user) {
                 (user) ? await setToken(commit, 'authUpdate', user) : removeToken(commit, 'authSignout');
-                if (!getters.isInitialized) {
-                    initApp();
-                    commit('initialize');
-                }
+            };
+            const unsubscribe = authService.setAuthStateChange(async (user) => {
+                await authStateChangeHandler(user);
+                dispatch('app/initialize', initApp, {root: true});
+                unsubscribe();
+                authService.setAuthStateChange(authStateChangeHandler);
             });
         },
         signUp({commit, getters}, credentials) {
@@ -96,9 +96,6 @@ export default {
         authSignout: (state) => {
             state.authStatus = '';
             state.token = null;
-        },
-        initialize: (state) => {
-            state.initialized = true;
         }
     }
 }

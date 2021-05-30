@@ -21,11 +21,6 @@ export default {
         Map,
         Footer  
     },
-    data () {
-        return {
-
-        }
-    },
     mounted () {
         this.$parent.setActive('contact');
     }

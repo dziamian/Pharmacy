@@ -29,7 +29,6 @@ export default {
         return firebase.auth().currentUser;
     },
     setAuthStateChange(method) {
-        //firebase.auth().onAuthStateChanged(method);
-        firebase.auth().onIdTokenChanged(method);
+        return firebase.auth().onIdTokenChanged(method);
     }
 }

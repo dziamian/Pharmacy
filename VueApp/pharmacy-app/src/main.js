@@ -21,5 +21,3 @@ const initApp = function () {
 }
 
 store.dispatch('user/setAuthStateChange', initApp);
-
-//initApp();
