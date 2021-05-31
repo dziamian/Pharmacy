@@ -29,13 +29,13 @@
                 <b-icon icon="person-circle"/>&nbsp;Log in
             </b-button>
             <b-button 
-            v-else
-            class="mr-1" 
-            variant="outline-dark"
-            @click="signOut">
-              <b-icon icon="person-circle"/>&nbsp;Log out
+              v-else
+              class="mr-1" 
+              variant="outline-dark"
+              @click="signOut">
+                <b-icon icon="person-circle"/>&nbsp;Log out
           </b-button>
-            <b-button v-if="user" variant="outline-dark">
+            <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
               <b-icon icon="handbag-fill"/>
               <span class="bag-number">2</span>
             </b-button>
@@ -107,7 +107,6 @@ export default {
         }).catch(error => console.log(error));
       }).catch((error) => {
         console.log(error.message);
-        console.log(this.$store.getters['user/authStatus'].message);
       });
     },
     signIn() {
@@ -115,14 +114,25 @@ export default {
         console.log("SUCCESSFULLY SIGNED IN.");
         api.test().then((data) => {
           console.log(data);
-        }).catch(error => console.log(error));
+        }).catch((error) => console.log(error));
       }).catch((error) => {
         console.log(error.message);
-        console.log(this.$store.getters['user/authStatus'].message);
+      });
+    },
+    signInWithGoogle() {
+      this.$store.dispatch('user/signInWithGoogle').then(() => {
+        console.log("SUCCESSFULLY SIGNED IN WITH GOOGLE.");
+        api.test().then((data) => {
+          console.log(data);
+        }).catch((error) => console.log(error));
+      }).catch((error) => {
+        console.log(error.message);
       });
     },
     signOut() {
-      this.$store.dispatch('user/signOut');
+      this.$store.dispatch('user/signOut').then(() => {
+        this.$router.push('');
+      });
     },
     isActive (menuItem) {
       return this.activeItem == menuItem;
@@ -161,10 +171,15 @@ export default {
         this.handleSubmit();
     },
     handleSubmit() {
-      this.signIn();
+      this.signInWithGoogle();
       this.$nextTick(() => {
           this.$bvModal.hide('sign-in-modal');
       })
+    },
+    navigateToCart() {
+      if (this.$route.name != 'Cart') {
+        this.$router.push('cart');
+      }
     }
   }
 }

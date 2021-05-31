@@ -36,7 +36,7 @@ export default {
     ProductsGallery,
     Footer
   },
-  data () {
+  data() {
 	  return {
       loading: true,
       newProducts: []
@@ -63,6 +63,9 @@ export default {
   },
   mounted () {
     this.$parent.setActive('home');
+  },
+  props: {
+    info: String
   }
 }
 </script>

@@ -15,7 +15,6 @@ const removeToken = function (commit, commitName) {
 
 export default {
     state: {
-        authStatus: '',
         token: localStorage.getItem('auth-token') || null
     },
     getters: {
@@ -26,7 +25,7 @@ export default {
     actions: {
         setAuthStateChange({commit}, onFirstAuthStateChange) {
             const authStateChangeHandler = async function (user) {
-                (user) ? await setToken(commit, 'authUpdate', user) : removeToken(commit, 'authSignout');
+                (user) ? await setToken(commit, 'authSuccess', user) : removeToken(commit, 'authSignout');
             };
             const unsubscribe = authService.setAuthStateChange(async (user) => {
                 await authStateChangeHandler(user);
@@ -41,11 +40,9 @@ export default {
                     reject(new Error("Please first sign out to sign up."));
                     return;
                 }
-                commit('authRequest');
                 authService.signUpWithEmailAndPassword(credentials).then((result) => {
                     resolve(result);
                 }).catch((error) => {
-                    commit('authError', error);
                     reject(error);
                 });
             });
@@ -56,17 +53,25 @@ export default {
                     reject(new Error("Please first sign out to sign in."));
                     return;
                 }
-                commit('authRequest');
                 authService.signInWithEmailAndPassword(credentials).then((result) => {
                     resolve(result);
                 }).catch((error) => {
-                    commit('authError', error);
                     reject(error);
                 });
             });
         },
-        signInWithGoogle() {
-            
+        signInWithGoogle({commit, getters}) {
+            return new Promise((resolve, reject) => {
+                if (getters.authToken) {
+                    reject(new Error("Please first sign out to sign in."));
+                    return;
+                }
+                authService.signInWithGoogle().then((result) => {
+                    resolve(result);
+                }).catch((error) => {
+                    reject(error);
+                });
+            });
         },
         signOut({commit}) {
             return new Promise((resolve) => {
@@ -79,22 +84,10 @@ export default {
         }
     },
     mutations: {
-        authRequest: (state) => {
-            state.authStatus = 'Attempting authentication request.';
-        },
         authSuccess: (state, token) => {
-            state.authStatus = 'Authentication succeeded.';
-            state.token = token;
-        },
-        authError: (state, error) => {
-            state.authStatus = error;
-            state.token = null;
-        },
-        authUpdate: (state, token) => {
             state.token = token;
         },
         authSignout: (state) => {
-            state.authStatus = '';
             state.token = null;
         }
     }
