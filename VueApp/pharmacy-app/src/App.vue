@@ -131,7 +131,7 @@ export default {
     },
     signOut() {
       this.$store.dispatch('user/signOut').then(() => {
-        this.$router.push('');
+        this.$router.push('/');
       });
     },
     isActive (menuItem) {
@@ -171,7 +171,7 @@ export default {
         this.handleSubmit();
     },
     handleSubmit() {
-      this.signInWithGoogle();
+      this.signIn();
       this.$nextTick(() => {
           this.$bvModal.hide('sign-in-modal');
       })

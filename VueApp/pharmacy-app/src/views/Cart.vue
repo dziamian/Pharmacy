@@ -10,6 +10,9 @@ export default {
         return {
 
         };
+    },
+    mounted () {
+        this.$parent.setActive('store');
     }
 }
 </script>
