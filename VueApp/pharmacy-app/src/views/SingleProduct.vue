@@ -4,7 +4,7 @@
         <!-- <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon> -->
         
     </div>
-    <div v-else-if="product != ''" class="site-wrap">
+    <div v-else-if="product != null" class="site-wrap">
         <div class="site-section">
             <div class="container mt-5"> 
                 <b-row class="justify-content-md-center">
@@ -75,22 +75,23 @@ export default {
             quantity: 1
         }
     },
-    async created() {
+    created() {
         this.getProduct();
     },
     methods: {
-        async getProduct() {
+        getProduct() {
             this.loading = true;
-
-            try {
-                this.product = await api.getProduct(this.id);
-                this.product.image = api._getBaseURL() + this.product.image;
-            } finally {
-                this.loading = false;
-            }
-        },
-        getCost(cost) {
-            return parseInt(cost / 100) + "," + ((cost % 100 < 10) ? "0" : "") + (cost % 100);
+            
+            api.getProduct(this.id)
+                .then((result) => {
+                    this.product = result;
+                    this.product.image = api._getBaseURL() + this.product.image;
+                    this.loading = false;
+                }).catch((errors) => {
+                    this.product = null;
+                }).finally(() => {
+                    this.loading = false;
+                });
         },
         setQuantity(change){
             this.quantity += change;

@@ -10,6 +10,13 @@ export default {
     getProduct(id) {
         return axios.execute('get', '/api/products/' + id);
     },
+    getItemsFromCart() {
+        return axios.execute('get', '/api/cart');
+    },
+    addItemToCart(id, amount = '') {
+        return axios.execute('get', '/api/cart/' + id + '/' + amount);
+    },
+    //TODO: remove this test
     test() {
         return axios.execute('get', '/api/profile/home');
     },

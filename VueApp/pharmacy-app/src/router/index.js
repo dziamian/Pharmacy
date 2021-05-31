@@ -20,33 +20,34 @@ const isAuthenticated = function() {
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'home',
+    component: Home,
+    props: true
   },
   {
     path: '/store',
-    name: 'Store',
+    name: 'store',
     component: Store
   },
   {
     path: '/about',
-    name: 'About',
+    name: 'about',
     component: About
   },
   {
     path: '/contact',
-    name: 'Contact',
+    name: 'contact',
     component: Contact
   },
   {
     path: '/store/product/:id',
-    name: 'Product',
+    name: 'product',
     component: SingleProduct,
     props: true
   },
   {
     path: '/cart',
-    name: 'Cart',
+    name: 'cart',
     component: Cart,
     meta: {
       requiresAuth: true
@@ -54,7 +55,7 @@ const routes = [
   },
   {
     path: '*',
-    name: 'NotFound',
+    name: 'notFound',
     component: PageNotFound
   }
 ]
@@ -68,7 +69,12 @@ router.beforeEach((to, from, next) => {
     if (isAuthenticated()) {
       return next();
     }
-    return next('/');
+    return next({
+      name: 'home', 
+      params: {
+        authRedirect: true
+      }
+    });
   }
   next();
 });

@@ -1,6 +1,6 @@
 <template>
     <carousel-3d ref="newProductsExplorer" 
-        :animationSpeed="1000"
+        :animationSpeed="1500"
         :autoplay="true"
         :autoplay-timeout="5000"
         :autoplayHoverPause="true"
@@ -14,10 +14,11 @@
         :perspective="0"
         :space="500"
         :height="340"
-        :width="360">
+        :width="360"
+        class="mt-4">
         <slide v-for="(product, i) in products" :index ="i" :key="i">
             <figure>
-                <img src="@/assets/images/example.png" width="360" height="280" />
+                <img :src="product.image" width="360" height="280" />
                 <figcaption>
                     <span class="title">{{product.name}}</span><br>
                     <span class="subtitle">{{getCost(product.cost)}} {{priceLabel}}</span>
@@ -35,11 +36,6 @@ export default {
     components: {
         Carousel3d,
         Slide
-    },
-    methods: {
-        getCost(cost) {
-            return parseInt(cost / 100) + "," + ((cost % 100 < 10) ? "0" : "") + (cost % 100);
-        }
     },
     props: {
         products: Array,

@@ -21,12 +21,15 @@ using Pharmacy.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AutoMapper;
+using Pharmacy.Models.Mappings;
+using Pharmacy.Services.Interfaces;
+using Pharmacy.Services;
 
 namespace Pharmacy
 {
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,6 +47,9 @@ namespace Pharmacy
             services.AddControllers();
 
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
+            services.AddScoped<ICartRepo, SqlCartRepo>();
+
+            services.AddScoped<ICartService, CartService>();
 
             services.AddCors(options => 
             {
@@ -71,6 +77,14 @@ namespace Pharmacy
                         ValidateLifetime = true
                     };
                 });
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new CartItemMapping());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PharmacyDBContext dBContext)

@@ -9,8 +9,8 @@ using Pharmacy.Models.Database;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(PharmacyDBContext))]
-    [Migration("20210429154945_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210531134525_CartItemId")]
+    partial class CartItemId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,29 @@ namespace Pharmacy.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems");
+                });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Product", b =>
                 {
@@ -31,6 +54,11 @@ namespace Pharmacy.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1023)
+                        .HasColumnType("nvarchar(1023)");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasMaxLength(1023)
                         .HasColumnType("nvarchar(1023)");
@@ -49,6 +77,17 @@ namespace Pharmacy.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.CartItem", b =>
+                {
+                    b.HasOne("Pharmacy.Models.Database.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

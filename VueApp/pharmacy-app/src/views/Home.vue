@@ -39,30 +39,44 @@ export default {
   data() {
 	  return {
       loading: true,
+      authRedirected: this.$route.params.authRedirect,
       newProducts: []
     }
   },
-  async created() {
+  created() {
     this.getNewProducts();
   },
   methods: {
-    async getNewProducts() {
+    getNewProducts() {
       this.loading = true;
-
-      try {
-        this.newProducts = await api.getNewProducts();
-        this.newProducts.forEach(product => {
-          product.image = api._getBaseURL() + product.image;
+      
+      api.getNewProducts()
+        .then((result) => {
+          this.newProducts = result;
+          this.newProducts.forEach(product => {
+            product.image = api._getBaseURL() + product.image;
+          });
+        }).catch((errors) => {
+          this.newProducts = null;
+          this.$parent.makeToast('Connection failed', 'No server response.', 'danger');
+        }).finally(() => {
+          this.loading = false;
         });
-      } catch(e) {
-        this.$parent.makeToast('Connection failed', 'No server response.', 'danger');
-      } finally {
-        this.loading = false;
+    },
+    isAuthRedirected() {
+      if (this.authRedirected) {
+        this.$parent.showSignIn();
       }
     }
   },
   mounted () {
     this.$parent.setActive('home');
+    this.isAuthRedirected();
+  },
+  watch: {
+    $route(to, from) {
+      console.log("XD.");
+    }
   }
 }
 </script>

@@ -44,32 +44,30 @@
       </div>
     </div>
     <router-view/>
-    <b-modal id="sign-in-modal" centered title="Log in" @ok="handleSignIn" ok-title="Log in">
+    <b-modal id="sign-in-modal" centered title="Log in" @ok="handleSignIn" ok-title="Log in" >
         <form>
           <b-form-group
             label="Email"
             label-for="email-input"
-            invalid-feedback="Email is required"
-            :state="emailState">
+            invalid-feedback="Email is required">
               <b-form-input
                 id="email-input"
                 type="email"
                 v-model="userCredentials.email"
-                :state="emailState"
                 required
+                @keydown.native.enter="modalEnterPressed"
               />
           </b-form-group>
           <b-form-group
             label="Password"
             label-for="password-input"
-            invalid-feedback="Password is required"
-            :state="passwordState">
+            invalid-feedback="Password is required">
               <b-form-input
                 id="password-input"
                 type="password"
                 v-model="userCredentials.password"
-                :state="passwordState"
                 required
+                @keydown.native.enter="modalEnterPressed"
               />
         </b-form-group>
       </form>
@@ -88,9 +86,7 @@ export default {
       userCredentials: {
         email: '',
         password: ''
-      },
-      emailState: null,
-      passwordState: null
+      }
     }
   },
   computed: {
@@ -149,25 +145,14 @@ export default {
             toaster: "b-toaster-bottom-right"
         });
     },
-    showSignInBox(){
-      this.$bvModal.msgBoxOk('Data was submitted successfully', {
-          title: 'Confirmation',
-          size: 'sm',
-          buttonSize: 'sm',
-          okVariant: 'success',
-          headerClass: 'p-2 border-bottom-0',
-          footerClass: 'p-2 border-top-0',
-          centered: true
-        })
+    showSignIn() {
+      this.$bvModal.show('sign-in-modal');
     },
-    resetModal(){
+    resetModal() {
       this.userCredentials.email = '';
-      this.emailState = null;
       this.userCredentials.password = '';
-      this.email = null;
     },
     handleSignIn(bvModalEvt) {
-        bvModalEvt.preventDefault();
         this.handleSubmit();
     },
     handleSubmit() {
@@ -176,9 +161,12 @@ export default {
           this.$bvModal.hide('sign-in-modal');
       })
     },
+    modalEnterPressed() {
+      this.handleSignIn();
+    },
     navigateToCart() {
-      if (this.$route.name != 'Cart') {
-        this.$router.push('cart');
+      if (this.$route.name != 'cart') {
+        this.$router.push({name: 'cart'});
       }
     }
   }

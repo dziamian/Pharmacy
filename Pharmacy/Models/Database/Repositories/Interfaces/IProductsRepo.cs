@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Database.Repositories
 {
-    // maybe repo for all project?
     public interface IProductsRepo
     {
         IEnumerable<Product> GetAllProducts();

@@ -187,7 +187,7 @@ export default {
             }
         };
     },
-    async created() {
+    created() {
         this.getAllProducts();
     },
     computed: {
@@ -199,18 +199,21 @@ export default {
         }
     },
     methods: {
-        async getAllProducts() {
+        getAllProducts() {
             this.loading = true;
 
-            try {
-                this.params.products = await api.getAllProducts();
-                this.params.products.forEach(product => {
-                    product.image = api._getBaseURL() + product.image;
+            api.getAllProducts()
+                .then((result) => {
+                    this.params.products = result;
+                    this.params.products.forEach(product => {
+                        product.image = api._getBaseURL() + product.image;
+                    });
+                }).catch((errors) => {
+                    this.params.products = null;
+                }).finally(() => {
+                    this.initPagination();
+                    this.loading = false;
                 });
-            } finally {
-                this.initPagination();
-                this.loading = false;
-            }
         },
         formatter(value) {
             if (!value || value < this.init.minPrice) {

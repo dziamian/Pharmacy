@@ -9,8 +9,8 @@ using Pharmacy.Models.Database;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(PharmacyDBContext))]
-    [Migration("20210429185218_ProductImageUpdate")]
-    partial class ProductImageUpdate
+    [Migration("20210531133959_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,22 @@ namespace Pharmacy.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.CartItem", b =>
+                {
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems");
+                });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Product", b =>
                 {
@@ -54,6 +70,17 @@ namespace Pharmacy.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.CartItem", b =>
+                {
+                    b.HasOne("Pharmacy.Models.Database.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,11 +15,6 @@ export default {
     props: {
         product: Object,
         priceLabel: String
-    },
-    methods: {
-        getCost(cost) {
-            return parseInt(cost / 100) + "," + ((cost % 100 < 10) ? "0" : "") + (cost % 100);
-        }
     }
 }
 </script>

@@ -15,28 +15,20 @@ using Pharmacy.Models.Database.Entities;
 namespace Pharmacy.Controllers
 {
     [Authorize]
-    //[Authorize(Policy = "ApiUser")]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        //private readonly ClaimsPrincipal _caller;
         private readonly PharmacyDBContext _dbContext;
 
         public ProfileController(PharmacyDBContext dbContext)
         {
-            //_caller = httpContextAccessor.HttpContext.User;
             _dbContext = dbContext;
         }
 
         [HttpGet]
         public IActionResult Home()
         {
-            /*var userId = _caller.Claims.Single(c => c.Type == "id");
-            var user = _dbContext.Users.SingleAsync(c => c.Id == userId.Value).Result;*/
-
-            //var user = _caller.Claims.FirstOrDefault();
-
             Console.WriteLine(HttpContext.User.Claims.Single(x => x.Type == "firebase"));
             Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value); //Get UID from Firebase Access Token -> it will be used in our database.
 
