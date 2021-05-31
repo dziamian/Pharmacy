@@ -1,56 +1,59 @@
 <template>
-<div v-if="loading == true"> <!-- Dodaj animacje do ładowania-->
-    
-    <!-- <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon> -->
-    
-</div>
-<div v-else-if="product != ''" class="site-wrap">
-    <div class="site-section">
-        <div class="container mt-5"> 
-            <b-row class="justify-content-md-center">
-                <b-col class="col-sm-4 col-lg-5 text-center item mb-4">
-                    <div class="border text-center">
-                        <img v-bind:src="product.image" class="img-fluid p-5">
-                    </div>
-                </b-col>
-                <b-col class="col-sm-4 col-lg-6 text-center">
-                    <h2 class="text-black">{{product.name}}</h2>
-                    <p>{{product.description}}</p>
-                
-                    <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
-                    
-                    <b-row class="item ml-5" v-if="product.supply > 0">
-                        <b-input-group class="ml-5">
-                            <b-input-group-prepend>
-                                <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
-                            </b-input-group-prepend>
-
-                            <b-form-input
-                                v-model.number="quantity"
-                                type="number"
-                                placeholder="1"
-                                :min="minQuantity"
-                                :max="product.supply"
-                                :formatter="formatter"
-                            />
-                            
-                            <b-input-group-append>
-                                <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                        <b-col class="col-sm-4 col-lg-12 mt-4">
-                            <b-button variant="primary" size="lg">Add to cart</b-button>
-                        </b-col>
-                    </b-row>
-                    <div v-else>
-                        <h2 class="text-black">This product is unavailable.</h2>
-                    </div>
-                </b-col>
-            </b-row>
-        </div>
-        <Footer></Footer>
+    <div v-if="loading == true"> <!-- Dodaj animacje do ładowania-->
+        
+        <!-- <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon> -->
+        
     </div>
-</div>
+    <div v-else-if="product != ''" class="site-wrap">
+        <div class="site-section">
+            <div class="container mt-5"> 
+                <b-row class="justify-content-md-center">
+                    <b-col class="col-sm-4 col-lg-5 text-center item mb-4">
+                        <div class="border text-center">
+                            <img v-bind:src="product.image" class="img-fluid p-5">
+                        </div>
+                    </b-col>
+                    <b-col class="col-sm-4 col-lg-6 text-center">
+                        <h2 class="text-black">{{product.name}}</h2>
+                        <p>{{product.description}}</p>
+                    
+                        <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
+                        
+                        <b-row class="item ml-5" v-if="product.supply > 0">
+                            <b-input-group class="ml-5">
+                                <b-input-group-prepend>
+                                    <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
+                                </b-input-group-prepend>
+
+                                <b-form-input
+                                    v-model.number="quantity"
+                                    type="number"
+                                    placeholder="1"
+                                    :min="minQuantity"
+                                    :max="product.supply"
+                                    :formatter="formatter"
+                                />
+                                
+                                <b-input-group-append>
+                                    <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                            <b-col class="col-sm-4 col-lg-12 mt-4">
+                                <b-button variant="primary" size="lg">Add to cart</b-button>
+                            </b-col>
+                        </b-row>
+                        <div v-else>
+                            <h2 class="text-black">This product is unavailable.</h2>
+                        </div>
+                    </b-col>
+                </b-row>
+            </div>
+            <Footer></Footer>
+        </div>
+    </div>
+    <div v-else>
+        Product not found.
+    </div>
 </template>
 
 <script>
