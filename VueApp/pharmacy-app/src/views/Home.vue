@@ -63,9 +63,6 @@ export default {
   },
   mounted () {
     this.$parent.setActive('home');
-  },
-  props: {
-    info: String
   }
 }
 </script>
