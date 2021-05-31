@@ -24,13 +24,13 @@ export default {
         authToken: (state) => state.token
     },
     actions: {
-        setAuthStateChange({commit, dispatch}, initApp) {
+        setAuthStateChange({commit}, onFirstAuthStateChange) {
             const authStateChangeHandler = async function (user) {
                 (user) ? await setToken(commit, 'authUpdate', user) : removeToken(commit, 'authSignout');
             };
             const unsubscribe = authService.setAuthStateChange(async (user) => {
                 await authStateChangeHandler(user);
-                dispatch('app/initialize', initApp, {root: true});
+                onFirstAuthStateChange();
                 unsubscribe();
                 authService.setAuthStateChange(authStateChangeHandler);
             });
