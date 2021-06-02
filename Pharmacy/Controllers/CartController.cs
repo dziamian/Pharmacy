@@ -35,6 +35,15 @@ namespace Pharmacy.Controllers
             return Ok(cart);
         }
 
+        [HttpGet("size")]
+        public async Task<ActionResult<int>> GetNumberOfItemsInCart()
+        {
+            string uid = GetUID();
+            var cart = await _cartService.GetCart(uid);
+
+            return Ok(cart.ToList().Count);
+        }
+
         [HttpGet("{id}/{amount:int?}")]
         public async Task<ActionResult> AddItemToCart(int id, int amount = 1)
         {

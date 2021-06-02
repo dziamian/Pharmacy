@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pharmacy.Controllers.BaseControllers;
 using Pharmacy.Models.Database;
 using Pharmacy.Models.Database.Entities;
 
@@ -17,20 +18,19 @@ namespace Pharmacy.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class ProfileController : AuthControllerBase
     {
-        private readonly PharmacyDBContext _dbContext;
 
-        public ProfileController(PharmacyDBContext dbContext)
+        public ProfileController()
         {
-            _dbContext = dbContext;
+
         }
 
         [HttpGet]
         public IActionResult Home()
         {
             Console.WriteLine(HttpContext.User.Claims.Single(x => x.Type == "firebase"));
-            Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value); //Get UID from Firebase Access Token -> it will be used in our database.
+            Console.WriteLine(GetUID());
 
             return Ok("XD");
 

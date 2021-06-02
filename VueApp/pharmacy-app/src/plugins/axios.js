@@ -62,8 +62,8 @@ export default {
       data
     }).then(response => {
       return response.data;
-    }).catch(response => {
-      return response.errors;
+    }).catch(error => {
+      throw error.response.data;
     });
   }
 };

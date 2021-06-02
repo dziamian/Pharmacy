@@ -10,6 +10,7 @@ import Contact from '@/views/Contact.vue'
 import SingleProduct from '@/views/SingleProduct.vue'
 import Cart from '@/views/Cart.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
+import Checkout from '@/views/Checkout.vue'
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,14 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: Cart,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: Checkout,
     meta: {
       requiresAuth: true
     }

@@ -37,13 +37,13 @@
           </b-button>
             <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
               <b-icon icon="handbag-fill"/>
-              <span class="bag-number"></span>
+              <span class="bag-number">{{cartSize}}</span>
             </b-button>
           </div>
         </b-navbar>
       </div>
     </div>
-    <router-view/>
+    <router-view @cart-size-change="setCartAmount"/>
     <b-modal id="sign-in-modal" centered title="Log in" @ok="handleSignIn" ok-title="Log in" >
         <form>
           <b-form-group
@@ -86,13 +86,17 @@ export default {
       userCredentials: {
         email: '',
         password: ''
-      }
+      },
+      cartSize: 0
     }
   },
   computed: {
     user() {
       return this.$store.getters['user/isAuthenticated'];
     }
+  },
+  created() {
+    this.setCartAmount();
   },
   methods: {
     signUp() {
@@ -108,6 +112,7 @@ export default {
     signIn() {
       this.$store.dispatch('user/signIn', this.userCredentials).then(() => {
         console.log("SUCCESSFULLY SIGNED IN.");
+        this.setCartAmount();
         api.test().then((data) => {
           console.log(data);
         }).catch((error) => console.log(error));
@@ -127,8 +132,19 @@ export default {
     },
     signOut() {
       this.$store.dispatch('user/signOut').then(() => {
-        this.$router.push('/');
+        if (this.$route.name != 'home') {
+          this.$router.push({name: 'home'});
+        }
       });
+    },
+    setCartAmount() {
+      if (!this.user) {
+        return;
+      }
+      api.getCartAmount()
+        .then((result) => {
+          this.cartSize = result;
+        });
     },
     isActive (menuItem) {
       return this.activeItem == menuItem;

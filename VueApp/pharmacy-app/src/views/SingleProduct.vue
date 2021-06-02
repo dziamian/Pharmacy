@@ -8,10 +8,8 @@
         <div class="site-section">
             <div class="container mt-5"> 
                 <b-row class="justify-content-md-center">
-                    <b-col class="col-sm-4 col-lg-5 text-center item mb-4">
-                        <div class="border text-center">
-                            <img v-bind:src="product.image" class="img-fluid p-5">
-                        </div>
+                    <b-col class="col-sm-4 col-lg-5 text-center item mb-3">
+                        <img v-bind:src="product.image" class="img-fluid borderless ">
                     </b-col>
                     <b-col class="col-sm-4 col-lg-6 text-center">
                         <h2 class="text-black">{{product.name}}</h2>
@@ -19,8 +17,8 @@
                     
                         <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
                         
-                        <b-row class="item ml-5" v-if="product.supply > 0">
-                            <b-input-group class="ml-5">
+                        <b-row class="ml-0 justify-content-center" v-if="product.supply > 0">
+                            <b-input-group class="ml-0">
                                 <b-input-group-prepend>
                                     <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
                                 </b-input-group-prepend>
@@ -38,7 +36,7 @@
                                     <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
                                 </b-input-group-append>
                             </b-input-group>
-                            <b-col class="col-sm-4 col-lg-12 mt-4">
+                            <b-col class="col-sm-4 col-lg-12 mt-4 mb-3">
                                 <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
                             </b-col>
                         </b-row>
@@ -112,11 +110,12 @@ export default {
             return value;
         },
         addItem() {
-            api.addItemToCart(5, this.quantity)
+            api.addItemToCart(this.product.id, this.quantity)
                 .then(result => {
+                    this.$emit('cart-size-change');
                     this.$parent.makeToast('Adding item', result, 'success');
                 }).catch(error => {
-                    this.$parent.makeToast('Could not add item', error, 'info');
+                    this.$parent.makeToast('Could not add item', error, 'danger');
                 });
         }
     },

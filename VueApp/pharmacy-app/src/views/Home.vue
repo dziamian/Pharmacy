@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <products-gallery v-if="newProducts && newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
+        <products-gallery v-if="newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
         <Footer></Footer>
       </div>
     </div>
@@ -25,10 +25,10 @@
 </template>
 
 <script>
+import api from '@/services/PharmacyApiService'
+
 import ProductsGallery from '@/components/ProductsGallery'
 import Footer from '@/components/Footer'
-
-import api from '@/services/PharmacyApiService'
 
 export default {
   components: {

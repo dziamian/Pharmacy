@@ -13,6 +13,9 @@ export default {
     getItemsFromCart() {
         return axios.execute('get', '/api/cart');
     },
+    getCartAmount() {
+        return axios.execute('get', '/api/cart/size');
+    },
     addItemToCart(id, amount = '') {
         return axios.execute('get', '/api/cart/' + id + '/' + amount);
     },
@@ -21,7 +24,7 @@ export default {
     },
     //TODO: remove this test
     test() {
-        return axios.execute('get', '/api/profile/home');
+        return axios.execute('get', '/api/profile');
     },
     _getBaseURL() {
         return axios.instance.defaults.baseURL;
