@@ -16,6 +16,9 @@ export default {
     addItemToCart(id, amount = '') {
         return axios.execute('get', '/api/cart/' + id + '/' + amount);
     },
+    removeItemFromCart(id) {
+        return axios.execute('get', '/api/cart/remove/' + id);
+    },
     //TODO: remove this test
     test() {
         return axios.execute('get', '/api/profile/home');

@@ -25,7 +25,7 @@
                         <td width="170px !important">
                             <b-input-group>
                                 <b-input-group-prepend>
-                                    <b-button variant="info" v-model.number="element.amount" @click="setAmount(-1)">-</b-button>
+                                    <b-button variant="info" v-model.number="element.amount" @click="addAmount(index,-1)">-</b-button>
                                 </b-input-group-prepend>
 
                                 <b-form-input
@@ -38,12 +38,12 @@
                                 />
                                 
                                 <b-input-group-append>
-                                    <b-button variant="info" v-model.number="element.amount" @click="setAmount(1)">+</b-button>
+                                    <b-button variant="info" v-model.number="element.amount" @click="addAmount(index, 1)">+</b-button>
                                 </b-input-group-append>
                             </b-input-group>
                         </td>
                         <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} zł</h2></td>
-                        <td><b-button>X</b-button></td>
+                        <td><b-button @click="removeItem(index)">X</b-button></td>
                     </tr>
                 </tbody>
             </table>
@@ -114,27 +114,28 @@ export default {
                     this.cart = result;
                     this.cart.forEach((element) => {
                         element.product.image = api._getBaseURL() + element.product.image;
-                    })
+                    });
                 }).catch((errors) => {
                     this.cart = [];
                 }).finally(() => {
                     this.loading = false;
                 });
         },
-        getTotalCost(){
+        getTotalCost() {
             var sum = 0;
             this.cart.forEach((element) =>{
                 sum += element.product.cost * element.amount;
             });
             return sum;
-        }/*
-        setAmount(change){
-            this.cart.amount += change;
-            if (this.cart.amount - 1 < this.minQuantity) {
-                this.cart.amount = this.minQuantity;
+        },
+        addAmount(index, change) {
+            const element = this.cart[index];
+            element.amount += change;
+            if (element.amount - 1 < this.minQuantity) {
+                element.amount = this.minQuantity;
             }
-            else if (this.cart.amount + 1 > this.element.product.supply) {
-                this.cart.amount = this.element.product.supply;
+            else if (element.amount + 1 > element.product.supply) {
+                element.amount = element.product.supply;
             }
         },
         formatter(value) {
@@ -145,7 +146,16 @@ export default {
                 return this.cart.product.supply;
             }
             return value;
-        }*/
+        },
+        removeItem(index) {
+            const productId = this.cart[index].product.id;
+            api.removeItemFromCart(productId)
+                .then((result) => {
+                    this.cart.splice(index, 1);
+                }).catch(error => {
+                    this.$parent.makeToast('Could not remove item', error, 'info');
+                });
+        }
     },
     mounted () {
         this.$parent.setActive('store');

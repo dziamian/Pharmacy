@@ -37,7 +37,7 @@
           </b-button>
             <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
               <b-icon icon="handbag-fill"/>
-              <span class="bag-number">2</span>
+              <span class="bag-number"></span>
             </b-button>
           </div>
         </b-navbar>

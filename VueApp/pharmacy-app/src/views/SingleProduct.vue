@@ -39,7 +39,7 @@
                                 </b-input-group-append>
                             </b-input-group>
                             <b-col class="col-sm-4 col-lg-12 mt-4">
-                                <b-button variant="primary" size="lg">Add to cart</b-button>
+                                <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
                             </b-col>
                         </b-row>
                         <div v-else>
@@ -110,6 +110,14 @@ export default {
                 return this.product.supply;
             }
             return value;
+        },
+        addItem() {
+            api.addItemToCart(5, this.quantity)
+                .then(result => {
+                    this.$parent.makeToast('Adding item', result, 'success');
+                }).catch(error => {
+                    this.$parent.makeToast('Could not add item', error, 'info');
+                });
         }
     },
     mounted () {
