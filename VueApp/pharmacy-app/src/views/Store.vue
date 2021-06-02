@@ -209,7 +209,7 @@ export default {
                         product.image = api._getBaseURL() + product.image;
                     });
                 }).catch((errors) => {
-                    this.params.products = null;
+                    this.params.products = [];
                 }).finally(() => {
                     this.initPagination();
                     this.loading = false;

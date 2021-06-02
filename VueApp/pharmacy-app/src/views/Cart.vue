@@ -116,7 +116,7 @@ export default {
                         element.product.image = api._getBaseURL() + element.product.image;
                     })
                 }).catch((errors) => {
-                    this.cart = null;
+                    this.cart = [];
                 }).finally(() => {
                     this.loading = false;
                 });

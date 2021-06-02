@@ -17,8 +17,7 @@
             </div>
           </div>
         </div>
-        <products-gallery :products="newProducts" priceLabel="zł">
-        </products-gallery>
+        <products-gallery v-if="newProducts && newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
         <Footer></Footer>
       </div>
     </div>
@@ -57,8 +56,8 @@ export default {
             product.image = api._getBaseURL() + product.image;
           });
         }).catch((errors) => {
-          this.newProducts = null;
-          this.$parent.makeToast('Connection failed', 'No server response.', 'danger');
+          this.newProducts = [];
+          this.$parent.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
         }).finally(() => {
           this.loading = false;
         });
@@ -72,11 +71,6 @@ export default {
   mounted () {
     this.$parent.setActive('home');
     this.isAuthRedirected();
-  },
-  watch: {
-    $route(to, from) {
-      console.log("XD.");
-    }
   }
 }
 </script>
