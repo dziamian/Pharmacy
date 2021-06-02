@@ -33,6 +33,7 @@ namespace Pharmacy.Services
                     return false;
                 }
                 await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = amount });
+                await _cartRepo.Save();
                 return true;
             }
 
@@ -79,6 +80,7 @@ namespace Pharmacy.Services
                     return false;
                 }
                 await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = totalAmount });
+                await _cartRepo.Save();
                 return true;
             }
 
