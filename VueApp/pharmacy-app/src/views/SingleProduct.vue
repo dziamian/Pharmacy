@@ -5,49 +5,47 @@
         
     </div>
     <div v-else-if="product != null" class="site-wrap">
-        <div class="site-section">
-            <div class="container mt-5"> 
-                <b-row class="justify-content-md-center">
-                    <b-col class="col-sm-4 col-lg-5 text-center item mb-3">
-                        <img v-bind:src="product.image" class="img-fluid borderless ">
-                    </b-col>
-                    <b-col class="col-sm-4 col-lg-6 text-center">
-                        <h2 class="text-black">{{product.name}}</h2>
-                        <p>{{product.description}}</p>
+        <b-container class="mt-5"> 
+            <b-row class="justify-content-md-center">
+                <b-col class="col-sm-4 col-lg-5 text-center item mb-3">
+                    <img v-bind:src="product.image" class="img-fluid borderless ">
+                </b-col>
+                <b-col class="col-sm-4 col-lg-6 text-center">
+                    <h2 class="text-black">{{product.name}}</h2>
+                    <p>{{product.description}}</p>
+                
+                    <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
                     
-                        <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
-                        
-                        <b-row class="ml-0 justify-content-center" v-if="product.supply > 0">
-                            <b-input-group class="ml-0">
-                                <b-input-group-prepend>
-                                    <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
-                                </b-input-group-prepend>
+                    <b-row class="ml-0 justify-content-center" v-if="product.supply > 0">
+                        <b-input-group class="ml-0">
+                            <b-input-group-prepend>
+                                <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
+                            </b-input-group-prepend>
 
-                                <b-form-input
-                                    v-model.number="quantity"
-                                    type="number"
-                                    placeholder="1"
-                                    :min="minQuantity"
-                                    :max="product.supply"
-                                    :formatter="formatter"
-                                />
-                                
-                                <b-input-group-append>
-                                    <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
-                                </b-input-group-append>
-                            </b-input-group>
-                            <b-col class="col-sm-4 col-lg-12 mt-4 mb-3">
-                                <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
-                            </b-col>
-                        </b-row>
-                        <div v-else>
-                            <h2 class="text-black">This product is unavailable.</h2>
-                        </div>
-                    </b-col>
-                </b-row>
-            </div>
-            <Footer></Footer>
-        </div>
+                            <b-form-input
+                                v-model.number="quantity"
+                                type="number"
+                                placeholder="1"
+                                :min="minQuantity"
+                                :max="product.supply"
+                                :formatter="formatter"
+                            />
+                            
+                            <b-input-group-append>
+                                <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
+                            </b-input-group-append>
+                        </b-input-group>
+                        <b-col class="col-sm-4 col-lg-12 mt-4 mb-3">
+                            <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
+                        </b-col>
+                    </b-row>
+                    <div v-else>
+                        <h2 class="text-black">This product is unavailable.</h2>
+                    </div>
+                </b-col>
+            </b-row>
+        </b-container>
+        <Footer></Footer>
     </div>
     <div v-else>
         Product not found.
