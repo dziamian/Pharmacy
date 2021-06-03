@@ -21,11 +21,11 @@
             </b-navbar-nav>
 
           <div class="buttons">
-            <b-button 
+            <b-button
               v-if="!user" 
-              v-b-modal.sign-in-modal 
               class="mr-1" 
-              variant="outline-dark">
+              variant="outline-dark"
+              @click="navigateToLoginPage">
                 <b-icon icon="person-circle"/>&nbsp;Log in
             </b-button>
             <b-button 
@@ -44,34 +44,6 @@
       </div>
     </div>
     <router-view @cart-size-change="setCartAmount"/>
-    <b-modal id="sign-in-modal" centered title="Log in" @ok="handleSignIn" ok-title="Log in" >
-        <form>
-          <b-form-group
-            label="Email"
-            label-for="email-input"
-            invalid-feedback="Email is required">
-              <b-form-input
-                id="email-input"
-                type="email"
-                v-model="userCredentials.email"
-                required
-                @keydown.native.enter="modalEnterPressed"
-              />
-          </b-form-group>
-          <b-form-group
-            label="Password"
-            label-for="password-input"
-            invalid-feedback="Password is required">
-              <b-form-input
-                id="password-input"
-                type="password"
-                v-model="userCredentials.password"
-                required
-                @keydown.native.enter="modalEnterPressed"
-              />
-        </b-form-group>
-      </form>
-    </b-modal>
   </div>
 </template>
 
@@ -83,10 +55,6 @@ export default {
   data () {
     return {
       activeItem: 'home',
-      userCredentials: {
-        email: '',
-        password: ''
-      },
       cartSize: 0
     }
   },
@@ -105,27 +73,6 @@ export default {
         api.test().then((data) => {
           console.log(data);
         }).catch(error => console.log(error));
-      }).catch((error) => {
-        console.log(error.message);
-      });
-    },
-    signIn() {
-      this.$store.dispatch('user/signIn', this.userCredentials).then(() => {
-        console.log("SUCCESSFULLY SIGNED IN.");
-        this.setCartAmount();
-        api.test().then((data) => {
-          console.log(data);
-        }).catch((error) => console.log(error));
-      }).catch((error) => {
-        console.log(error.message);
-      });
-    },
-    signInWithGoogle() {
-      this.$store.dispatch('user/signInWithGoogle').then(() => {
-        console.log("SUCCESSFULLY SIGNED IN WITH GOOGLE.");
-        api.test().then((data) => {
-          console.log(data);
-        }).catch((error) => console.log(error));
       }).catch((error) => {
         console.log(error.message);
       });
@@ -161,28 +108,14 @@ export default {
             toaster: "b-toaster-bottom-right"
         });
     },
-    showSignIn() {
-      this.$bvModal.show('sign-in-modal');
-    },
-    resetModal() {
-      this.userCredentials.email = '';
-      this.userCredentials.password = '';
-    },
-    handleSignIn(bvModalEvt) {
-        this.handleSubmit();
-    },
-    handleSubmit() {
-      this.signIn();
-      this.$nextTick(() => {
-          this.$bvModal.hide('sign-in-modal');
-      })
-    },
-    modalEnterPressed() {
-      this.handleSignIn();
-    },
     navigateToCart() {
       if (this.$route.name != 'cart') {
         this.$router.push({name: 'cart'});
+      }
+    },
+    navigateToLoginPage() {
+      if (this.$route.name != 'login') {
+        this.$router.push({name: 'login'});
       }
     }
   }
