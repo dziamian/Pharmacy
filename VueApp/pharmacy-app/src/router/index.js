@@ -11,6 +11,8 @@ import SingleProduct from '@/views/SingleProduct.vue'
 import Cart from '@/views/Cart.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import Checkout from '@/views/Checkout.vue'
+import Login from '@/views/Login.vue'
+
 
 Vue.use(VueRouter);
 
@@ -61,6 +63,11 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
     path: '*',
