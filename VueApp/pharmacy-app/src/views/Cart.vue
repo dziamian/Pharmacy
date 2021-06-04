@@ -8,7 +8,6 @@
                         <th>Image</th>
                         <th>Product</th>
                         <th>Price</th>
-                        <th>Quantity</th>
                         <th>Total</th>
                         <th>Remove</th>
                     </tr>
@@ -22,33 +21,6 @@
                             <h2 class="h5 text-black">{{element.product.name}}</h2>
                         </td>
                         <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost)}} zł</h2></td>
-                        <td width="170px !important">
-                            <b-input-group>
-                                <b-input-group-prepend>
-                                    <b-button 
-                                        variant="info" 
-                                        v-model.number="element.amount" 
-                                        @click="addAmount(index,-1)"
-                                    >-</b-button>
-                                </b-input-group-prepend>
-
-                                <b-form-input
-                                    v-model.number="element.amount"
-                                    type="number"
-                                    :min="minQuantity"
-                                    :max="element.product.supply"
-                                    :formatter="(value, event) => formatter(index, value)"
-                                />
-                                
-                                <b-input-group-append>
-                                    <b-button 
-                                        variant="info" 
-                                        v-model.number="element.amount" 
-                                        @click="addAmount(index, 1)"
-                                    >+</b-button>
-                                </b-input-group-append>
-                            </b-input-group>
-                        </td>
                         <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} zł</h2></td>
                         <td><b-button @click="removeItem(index)">X</b-button></td>
                     </tr>
@@ -70,7 +42,7 @@
                         </b-row>
                         <b-row class="mb-2">
                             <b-col class="md-6 mb-4 text-center">
-                                <strong class="text-black">{{getCost(getTotalCost())}}zł</strong>
+                                <strong class="text-black">{{getCost(getTotalCost())}} zł</strong>
                             </b-col>
                 
                             <b-row>
@@ -132,26 +104,6 @@ export default {
                 sum += element.product.cost * element.amount;
             });
             return sum;
-        },
-        addAmount(index, change) {
-            const element = this.cart[index];
-            element.amount += change;
-            if (element.amount - 1 < this.minQuantity) {
-                element.amount = this.minQuantity;
-            }
-            else if (element.amount + 1 > element.product.supply) {
-                element.amount = element.product.supply;
-            }
-        },
-        formatter(index, value) {
-            if (!value || value < this.minQuantity) {
-                return this.minQuantity;
-            }
-            const element = this.cart[index];
-            if (value > element.product.supply) {
-                return element.product.supply;
-            }
-            return value;
         },
         removeItem(index) {
             const productId = this.cart[index].product.id;
