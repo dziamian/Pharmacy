@@ -24,9 +24,9 @@
             <div class="block-5 mb-5">
                 <h5 class="footer-heading mb-4">Contact Info</h5>
                 <ul class="list-unstyled">
-                    <li class="address"> <b-icon icon="map-fill" color="#51eaea"></b-icon>  Warszawska 21, 25-521 Kielce, Polska</li>
-                    <li class="phone"> <b-icon icon="telephone-fill" color="#51eaea"></b-icon> <a href="tel://48123456789">  +48 123 456 789</a></li>
-                    <li class="email"> <b-icon icon="envelope-fill" color="#51eaea"></b-icon> <a href="mailto:pharmacy@gmail.com">  pharmacy@gmail.com</a></li>
+                    <li class="address"> <b-icon icon="map-fill" color="#51eaea"></b-icon>  {{CONTACT.ADDRESS}}, {{CONTACT.COUNTRY}}</li>
+                    <li class="phone"> <b-icon icon="telephone-fill" color="#51eaea"></b-icon> <a :href="'tel://' + CONTACT.PHONE">  {{getFormattedPhoneNumber(CONTACT.PHONE)}}</a></li>
+                    <li class="email"> <b-icon icon="envelope-fill" color="#51eaea"></b-icon> <a :href="'mailto:' + CONTACT.EMAIL">  {{CONTACT.EMAIL}}</a></li>
                 </ul>
             </div>
         </b-col>

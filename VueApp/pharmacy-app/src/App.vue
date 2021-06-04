@@ -16,7 +16,6 @@
                 <b-dropdown-item to="/">Bandage</b-dropdown-item>
                 <b-dropdown-item to="/">Health</b-dropdown-item>
               </b-nav-item-dropdown>
-              <b-nav-item to="/about" v-bind:class="{ active: isActive('about') }">About</b-nav-item>
               <b-nav-item to="/contact" v-bind:class="{ active: isActive('contact') }">Contact</b-nav-item>
             </b-navbar-nav>
 
@@ -98,15 +97,6 @@ export default {
     },
     setActive (menuItem) {
       this.activeItem = menuItem;
-    },
-    makeToast(title, description, variant, autoHideDelay = 5000) {
-        this.$bvToast.toast(description, {
-            title: title,
-            variant: variant,
-            autoHideDelay: autoHideDelay,
-            appendToast: false,
-            toaster: "b-toaster-bottom-right"
-        });
     },
     navigateToCart() {
       if (this.$route.name != 'cart') {

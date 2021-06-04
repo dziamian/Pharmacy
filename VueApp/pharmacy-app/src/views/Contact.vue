@@ -3,11 +3,11 @@
         <b-row class="mb-5">
             <b-col  class="ml-5 mt-5">
                 <h2 class="h3 mb-3 text-black">Address:</h2>
-                <h2 class="h5 mb-4">Warszawska 21, 25-521 Kielce</h2>
+                <h2 class="h5 mb-4">{{CONTACT.ADDRESS}}</h2>
 
                 <h2 class="h3 mb-3 text-black">Office:</h2>
-                <h2 class="h5 mb-2">Phone number: <a href="tel://48123456789">+48 123 456 789</a></h2>
-                <h2 class="h5 mb-4">E-mail:  <a href="mailto:pharmacy@gmail.com">pharmacy@gmail.com</a></h2>
+                <h2 class="h5 mb-2">Phone number: <a :href="'tel://' + CONTACT.PHONE">{{getFormattedPhoneNumber(CONTACT.PHONE)}}</a></h2>
+                <h2 class="h5 mb-4">E-mail:  <a :href="'mailto:' + CONTACT.EMAIL">{{CONTACT.EMAIL}}</a></h2>
 
                 <h2 class="h3 mb-3 text-black">Opening hours:</h2>
                 <h2 class="h5 mb-2 text-black">From 9:00 a.m. to 20:00 p.m.</h2>

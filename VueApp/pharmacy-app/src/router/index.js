@@ -5,7 +5,6 @@ import store from '@/store'
 
 import Home from '@/views/Home.vue'
 import Store from '@/views/Store.vue'
-import About from '@/views/About.vue'
 import Contact from '@/views/Contact.vue'
 import SingleProduct from '@/views/SingleProduct.vue'
 import Cart from '@/views/Cart.vue'
@@ -32,11 +31,6 @@ const routes = [
     path: '/store',
     name: 'store',
     component: Store
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: About
   },
   {
     path: '/contact',
