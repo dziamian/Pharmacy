@@ -46,7 +46,7 @@
                             </b-col>
                 
                             <b-row>
-                                <b-col class="md-12">
+                                <b-col class="md-12 mb-5">
                                     <button class="btn btn-primary btn-lg btn-block" @click="manageSubmit">Proceed To
                                     Checkout</button>
                                     </b-col>
@@ -57,21 +57,27 @@
             </b-col>
         </b-row>
     </b-row>
+    <Footer/>
 </b-container>
 <b-container class="mt-5" v-else>
-    <b-row class="justify-content-md-center">
+    <b-row class="justify-content-md-center mb-5">
         <p class="h3 mb-2">
             <b-icon icon="exclamation-circle-fill" font-scale="1" variant="info"/>
             You have no items in cart.
         </p>
     </b-row>
+    <Footer/>
 </b-container>
 </template>
 
 <script>
 import api from '@/services/PharmacyApiService'
+import Footer from '@/components/Footer'
 
 export default {
+    components:{
+        Footer
+    },
     data() {
         let minQuantity = 1;
         return {

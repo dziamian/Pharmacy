@@ -1,6 +1,6 @@
 <template>
 <b-container class="mt-5">
-    <b-row class="mt-5">
+    <b-row>
         <b-col class="col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="block-7">
                 <h5 class="footer-heading mb-4">About Us</h5>

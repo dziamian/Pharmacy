@@ -54,7 +54,6 @@
 
 <script>
 import api from '@/services/PharmacyApiService'
-
 import Footer from '@/components/Footer'
 
 export default {

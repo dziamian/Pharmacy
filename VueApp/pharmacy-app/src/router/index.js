@@ -12,6 +12,7 @@ import Cart from '@/views/Cart.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import Checkout from '@/views/Checkout.vue'
 import Login from '@/views/Login.vue'
+import SignUp from '@/views/SignUp.vue'
 
 
 Vue.use(VueRouter);
@@ -68,6 +69,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/signUp',
+    name: 'signUp',
+    component: SignUp
   },
   {
     path: '*',

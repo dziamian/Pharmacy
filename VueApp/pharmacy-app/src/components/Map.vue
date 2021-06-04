@@ -1,12 +1,14 @@
 <template>
-    <gmap-map
-        ref="map"
-        :center="coordinates"
-        :zoom="15"
-        style="width:640px; height:360px;"
-    >
-        <gmap-marker :position="coordinates" :clickable="false"/>
-    </gmap-map>  
+    <b-container>
+        <gmap-map
+            ref="map"
+            :center="coordinates"
+            :zoom="15"
+            style="width:640px; height:360px;"
+        >
+            <gmap-marker :position="coordinates" :clickable="false"/>
+        </gmap-map>  
+    </b-container>
 </template>
 
 <script>
