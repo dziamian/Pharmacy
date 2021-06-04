@@ -70,6 +70,11 @@
                         <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number">
                     </b-col>
                 </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-block">Make order</button>
+                </div>
+
             </div>
         </b-col>
     </b-row>
