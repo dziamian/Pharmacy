@@ -84,7 +84,7 @@ export default {
                     this.product.image = api._getBaseURL() + this.product.image;
                     this.loading = false;
                 }).catch((errors) => {
-                    this.product = null;
+                    this.$router.push({name: 'store'});
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -111,9 +111,9 @@ export default {
             api.addItemToCart(this.product.id, this.quantity)
                 .then(result => {
                     this.$emit('cart-size-change');
-                    this.$parent.makeToast('Adding item', result, 'success');
+                    this.makeToast('Adding item', result, 'success');
                 }).catch(error => {
-                    this.$parent.makeToast('Could not add item', error, 'danger');
+                    this.makeToast('Could not add item', error, 'danger');
                 });
         }
     },

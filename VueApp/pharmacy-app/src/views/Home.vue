@@ -70,7 +70,7 @@ export default {
           });
         }).catch((errors) => {
           this.newProducts = [];
-          this.$parent.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
+          this.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
         }).finally(() => {
           this.loading = false;
         });

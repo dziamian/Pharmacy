@@ -76,7 +76,7 @@ export default {
                 this.onSignedIn();
             }).catch((error) => {
                 console.log(error.message);
-                this.$parent.makeToast("Invalid login or password","Try again","danger");
+                this.makeToast("Invalid login or password","Try again","danger");
             });
         },
         signInWithGoogle() {

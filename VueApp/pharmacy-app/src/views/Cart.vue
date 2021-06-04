@@ -160,7 +160,7 @@ export default {
                     this.$emit('cart-size-change');
                     this.cart.splice(index, 1);
                 }).catch(error => {
-                    this.$parent.makeToast('Could not remove item', error, 'error');
+                    this.makeToast('Could not remove item', error, 'error');
                 });
         },
         manageSubmit(){
