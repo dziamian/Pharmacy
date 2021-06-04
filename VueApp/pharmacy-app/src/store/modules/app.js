@@ -4,7 +4,8 @@ import App from '@/App'
 import '@/plugins/bootstrap-vue'
 import router from '@/router'
 import store from '@/store'
-import '@/plugins/mixins'
+import '@/helpers'
+import '@/plugins/scrollto'
 
 import '@/plugins/firebase'
 import '@/plugins/gmap'
@@ -30,7 +31,7 @@ export default {
     actions: {
         initialize({commit, dispatch, getters}) {
             if (!getters.isInitialized) {
-                dispatch('user/setAuthStateChange', () => commit('initialize', initApp()), {root: true});
+                dispatch('user/onFirstAuthStateChange', () => commit('initialize', initApp()), {root: true});
             }
         }
     },

@@ -25,20 +25,27 @@
                         <td width="170px !important">
                             <b-input-group>
                                 <b-input-group-prepend>
-                                    <b-button variant="info" v-model.number="element.amount" @click="addAmount(index,-1)">-</b-button>
+                                    <b-button 
+                                        variant="info" 
+                                        v-model.number="element.amount" 
+                                        @click="addAmount(index,-1)"
+                                    >-</b-button>
                                 </b-input-group-prepend>
 
                                 <b-form-input
                                     v-model.number="element.amount"
                                     type="number"
-                                    placeholder="element.amount"
                                     :min="minQuantity"
                                     :max="element.product.supply"
-                                    :formatter="formatter"
+                                    :formatter="(value, event) => formatter(index, value)"
                                 />
                                 
                                 <b-input-group-append>
-                                    <b-button variant="info" v-model.number="element.amount" @click="addAmount(index, 1)">+</b-button>
+                                    <b-button 
+                                        variant="info" 
+                                        v-model.number="element.amount" 
+                                        @click="addAmount(index, 1)"
+                                    >+</b-button>
                                 </b-input-group-append>
                             </b-input-group>
                         </td>
@@ -136,12 +143,13 @@ export default {
                 element.amount = element.product.supply;
             }
         },
-        formatter(value) {
+        formatter(index, value) {
             if (!value || value < this.minQuantity) {
                 return this.minQuantity;
             }
-            if (value > this.cart.product.supply) {
-                return this.cart.product.supply;
+            const element = this.cart[index];
+            if (value > element.product.supply) {
+                return element.product.supply;
             }
             return value;
         },
@@ -149,10 +157,10 @@ export default {
             const productId = this.cart[index].product.id;
             api.removeItemFromCart(productId)
                 .then((result) => {
-                    this.$emit('cart-size-remove');
+                    this.$emit('cart-size-change');
                     this.cart.splice(index, 1);
                 }).catch(error => {
-                    this.$parent.makeToast('Could not remove item', error, 'error');
+                    this.makeToast('Could not remove item', error, 'error');
                 });
         },
         manageSubmit(){

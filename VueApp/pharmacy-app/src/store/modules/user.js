@@ -5,12 +5,14 @@ const setToken = async function (commit, commitName, user) {
     commit(commitName, token);
     localStorage.setItem('auth-token', token);
     console.log("Current auth token: " + token);
+    return token;
 };
 
 const removeToken = function (commit, commitName) {
     commit(commitName);
     localStorage.removeItem('auth-token');
     console.log("Current auth token: null");
+    return null;
 }
 
 export default {
@@ -18,67 +20,75 @@ export default {
         token: localStorage.getItem('auth-token') || null
     },
     getters: {
-        isAuthenticated: (state) => !!state.token,
-        authStatus: (state) => state.authStatus,
-        authToken: (state) => state.token
+        isAuthenticated: (state) => !!state.token
     },
     actions: {
-        setAuthStateChange({commit}, onFirstAuthStateChange) {
-            const authStateChangeHandler = async function (user) {
-                (user) ? await setToken(commit, 'authSuccess', user) : removeToken(commit, 'authSignout');
-            };
+        onFirstAuthStateChange({commit}, method) {
             const unsubscribe = authService.setAuthStateChange(async (user) => {
-                await authStateChangeHandler(user);
-                onFirstAuthStateChange();
+                method();
                 unsubscribe();
-                authService.setAuthStateChange(authStateChangeHandler);
             });
         },
-        signUp({commit, getters}, credentials) {
+        async getAuthToken({commit}) {
+            const user = authService.getCurrentUser();
+            if (user == null) {
+                return removeToken(commit, 'authFailure');
+            }
+            return await setToken(commit, 'authSuccess', user);
+        },
+        signUp({dispatch, getters}, credentials) {
             return new Promise((resolve, reject) => {
-                if (getters.authToken) {
-                    reject(new Error("Please first sign out to sign up."));
+                if (getters.isAuthenticated) {
+                    reject(new Error("You are currently logged in. Please log out first."));
                     return;
                 }
-                authService.signUpWithEmailAndPassword(credentials).then((result) => {
+                authService.signUpWithEmailAndPassword(credentials).then(async (result) => {
+                    await dispatch('getAuthToken');
                     resolve(result);
                 }).catch((error) => {
                     reject(error);
                 });
             });
         },
-        signIn({commit, getters}, credentials) {
+        signIn({dispatch, getters}, credentials) {
             return new Promise((resolve, reject) => {
-                if (getters.authToken) {
-                    reject(new Error("Please first sign out to sign in."));
+                if (getters.isAuthenticated) {
+                    reject(new Error("You are currently logged in. Please log out first."));
                     return;
                 }
-                authService.signInWithEmailAndPassword(credentials).then((result) => {
+                authService.signInWithEmailAndPassword(credentials).then(async (result) => {
+                    await dispatch('getAuthToken');
                     resolve(result);
                 }).catch((error) => {
                     reject(error);
                 });
             });
         },
-        signInWithGoogle({commit, getters}) {
+        signInWithGoogle({dispatch, getters}) {
             return new Promise((resolve, reject) => {
-                if (getters.authToken) {
-                    reject(new Error("Please first sign out to sign in."));
+                if (getters.isAuthenticated) {
+                    reject(new Error("You are currently logged in. Please log out first."));
                     return;
                 }
-                authService.signInWithGoogle().then((result) => {
+                authService.signInWithGoogle().then(async (result) => {
+                    await dispatch('getAuthToken');
                     resolve(result);
                 }).catch((error) => {
                     reject(error);
                 });
             });
         },
-        signOut({commit}) {
-            return new Promise((resolve) => {
-                commit('authSignout');
+        signOut({commit, getters}) {
+            return new Promise((resolve, reject) => {
+                if (!getters.isAuthenticated) {
+                    reject(new Error("You are currently logged out."));
+                    return;
+                }
                 authService.signOut().then(() => {
-                    localStorage.removeItem('auth-token');
+                    removeToken(commit, 'authSignout');
                     resolve();
+                }).catch((error) => {
+                    reject(error);
                 });
             });
         }
@@ -88,6 +98,9 @@ export default {
             state.token = token;
         },
         authSignout: (state) => {
+            state.token = null;
+        },
+        authFailure: (state) => {
             state.token = null;
         }
     }

@@ -33,7 +33,7 @@
     </b-row>
     <b-row class="pt-5 mt-5 text-center">
         <b-col class="col-md-12 mt-2 mb-5">
-            <p>Copyright © 2021 All rights reserved</p>
+            <p>Copyright © 2021 | All rights reserved</p>
         </b-col>
     </b-row>
 </b-container>
@@ -41,7 +41,7 @@
 
 <script>
 
-export default{
+export default {
 
 }
 </script>

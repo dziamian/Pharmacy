@@ -12,9 +12,8 @@ let config = {
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
-  function(config) {
-    const authToken = store.getters['user/authToken'];
-    console.log(authToken);
+  async function(config) {
+    const authToken = await store.dispatch('user/getAuthToken');
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`;
     }

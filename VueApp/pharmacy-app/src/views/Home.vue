@@ -11,16 +11,29 @@
               <h1>
                 Welcome to our Pharmacy
               </h1>
-              <b-button class="btn-shop px-5 py-3" variant="primary">
+              <b-button class="btn-shop px-5 py-3" variant="primary" v-scroll-to="'#newProducts'">
                 Check new products
               </b-button>
             </div>
           </div>
         </div>
-        <products-gallery v-if="newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
-        <Footer></Footer>
       </div>
     </div>
+    <div class="home-section new-products">
+      <div id="newProducts" class="container pt-5">
+        <div class="row">
+          <div class="title-section text-center col-12">
+            <h2 class="text-uppercase">
+              New products
+            </h2>
+          </div>
+        </div>
+        <div class="row">
+          <products-gallery v-if="newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
+        </div>
+      </div>
+    </div>
+    <Footer></Footer>
   </main>
 </template>
 
@@ -57,7 +70,7 @@ export default {
           });
         }).catch((errors) => {
           this.newProducts = [];
-          this.$parent.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
+          this.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
         }).finally(() => {
           this.loading = false;
         });
@@ -118,5 +131,9 @@ export default {
 .btn-shop:hover {
   background: transparent;
   color: #51eaea;
+}
+
+.new-products {
+  background-color: #f8f9fa;
 }
 </style>

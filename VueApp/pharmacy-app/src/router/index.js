@@ -77,7 +77,16 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    return {
+      x: 0, 
+      y: 0
+    };
+  }
 });
 
 router.beforeEach((to, from, next) => {
@@ -86,7 +95,7 @@ router.beforeEach((to, from, next) => {
       return next();
     }
     return next({
-      name: 'home', 
+      name: 'login', 
       params: {
         authRedirect: true
       }
