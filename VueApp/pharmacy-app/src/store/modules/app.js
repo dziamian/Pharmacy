@@ -5,6 +5,7 @@ import '@/plugins/bootstrap-vue'
 import router from '@/router'
 import store from '@/store'
 import '@/plugins/mixins'
+import '@/plugins/scrollto'
 
 import '@/plugins/firebase'
 import '@/plugins/gmap'
