@@ -2,7 +2,7 @@
     <b-container class="mt-5">
         <b-form >
             <b-row class="justify-content-md-center">
-                <b-col class=col-lg-3>
+                <b-col class="col-lg-3">
                     <b-form-group
                     label="Email"
                     label-for="email-input"
@@ -17,7 +17,7 @@
                 </b-col>
             </b-row> 
             <b-row class="justify-content-md-center">
-                <b-col class=col-lg-3>
+                <b-col class="col-lg-3">
                     <b-form-group
                     label="Password"
                     label-for="password-input"
@@ -32,28 +32,28 @@
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center mt-3">
-                <b-col class="col-lg-3">
-                    <b-button variant="primary" size="lg" @click="handleSubmit">Log in</b-button>
+                <b-col class="col-lg-3 text-center">
+                    <b-button variant="primary" size="lg" @click="handleSubmit">Log in with Email</b-button>
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center mt-3">
-                <b-col class=col-lg-3>
+                <b-col class="col-lg-3">
                     <hr class="or">
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center mt-3 mb-3">
-                <b-col class="col-lg-3">
+                <b-col class="col-lg-3 text-center">
                     <b-button variant="outline-primary" size="lg" @click="signInWithGoogle">
                         <b-icon icon="google"/> Log in with Google</b-button>
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center">
-                <b-col class=col-lg-3>
+                <b-col class="col-lg-3">
                     <hr>
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center">
-                <b-col class=col-lg-3>
+                <b-col class="col-lg-3 text-center">
                     <p class="signUpRef">If you don't have an account: <b-link to="SignUp">click here</b-link></p>
                 </b-col>
             </b-row>
@@ -115,8 +115,6 @@ export default {
 <style scoped>
 
 .or {
-    border: none;
-    border-top: 3px double rgb(145, 145, 145);
     color: rgb(145, 145, 145);
     overflow: visible;
     text-align: center;
