@@ -68,7 +68,7 @@ import api from '@/services/PharmacyApiService'
 import Footer from '@/components/Footer'
 
 export default {
-    name: 'Login',
+    name: 'SignIn',
     components: { 
         Footer 
     },

@@ -11,7 +11,7 @@ import Cart from '@/views/Cart.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import Checkout from '@/views/Checkout.vue'
 import SuccessfulOrder from '@/views/SuccessfulOrder.vue'
-import Login from '@/views/Login.vue'
+import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 
 
@@ -69,9 +69,9 @@ const routes = [
     }
   },
   {
-    path: '/login',
-    name: 'login',
-    component: Login,
+    path: '/signIn',
+    name: 'signIn',
+    component: SignIn,
     meta: {
       requiresNonAuth: true
     }

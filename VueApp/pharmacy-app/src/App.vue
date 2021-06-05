@@ -22,10 +22,17 @@
           <div class="buttons">
             <b-button
               v-if="!user" 
+              class="mr-2" 
+              variant="outline-dark"
+              @click="navigateToSignInPage">
+                <b-icon icon="person-circle"/>&nbsp;Log in
+            </b-button>
+            <b-button
+              v-if="!user" 
               class="mr-1" 
               variant="outline-dark"
-              @click="navigateToLoginPage">
-                <b-icon icon="person-circle"/>&nbsp;Log in
+              @click="navigateToSignUpPage">
+                <b-icon icon="person-plus-fill"/>&nbsp;Sign Up
             </b-button>
             <b-button 
               v-else
@@ -57,25 +64,11 @@ export default {
       cartSize: 0
     }
   },
-  computed: {
-    user() {
-      return this.$store.getters['user/isAuthenticated'];
-    }
-  },
   created() {
     this.setCartAmount();
   },
   methods: {
-    signUp() {
-      this.$store.dispatch('user/signUp', this.userCredentials).then(() => {
-        console.log("SUCCESSFULLY SIGNED UP.");
-        api.test().then((data) => {
-          console.log(data);
-        }).catch(error => console.log(error));
-      }).catch((error) => {
-        console.log(error.message);
-      });
-    },
+
     signOut() {
       this.$store.dispatch('user/signOut').then(() => {
         if (this.$route.name != 'home') {
@@ -103,9 +96,14 @@ export default {
         this.$router.push({name: 'cart'});
       }
     },
-    navigateToLoginPage() {
-      if (this.$route.name != 'login') {
-        this.$router.push({name: 'login'});
+    navigateToSignInPage() {
+      if (this.$route.name != 'signIn') {
+        this.$router.push({name: 'signIn'});
+      }
+    },
+    navigateToSignUpPage() {
+      if (this.$route.name != 'signUp') {
+        this.$router.push({name: 'signUp'});
       }
     }
   }

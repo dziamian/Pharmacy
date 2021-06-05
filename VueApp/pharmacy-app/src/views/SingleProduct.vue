@@ -1,9 +1,5 @@
 <template>
-    <div v-if="loading == true"> <!-- Dodaj animacje do ładowania-->
-        
-        <!-- <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon> -->
-        
-    </div>
+    <Loading v-if="loading==true"/>
     <div v-else-if="product != null" class="site-wrap">
         <b-container class="mt-5"> 
             <b-row class="justify-content-md-center">
@@ -35,7 +31,7 @@
                                 <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
                             </b-input-group-append>
                         </b-input-group>
-                        <b-col class="col-sm-4 col-lg-12 mt-4 mb-3">
+                        <b-col v-if="user" class="col-sm-4 col-lg-12 mt-4 mb-3">
                             <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
                         </b-col>
                     </b-row>
@@ -45,7 +41,7 @@
                 </b-col>
             </b-row>
         </b-container>
-        <Footer></Footer>
+        <Footer/>
     </div>
     <div v-else>
         Product not found.
@@ -55,10 +51,12 @@
 <script>
 import api from '@/services/PharmacyApiService'
 import Footer from '@/components/Footer'
+import Loading from '@/components/Loading'
 
 export default {
     components:{
-        Footer
+        Footer,
+        Loading
     },
     name: 'SingleProduct',
     data() {

@@ -25,6 +25,11 @@ function initMixin(contact) {
                 }
             };
         },
+        computed: {
+            user() {
+                return this.$store.getters['user/isAuthenticated'];
+            }
+        },
         methods: {
             getFormattedPhoneNumber(phone) {
                 return '+' + 

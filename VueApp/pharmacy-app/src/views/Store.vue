@@ -1,5 +1,6 @@
 <template>
-    <div class="store-section">
+    <Loading v-if="loading==true"/>
+    <div v-else class="store-section">
         <div class="search mt-2">
             <b-input-group>
                 <b-input-group-prepend is-text>
@@ -128,6 +129,8 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 
+import Loading from '@/components/Loading'
+
 import Product from '@/components/Product'
 
 import Footer from '@/components/Footer'
@@ -139,7 +142,8 @@ export default {
         VueSlider,
         VueBootstrapTypeahead,
         Product,
-        Footer
+        Footer,
+        Loading
     },
     data() {
         let minPrice = 0;

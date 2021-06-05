@@ -1,5 +1,6 @@
 <template>
-  <main class="pb-3">
+  <Loading v-if="loading==true"/>
+  <main v-else class="pb-3">
     <div class="home-cover">
       <div class="container">
         <div class="row">
@@ -11,7 +12,9 @@
               <h1>
                 Welcome to our Pharmacy
               </h1>
-              <b-button class="btn-shop px-5 py-3" variant="primary" v-scroll-to="'#newProducts'">
+              <b-button 
+                class="btn-shop px-5 py-3" 
+                variant="primary" v-scroll-to="{el: '#newProducts', offset: 200}">
                 Check new products
               </b-button>
             </div>
@@ -19,8 +22,8 @@
         </div>
       </div>
     </div>
-    <div class="home-section new-products">
-      <div id="newProducts" class="container pt-5">
+    <div id="newProducts" class="home-section new-products">
+      <div class="container pt-5">
         <div class="row">
           <div class="title-section text-center col-12">
             <h2 class="text-uppercase">
@@ -42,11 +45,13 @@ import api from '@/services/PharmacyApiService'
 
 import ProductsGallery from '@/components/ProductsGallery'
 import Footer from '@/components/Footer'
+import Loading from '@/components/Loading'
 
 export default {
   components: {
     ProductsGallery,
-    Footer
+    Footer,
+    Loading
   },
   data() {
 	  return {
