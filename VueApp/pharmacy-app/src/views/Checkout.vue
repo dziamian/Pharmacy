@@ -173,10 +173,11 @@
                             <button class="btn btn-primary btn-lg btn-block">Make order</button>
                         </div>
                         <PayPal
-                            amount="10.00"
-                            currency="USD"
+                            :amount="getCost(getTotalCost(), '.')"
+                            :currency="BILLING.CURRENCY.ABB"
                             :client="credentials"
-                            env="sandbox">
+                            env="sandbox"
+                            @payment-completed="onPaymentCompleted">
                         </PayPal>
                     </div>
                 </b-col>
@@ -203,7 +204,7 @@ export default {
             cart: [],
             selectedPaymentOption: "paypal",
             credentials: {
-                sandbox: 'sb-1emv436425804@personal.example.com',
+                sandbox: 'AYprUXv1Y6tPemMNwfUeJ9IMUPVMxwgPm4deenB6Z55fX5Esd400KcglzIgibM_xUllG6UQIzjZ9E16z',
                 production: ''
             }
         }
@@ -234,6 +235,9 @@ export default {
             });
             return sum;
         },
+        onPaymentCompleted() {
+            this.$router.push({name: 'successfulOrder'});
+        }
     }
 }
 

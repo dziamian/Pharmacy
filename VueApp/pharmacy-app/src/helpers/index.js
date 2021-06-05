@@ -33,8 +33,8 @@ function initMixin(contact) {
                     phone.substring(5, 8) + ' ' +
                     phone.substring(8, 11);
             },
-            getCost(cost) {
-                return parseInt(cost / 100) + "," + ((cost % 100 < 10) ? "0" : "") + (cost % 100);
+            getCost(cost, delimeter = ',') {
+                return parseInt(cost / 100) + delimeter + ((cost % 100 < 10) ? "0" : "") + (cost % 100);
             },
             makeToast(title, description, variant, autoHideDelay = 5000) {
                 this.$bvToast.toast(description, {

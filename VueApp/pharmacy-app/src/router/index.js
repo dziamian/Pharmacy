@@ -10,6 +10,7 @@ import SingleProduct from '@/views/SingleProduct.vue'
 import Cart from '@/views/Cart.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import Checkout from '@/views/Checkout.vue'
+import SuccessfulOrder from '@/views/SuccessfulOrder.vue'
 import Login from '@/views/Login.vue'
 import SignUp from '@/views/SignUp.vue'
 
@@ -60,14 +61,28 @@ const routes = [
     }
   },
   {
+    path: '/successfulOrder',
+    name: 'successfulOrder',
+    component: SuccessfulOrder,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    meta: {
+      requiresNonAuth: true
+    }
   },
   {
     path: '/signUp',
     name: 'signUp',
-    component: SignUp
+    component: SignUp,
+    meta: {
+      requiresNonAuth: true
+    }
   },
   {
     path: '*',
@@ -96,10 +111,13 @@ router.beforeEach((to, from, next) => {
     }
     return next({
       name: 'login', 
-      params: {
-        authRedirect: true
-      }
     });
+  }
+  if (to.matched.some((record) => record.meta.requiresNonAuth)) {
+    if (!isAuthenticated()) {
+      return next();
+    }
+    return next(false);
   }
   next();
 });

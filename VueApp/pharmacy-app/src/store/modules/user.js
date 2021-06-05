@@ -23,8 +23,9 @@ export default {
         isAuthenticated: (state) => !!state.token
     },
     actions: {
-        onFirstAuthStateChange({commit}, method) {
-            const unsubscribe = authService.setAuthStateChange(async (user) => {
+        onFirstAuthStateChange({commit, dispatch}, method) {
+            const unsubscribe = authService.setAuthStateChange(async () => {
+                await dispatch('getAuthToken');
                 method();
                 unsubscribe();
             });
