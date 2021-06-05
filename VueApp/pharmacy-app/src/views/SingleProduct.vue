@@ -14,7 +14,7 @@
                     <h2 class="text-black">{{product.name}}</h2>
                     <p>{{product.description}}</p>
                 
-                    <p><strong class="text-primary h4">{{getCost(product.cost)}} zł</strong></p>
+                    <p><strong class="text-primary h4">{{getCost(product.cost)}} {{BILLING.CURRENCY.ABB}}</strong></p>
                     
                     <b-row class="ml-0 justify-content-center" v-if="product.supply > 0">
                         <b-input-group class="ml-0">

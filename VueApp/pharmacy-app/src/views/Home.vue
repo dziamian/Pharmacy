@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="row">
-          <products-gallery v-if="newProducts.length > 0" :products="newProducts" priceLabel="zł"/>
+          <products-gallery v-if="newProducts.length > 0" :products="newProducts" :priceLabel="BILLING.CURRENCY.ABB"/>
         </div>
       </div>
     </div>

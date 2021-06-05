@@ -30,7 +30,7 @@
                             :tooltip-placement="'bottom'"
                         />
                         <div class="p-2">
-                            <b-input-group class="price-input-group" :append="init.priceLabel" style="float: left;">
+                            <b-input-group class="price-input-group" :append="BILLING.CURRENCY.ABB" style="float: left;">
                                 <b-form-input 
                                     v-model.number="filter.settings.priceRange[0]"
                                     type="number"  
@@ -40,7 +40,7 @@
                                     :formatter="formatter"
                                 />
                             </b-input-group>
-                            <b-input-group class="price-input-group" :append="init.priceLabel" style="float: right;">
+                            <b-input-group class="price-input-group" :append="BILLING.CURRENCY.ABB" style="float: right;">
                                 <b-form-input 
                                     v-model.number="filter.settings.priceRange[1]"
                                     type="number" 
@@ -102,7 +102,7 @@
         <div class="container mt-5">
             <b-row v-if="pagination.products.length > 0">
                 <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in pagination.products"  :key="index">
-                    <product :product="product" :priceLabel="init.priceLabel" />
+                    <product :product="product" :priceLabel="BILLING.CURRENCY.ABB" />
                 </b-col>
             </b-row>
             <b-row v-else class="justify-content-md-center">
@@ -148,8 +148,7 @@ export default {
             loading: true,
             init: {
                 minPrice: minPrice,
-                maxPrice: maxPrice,
-                priceLabel: 'zł',
+                maxPrice: maxPrice
             },
             params: {
                 products: [],

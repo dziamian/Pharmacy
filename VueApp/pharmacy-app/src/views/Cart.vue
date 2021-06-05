@@ -20,8 +20,8 @@
                         <td>
                             <h2 class="h5 text-black">{{element.product.name}}</h2>
                         </td>
-                        <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost)}} zł</h2></td>
-                        <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} zł</h2></td>
+                        <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost)}} {{BILLING.CURRENCY.ABB}}</h2></td>
+                        <td width="100px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} {{BILLING.CURRENCY.ABB}}</h2></td>
                         <td><b-button @click="removeItem(index)">X</b-button></td>
                     </tr>
                 </tbody>
@@ -42,7 +42,7 @@
                         </b-row>
                         <b-row class="mb-2">
                             <b-col class="md-6 mb-4 text-center">
-                                <strong class="text-black">{{getCost(getTotalCost())}} zł</strong>
+                                <strong class="text-black">{{getCost(getTotalCost())}} {{BILLING.CURRENCY.ABB}}</strong>
                             </b-col>
                 
                             <b-row>
@@ -122,7 +122,7 @@ export default {
                 });
         },
         manageSubmit(){
-            this.$router.push("checkout");
+            this.$router.push({name: 'checkout'});
         }
     },
     mounted () {

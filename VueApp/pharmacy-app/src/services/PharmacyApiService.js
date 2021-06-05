@@ -26,6 +26,9 @@ export default {
     test() {
         return axios.execute('get', '/api/profile');
     },
+    getContactInfo() {
+        return axios.execute('get', '/api/contact');
+    },
     _getBaseURL() {
         return axios.instance.defaults.baseURL;
     }

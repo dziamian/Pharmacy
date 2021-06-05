@@ -32,13 +32,6 @@
         
                 <div class="form-group row">
                     <b-col class="md-12">
-                        <label for="companyName" class="text-black">Company Name </label>
-                        <input type="text" class="form-control" id="companyName" name="companyName">
-                    </b-col>
-                </div>
-        
-                <div class="form-group row">
-                    <b-col class="md-12">
                         <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="Street address">
                     </b-col>
@@ -105,13 +98,6 @@
             
                             <div class="form-group row">
                                 <b-col class="md-12">
-                                    <label for="diffrentCompanyName" class="text-black">Company Name </label>
-                                    <input type="text" class="form-control" id="diffrentCompanyName" name="diffrentCompanyName">
-                                </b-col>
-                            </div>
-            
-                            <div class="form-group row">
-                                <b-col class="md-12">
                                     <label for="diffrentAddress" class="text-black">Address <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="diffrentAddress" name="diffrentAddress"
                                     placeholder="Street address">
@@ -171,21 +157,27 @@
                             <tbody>
                                 <tr v-for="(element, index) in cart" :key="index">
                                     <td>{{element.product.name}}<strong class="mx-2">x</strong> {{element.amount}}</td>
-                                    <td>{{getCost(element.product.cost*element.amount)}} zł</td>
+                                    <td>{{getCost(element.product.cost*element.amount)}} {{BILLING.CURRENCY.ABB}}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                                    <td class="text-black font-weight-bold"><strong>{{getCost(getTotalCost())}} zł</strong></td>
+                                    <td class="text-black font-weight-bold"><strong>{{getCost(getTotalCost())}} {{BILLING.CURRENCY.ABB}}</strong></td>
                                 </tr>
                             </tbody>
                         </table>
                         <b-form-group label="Payment options" v-slot="{ paymentOption }">
-                            <b-form-radio v-model="selectedPaymentOption" :aria-describedby="paymentOption" name="payPal" value="payPal">Paypal</b-form-radio>
+                            <b-form-radio v-model="selectedPaymentOption" :aria-describedby="paymentOption" name="paypal" value="paypal">Paypal</b-form-radio>
                         </b-form-group>
 
                         <div class="form-group mt-5">
                             <button class="btn btn-primary btn-lg btn-block">Make order</button>
                         </div>
+                        <PayPal
+                            amount="10.00"
+                            currency="USD"
+                            :client="credentials"
+                            env="sandbox">
+                        </PayPal>
                     </div>
                 </b-col>
             </b-row>
@@ -196,17 +188,24 @@
 </template>
 
 <script>
-import api from '@/services/PharmacyApiService'
+import PayPal from 'vue-paypal-checkout'
 import Footer from '@/components/Footer'
+
+import api from '@/services/PharmacyApiService'
 
 export default {
     components:{
-        Footer,
+        PayPal,
+        Footer
     },
     data() {
         return {
             cart: [],
-            selectedPaymentOption: ""
+            selectedPaymentOption: "paypal",
+            credentials: {
+                sandbox: 'sb-1emv436425804@personal.example.com',
+                production: ''
+            }
         }
     },
     created() {

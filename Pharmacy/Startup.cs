@@ -25,6 +25,7 @@ using AutoMapper;
 using Pharmacy.Models.Mappings;
 using Pharmacy.Services.Interfaces;
 using Pharmacy.Services;
+using Pharmacy.Helpers;
 
 namespace Pharmacy
 {
@@ -50,6 +51,8 @@ namespace Pharmacy
             services.AddScoped<ICartRepo, SqlCartRepo>();
 
             services.AddScoped<ICartService, CartService>();
+
+            services.Configure<Contact>(Configuration.GetSection("Contact"));
 
             services.AddCors(options => 
             {
