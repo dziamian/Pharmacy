@@ -110,7 +110,7 @@ router.beforeEach((to, from, next) => {
       return next();
     }
     return next({
-      name: 'login', 
+      name: 'signIn', 
     });
   }
   if (to.matched.some((record) => record.meta.requiresNonAuth)) {

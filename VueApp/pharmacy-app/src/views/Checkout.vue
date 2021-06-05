@@ -1,6 +1,5 @@
 <template>
-    <Loading v-if="loading==true"/>
-    <b-container v-else class="mt-5">
+    <b-container class="mt-5">
         <b-row class="mb-5">   
             <b-col class="md-6 mb-5 mb-md-0">
                 <h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -166,13 +165,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <b-form-group label="Payment options" v-slot="{ paymentOption }">
-                                <b-form-radio v-model="selectedPaymentOption" :aria-describedby="paymentOption" name="paypal" value="paypal">Paypal</b-form-radio>
-                            </b-form-group>
-                            <div class="form-group mt-5">
-                                <button class="btn btn-primary btn-lg btn-block">Make order</button>
-                            </div>
-                            <div ref="paypal"></div>
+                            <div id="paypal-button"></div>
                         </div>
                     </b-col>
                 </b-row>
@@ -195,6 +188,7 @@ export default {
     },
     data() {
         return {
+            paypal: null,
             cart: [],
             selectedPaymentOption: "paypal",
             loading: true
@@ -227,7 +221,8 @@ export default {
             return sum;
         },
         setLoaded() {
-            window.paypal.Buttons({
+            this.loading = false;
+            this.paypal = window.paypal.Buttons({
                 fundingSource: window.paypal.FUNDING.PAYPAL,
                 createOrder: (data, actions) => {
                     return actions.order.create({
@@ -248,14 +243,14 @@ export default {
                 onError: (error) => {
                     console.log("XDDD");
                 }
-            }).render(this.$refs.paypal);
+            }).render('#paypal-button');
         }
     },
     mounted() {
         const script = document.createElement("script");
         script.src = "https://www.paypal.com/sdk/js?client-id=AYprUXv1Y6tPemMNwfUeJ9IMUPVMxwgPm4deenB6Z55fX5Esd400KcglzIgibM_xUllG6UQIzjZ9E16z&currency=PLN";
-        script.addEventListener("load", this.setLoaded);
         document.body.appendChild(script);
+        script.addEventListener("load", this.setLoaded);
     }
 }
 
