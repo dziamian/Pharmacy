@@ -4,7 +4,7 @@ import App from '@/App'
 import '@/plugins/bootstrap-vue'
 import router from '@/router'
 import store from '@/store'
-import '@/helpers'
+import helpers from '@/helpers'
 import '@/plugins/scrollto'
 
 import '@/plugins/firebase'
@@ -13,11 +13,20 @@ import '@/plugins/gmap'
 Vue.config.productionTip = false;
 
 const initApp = function () {
-    return new Vue({
-        router,
-        store,
-        render: h => h(App)
-    }).$mount("#app");
+    var app;
+    helpers.getContactInfo()
+    .then((contact) => {
+        helpers.initMixin(contact);
+    }).catch((error) => {
+        helpers.initMixin();
+    }).finally(() => {
+        app = new Vue({
+            router,
+            store,
+            render: h => h(App)
+        }).$mount("#app");
+    });
+    return app;
 };
 
 export default {

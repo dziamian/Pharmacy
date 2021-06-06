@@ -4,26 +4,32 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3">
                     <b-form-group
-                    label="First name"
                     label-for="firstName-input"
                     invalid-feedback="Enter at least 3 characters.">
+                        <template v-slot:label>
+                            First name <span class="text-danger font-weight-bold h5">*</span>
+                        </template>
                         <b-form-input
                             id="firstName-input"
                             type="text"
                             v-model="userCredentials.firstName"
+                            placeholder="Enter your name"
                             :state="firstNameState"
                             required/>
                     </b-form-group>
                 </b-col>
                 <b-col class="col-lg-3">
                     <b-form-group
-                    label="Last name"
                     label-for="lastName-input"
                     invalid-feedback="Enter at least 3 characters.">
+                        <template v-slot:label>
+                            Last name <span class="text-danger font-weight-bold h5">*</span>
+                        </template>
                         <b-form-input
                             id="lastName-input"
                             type="text"
                             v-model="userCredentials.lastName"
+                            placeholder="Enter your last name"
                             :state="lastNameState"
                             required/>
                     </b-form-group>
@@ -32,13 +38,16 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3">
                     <b-form-group
-                    label="Email"
                     label-for="email-input"
                     invalid-feedback="Invalid email address.">
+                        <template v-slot:label>
+                            Email <span class="text-danger font-weight-bold h5">*</span>
+                        </template>
                         <b-form-input
                             id="email-input"
                             type="email"
                             v-model="userCredentials.email"
+                            placeholder="Enter your e-mail"
                             :state="emailState"
                             required/>
                     </b-form-group>
@@ -52,6 +61,7 @@
                             id="phone-input"
                             type="tel"
                             v-model="userCredentials.phone"
+                            placeholder="Enter your phone number"
                             :state="phoneState"/>
                     </b-form-group>
                 </b-col>
@@ -59,18 +69,22 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3 mt-3">
                     <b-form-group
-                        label="Date of birth"
                         label-for="age-input"
-                        invalid-feedback="Date of birth is required.">
+                        invalid-feedback="Date of birth must be in the past.">
+                        <template v-slot:label>
+                            Date of birth <span class="text-danger font-weight-bold h5">*</span>
+                        </template>
                         <b-form-input
                             id="age-input"
                             type="date"
+                            :max="currentDate"
                             v-model="userCredentials.dateOfBirth"
-                            :state="dateOfBirthState"/>
+                            :state="dateOfBirthState"
+                            required/>
                     </b-form-group>
                 </b-col>
                 <b-col class="col-lg-3">
-                    <b-form-group label="Gender" v-slot="{ gender }">
+                    <b-form-group v-slot="{ gender }">
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Male" value="male">Male</b-form-radio>
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Female" value="female">Female</b-form-radio>
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Other" value="other">Other </b-form-radio>
@@ -80,26 +94,32 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3">
                     <b-form-group
-                    label="Password"
                     label-for="password-input"
                     invalid-feedback="Password must have at least 4 characters.">
+                    <template v-slot:label>
+                        Password <span class="text-danger font-weight-bold h5">*</span>
+                    </template>
                         <b-form-input
                             id="password-input"
                             type="password"
                             v-model="userCredentials.password"
+                            placeholder="Enter your password"
                             :state="passwordState"
                             required/>
-                    </b-form-group>
+                        </b-form-group>
                 </b-col>
                 <b-col class="col-lg-3">
                     <b-form-group
-                    label="Password confirm"
                     label-for="passwordConf-input"
                     invalid-feedback="Passwords do not match.">
+                        <template v-slot:label>
+                            Password confirm <span class="text-danger font-weight-bold h5">*</span>
+                        </template>
                         <b-form-input
                             id="passwordConf-input"
                             type="password"
                             v-model="userCredentials.confirmPassword"
+                            placeholder="Repeat your password"
                             :state="passwordConfirmState"
                             required/>
                     </b-form-group>
@@ -148,7 +168,7 @@ export default {
     },
     data() {
         return {
-            formError: false,
+            currentDate: this.getFormattedDate(new Date()),
             userCredentials: {
                 firstName: '',
                 lastName: '',
@@ -172,21 +192,41 @@ export default {
                 (this.passwordConfirmState == null || this.passwordConfirmState);
         },
         firstNameState() {
+            if (this.userCredentials.firstName.length == 0) {
+                return null;
+            }
             return this.userCredentials.firstName.length > 2;
         },
         lastNameState() {
+            if (this.userCredentials.lastName.length == 0) {
+                return null;
+            }
             return this.userCredentials.lastName.length > 2;
         },
         emailState() {
-            return this.userCredentials.email.indexOf('@') > -1;
+            if (this.userCredentials.email.length == 0) {
+                return null;
+            }
+            return (this.userCredentials.email.indexOf('@') > -1) && 
+                (this.userCredentials.email.length > 5) && 
+                (this.userCredentials.email.indexOf('.') > -1);
         },
         phoneState() {
-            return null;
+            if (this.userCredentials.phone.length == 0) {
+                return null;
+            }
+            return this.userCredentials.phone.length == 9; 
         },
         dateOfBirthState() {
-            return this.userCredentials.dateOfBirth != '';
+            if (this.userCredentials.dateOfBirth.length == 0) {
+                return null;
+            }
+            return Date.parse(this.userCredentials.dateOfBirth) <= new Date();
         },
         passwordState() {
+            if (this.userCredentials.password.length == 0) {
+                return null;
+            }
             return this.userCredentials.password.length > 3;
         },
         passwordConfirmState() {
@@ -209,7 +249,7 @@ export default {
                 this.onSignedIn();
             }).catch((error) => {
                 console.log(error.message);
-                this.makeToast("Invalid data or account exist", "Try again", "danger");
+                this.makeToast("Account with this e-mail exists", "Log in or use a different email", "danger");
             });
         },
         signInWithGoogle() {
@@ -227,6 +267,9 @@ export default {
                 console.log(data);
             }).catch((error) => console.log(error));
         }
+    },
+    mounted() {
+        this.$parent.setActive('');
     }
 }
 

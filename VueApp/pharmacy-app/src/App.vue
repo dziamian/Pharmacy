@@ -41,6 +41,13 @@
               @click="signOut">
                 <b-icon icon="person-circle"/>&nbsp;Log out
           </b-button>
+          <b-button 
+              v-if="user"
+              class="mr-1" 
+              variant="outline-dark"
+              @click="navigateToProfilePage">
+                <b-icon icon="wrench"/>&nbsp;Profile
+          </b-button>
             <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
               <b-icon icon="handbag-fill"/>
               <span class="bag-number">{{cartSize}}</span>
@@ -109,9 +116,16 @@ export default {
       if (this.$route.name != 'signUp') {
         this.$router.push({name: 'signUp'});
       }
+    },
+    navigateToProfilePage() {
+      if (this.$route.name != 'Profile') {
+        this.$router.push({name: 'Profile'});
+      }
     }
   }
 }
+
+
 </script>
 
 <style>

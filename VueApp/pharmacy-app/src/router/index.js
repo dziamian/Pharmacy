@@ -13,6 +13,7 @@ import Checkout from '@/views/Checkout.vue'
 import SuccessfulOrder from '@/views/SuccessfulOrder.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
+import Profile from '@/views/Profile.vue'
 
 
 Vue.use(VueRouter);
@@ -82,6 +83,14 @@ const routes = [
     component: SignUp,
     meta: {
       requiresNonAuth: true
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiresAuth: true
     }
   },
   {

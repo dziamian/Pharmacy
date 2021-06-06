@@ -29,6 +29,9 @@ export default {
         manageClick(){
             this.$router.push({name: 'store'});
         }
+    },
+    mounted() {
+        this.$parent.setActive('store');
     }
 }
 </script>

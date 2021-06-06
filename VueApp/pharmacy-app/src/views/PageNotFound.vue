@@ -19,6 +19,9 @@ export default {
         return {
 
         };
+    },
+    mounted() {
+        this.$parent.setActive('');
     }
 }
 </script>

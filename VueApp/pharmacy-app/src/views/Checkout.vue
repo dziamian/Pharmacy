@@ -247,6 +247,8 @@ export default {
         }
     },
     mounted() {
+        this.$parent.setActive('store');
+
         const script = document.createElement("script");
         script.src = "https://www.paypal.com/sdk/js?client-id=AYprUXv1Y6tPemMNwfUeJ9IMUPVMxwgPm4deenB6Z55fX5Esd400KcglzIgibM_xUllG6UQIzjZ9E16z&currency=PLN";
         document.body.appendChild(script);

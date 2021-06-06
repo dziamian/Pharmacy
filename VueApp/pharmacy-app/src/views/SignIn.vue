@@ -1,18 +1,18 @@
 <template>  
     <b-container class="mt-5">
-        <b-form >
+        <b-form @submit.stop.prevent="signIn">
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3">
                     <b-form-group
                     label="Email"
-                    label-for="email-input"
-                    invalid-feedback="Email is required">
+                    label-for="email-input">
                         <b-form-input
                         id="email-input"
                         type="email"
                         v-model="userCredentials.email"
-                        required
-                        @keydown.native.enter="handleSubmit"/>
+                        placeholder="Enter your e-mail"
+                        :state="emailState"
+                        required/>
                     </b-form-group>
                 </b-col>
             </b-row> 
@@ -20,44 +20,44 @@
                 <b-col class="col-lg-3">
                     <b-form-group
                     label="Password"
-                    label-for="password-input"
-                    invalid-feedback="Password is required">
+                    label-for="password-input">
                         <b-form-input
                         id="password-input"
                         type="password"
                         v-model="userCredentials.password"
-                        required
-                        @keydown.native.enter="handleSubmit"/>
+                        placeholder="Enter your password"
+                        :state="passwordState"
+                        required/>
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center mt-3">
                 <b-col class="col-lg-3 text-center">
-                    <b-button variant="primary" size="lg" @click="handleSubmit">Log in with Email</b-button>
-                </b-col>
-            </b-row>
-            <b-row class="justify-content-md-center mt-3">
-                <b-col class="col-lg-3">
-                    <hr class="or">
-                </b-col>
-            </b-row>
-            <b-row class="justify-content-md-center mt-3 mb-3">
-                <b-col class="col-lg-3 text-center">
-                    <b-button variant="outline-primary" size="lg" @click="signInWithGoogle">
-                        <b-icon icon="google"/> Log in with Google</b-button>
-                </b-col>
-            </b-row>
-            <b-row class="justify-content-md-center">
-                <b-col class="col-lg-3">
-                    <hr>
-                </b-col>
-            </b-row>
-            <b-row class="justify-content-md-center">
-                <b-col class="col-lg-3 text-center">
-                    <p class="signUpRef">If you don't have an account: <b-link to="SignUp">click here</b-link></p>
+                    <b-button type="submit" variant="primary" size="lg">Log in with Email</b-button>
                 </b-col>
             </b-row>
         </b-form>
+        <b-row class="justify-content-md-center mt-3">
+            <b-col class="col-lg-3">
+                <hr class="or">
+            </b-col>
+        </b-row>
+        <b-row class="justify-content-md-center mt-3 mb-3">
+            <b-col class="col-lg-3 text-center">
+                <b-button variant="outline-primary" size="lg" @click="signInWithGoogle">
+                    <b-icon icon="google"/> Log in with Google</b-button>
+            </b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+            <b-col class="col-lg-3">
+                <hr>
+            </b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+            <b-col class="col-lg-3 text-center">
+                <p class="signUpRef">If you don't have an account: <b-link to="SignUp">click here</b-link></p>
+            </b-col>
+        </b-row>
         <Footer/>
     </b-container>
 </template>
@@ -80,8 +80,32 @@ export default {
             },
         }
     },
+        computed: {
+        formState() {
+            return (this.emailState == null || this.emailState) && 
+                (this.passwordState == null || this.passwordState);
+        },
+        emailState() {
+            if (this.userCredentials.email.length == 0) {
+                return null;
+            }
+            return (this.userCredentials.email.indexOf('@') > -1) && 
+                (this.userCredentials.email.length > 5) && 
+                (this.userCredentials.email.indexOf('.') > -1);
+        },
+        passwordState() {
+            if (this.userCredentials.password.length == 0) {
+                return null;
+            }
+            return this.userCredentials.password.length > 3;
+        },
+    },
     methods: { 
         signIn() {
+            if (!this.formState) {
+                this.makeToast("Invalid form state", "Please fill out data correctly.", "danger");
+                return;
+            }
             this.$store.dispatch('user/signIn', this.userCredentials).then(() => {
                 this.onSignedIn();
             }).catch((error) => {
@@ -96,9 +120,6 @@ export default {
                 console.log(error.message);
             });
         },
-        handleSubmit() {
-            this.signIn();
-        },
         onSignedIn() {
             console.log("SUCCESSFULLY SIGNED IN.");
             this.$emit('cart-size-change');
@@ -107,7 +128,9 @@ export default {
                 console.log(data);
             }).catch((error) => console.log(error));
         }
-        
+    },
+    mounted() {
+        this.$parent.setActive('');
     }
 }
 </script>
