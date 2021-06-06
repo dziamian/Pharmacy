@@ -164,7 +164,7 @@ export default {
                 this.onSignedIn();
             }).catch((error) => {
                 console.log(error.message);
-                this.makeToast("Invalid data or account exist","Try again","danger");
+                this.makeToast("Invalid data or account exist", "Try again", "danger");
             });
         },
         signInWithGoogle() {

@@ -65,7 +65,6 @@ export default {
   },
   computed: {
     appHeight() {
-      console.log(-this.$parent.height);
       return -this.$parent.height;
     }
   },
