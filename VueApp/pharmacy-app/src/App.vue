@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="header py-2">
+    <div class="header py-2" ref="header">
       <div class="container">
         <b-navbar class="navbar d-flex align-items-center justify-content-between">
           
@@ -67,8 +67,12 @@ export default {
   created() {
     this.setCartAmount();
   },
+  computed: {
+    height() {
+      return this.$refs.header.clientHeight;
+    }
+  },
   methods: {
-
     signOut() {
       this.$store.dispatch('user/signOut').then(() => {
         if (this.$route.name != 'home') {

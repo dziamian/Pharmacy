@@ -11,7 +11,7 @@ async function getContactInfo() {
     return contact;
 }
 
-function initMixin(contact) {
+function initMixin(contact = {ADDRESS: "", COUNTRY: "", PHONE: "", EMAIL: ""}) {
     Vue.mixin({
         data() {
             return {
@@ -54,6 +54,9 @@ function initMixin(contact) {
     });
 }
 
-getContactInfo().then((contact) => {
-    initMixin(contact);
-});
+getContactInfo()
+    .then((contact) => {
+        initMixin(contact);
+    }).catch((error) => {
+        initMixin();
+    });

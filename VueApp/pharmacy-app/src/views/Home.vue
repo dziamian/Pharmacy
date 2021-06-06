@@ -14,7 +14,7 @@
               </h1>
               <b-button 
                 class="btn-shop px-5 py-3" 
-                variant="primary" v-scroll-to="{el: '#newProducts', offset: 200}">
+                variant="primary" v-scroll-to="{el: '#newProducts', offset: appHeight}">
                 Check new products
               </b-button>
             </div>
@@ -63,6 +63,12 @@ export default {
   created() {
     this.getNewProducts();
   },
+  computed: {
+    appHeight() {
+      console.log(-this.$parent.height);
+      return -this.$parent.height;
+    }
+  },
   methods: {
     getNewProducts() {
       this.loading = true;
@@ -79,16 +85,10 @@ export default {
         }).finally(() => {
           this.loading = false;
         });
-    },
-    isAuthRedirected() {
-      if (this.authRedirected) {
-        this.$parent.showSignIn();
-      }
     }
   },
   mounted () {
     this.$parent.setActive('home');
-    this.isAuthRedirected();
   }
 }
 </script>
