@@ -37,14 +37,16 @@ namespace Pharmacy.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+                //remove account from firebase
             }
 
             var createdClient = await _clientsRepo.GetClient(uid);
             if (createdClient != null)
             {
                 return BadRequest();
+                //remove account from firebase
             }
-            
+
             await _clientsRepo.CreateClient(ClientsConverter.FromClientDTO(client, uid));
             await _clientsRepo.Save();
             return Ok();
