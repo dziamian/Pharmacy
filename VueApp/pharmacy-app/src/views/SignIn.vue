@@ -42,12 +42,7 @@
                 <hr class="or">
             </b-col>
         </b-row>
-        <b-row class="justify-content-md-center mt-3 mb-3">
-            <b-col class="col-lg-3 text-center">
-                <b-button variant="outline-primary" size="lg" @click="signInWithGoogle">
-                    <b-icon icon="google"/> Log in with Google</b-button>
-            </b-col>
-        </b-row>
+        <GoogleButton :onSignedIn="onSignedIn"/>
         <b-row class="justify-content-md-center">
             <b-col class="col-lg-3">
                 <hr>
@@ -65,12 +60,15 @@
 <script>
 
 import api from '@/services/PharmacyApiService'
+
+import GoogleButton from '@/components/GoogleButton'
 import Footer from '@/components/Footer'
 
 export default {
-    name: 'SignIn',
+    name: 'signIn',
     components: { 
-        Footer 
+        GoogleButton,
+        Footer
     },
     data() {
         return {
@@ -109,24 +107,13 @@ export default {
             this.$store.dispatch('user/signIn', this.userCredentials).then(() => {
                 this.onSignedIn();
             }).catch((error) => {
-                console.log(error.message);
-                this.makeToast("Invalid login or password","Try again","danger");
-            });
-        },
-        signInWithGoogle() {
-            this.$store.dispatch('user/signInWithGoogle').then(() => {
-                this.onSignedIn();
-            }).catch((error) => {
-                console.log(error.message);
+                const message = error.message.split('.');
+                this.makeToast(message[0], message[1] + '.', "danger");
             });
         },
         onSignedIn() {
-            console.log("SUCCESSFULLY SIGNED IN.");
             this.$emit('cart-size-change');
             this.$router.push({name: 'home'});
-            api.test().then((data) => {
-                console.log(data);
-            }).catch((error) => console.log(error));
         }
     },
     mounted() {

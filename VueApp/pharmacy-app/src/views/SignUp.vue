@@ -2,35 +2,19 @@
     <b-container class="mt-5">
         <b-form @submit.stop.prevent="signUp">
             <b-row class="justify-content-md-center">
-                <b-col class="col-lg-3">
+                <b-col class="col-lg-6">
                     <b-form-group
-                    label-for="firstName-input"
-                    invalid-feedback="Enter at least 3 characters.">
+                    label-for="Name-input"
+                    invalid-feedback="Enter at least 5 characters.">
                         <template v-slot:label>
-                            First name <span class="text-danger font-weight-bold h5">*</span>
+                            Name <span class="text-danger font-weight-bold h5">*</span>
                         </template>
                         <b-form-input
-                            id="firstName-input"
+                            id="Name-input"
                             type="text"
-                            v-model="userCredentials.firstName"
+                            v-model="userCredentials.name"
                             placeholder="Enter your name"
-                            :state="firstNameState"
-                            required/>
-                    </b-form-group>
-                </b-col>
-                <b-col class="col-lg-3">
-                    <b-form-group
-                    label-for="lastName-input"
-                    invalid-feedback="Enter at least 3 characters.">
-                        <template v-slot:label>
-                            Last name <span class="text-danger font-weight-bold h5">*</span>
-                        </template>
-                        <b-form-input
-                            id="lastName-input"
-                            type="text"
-                            v-model="userCredentials.lastName"
-                            placeholder="Enter your last name"
-                            :state="lastNameState"
+                            :state="nameState"
                             required/>
                     </b-form-group>
                 </b-col>
@@ -69,22 +53,19 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-lg-3 mt-3">
                     <b-form-group
+                        label="Date of birth"
                         label-for="age-input"
                         invalid-feedback="Date of birth must be in the past.">
-                        <template v-slot:label>
-                            Date of birth <span class="text-danger font-weight-bold h5">*</span>
-                        </template>
                         <b-form-input
                             id="age-input"
                             type="date"
                             :max="currentDate"
                             v-model="userCredentials.dateOfBirth"
-                            :state="dateOfBirthState"
-                            required/>
+                            :state="dateOfBirthState"/>
                     </b-form-group>
                 </b-col>
                 <b-col class="col-lg-3">
-                    <b-form-group v-slot="{ gender }">
+                    <b-form-group v-slot="{ gender }" label="Gender">
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Male" value="male">Male</b-form-radio>
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Female" value="female">Female</b-form-radio>
                         <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Other" value="other">Other </b-form-radio>
@@ -136,12 +117,7 @@
                 <hr class="or">
             </b-col>
         </b-row>
-        <b-row class="justify-content-md-center mt-3 mb-3">
-            <b-col class="col-lg-3 text-center">
-                <b-button variant="outline-primary" size="lg" @click="signInWithGoogle">
-                    <b-icon icon="google"/> Log in with Google</b-button>
-            </b-col>
-        </b-row>
+        <GoogleButton :onSignedIn="onSignedIn"/>
         <b-row class="justify-content-md-center">
             <b-col class="col-lg-6">
                 <hr>
@@ -159,19 +135,21 @@
 <script>
 
 import api from '@/services/PharmacyApiService'
+
+import GoogleButton from '@/components/GoogleButton'
 import Footer from '@/components/Footer'
 
 export default {
-    name: 'SignUp',
+    name: 'signUp',
     components: { 
+        GoogleButton,
         Footer 
     },
     data() {
         return {
             currentDate: this.getFormattedDate(new Date()),
             userCredentials: {
-                firstName: '',
-                lastName: '',
+                name: '',
                 email: '',
                 phone: '',
                 dateOfBirth: '',
@@ -183,25 +161,18 @@ export default {
     },
     computed: {
         formState() {
-            return (this.firstNameState == null || this.firstNameState) && 
-                (this.lastNameState == null || this.lastNameState) && 
+            return (this.nameState == null || this.nameState) && 
                 (this.emailState == null || this.emailState) && 
                 (this.phoneState == null || this.phoneState) && 
                 (this.dateOfBirthState == null || this.dateOfBirthState) && 
                 (this.passwordState == null || this.passwordState) &&
                 (this.passwordConfirmState == null || this.passwordConfirmState);
         },
-        firstNameState() {
-            if (this.userCredentials.firstName.length == 0) {
+        nameState() {
+            if (this.userCredentials.name.length == 0) {
                 return null;
             }
-            return this.userCredentials.firstName.length > 2;
-        },
-        lastNameState() {
-            if (this.userCredentials.lastName.length == 0) {
-                return null;
-            }
-            return this.userCredentials.lastName.length > 2;
+            return this.userCredentials.name.length > 4;
         },
         emailState() {
             if (this.userCredentials.email.length == 0) {
@@ -246,26 +217,23 @@ export default {
                 return;
             }
             this.$store.dispatch('user/signUp', this.userCredentials).then(() => {
-                this.onSignedIn();
+                api.createAccount({
+                    name: this.userCredentials.name,
+                    email: this.userCredentials.email,
+                    phone: this.userCredentials.phone == '' ? undefined : this.userCredentials.phone,
+                    dateOfBirth: this.userCredentials.dateOfBirth == '' ? undefined : this.userCredentials.dateOfBirth,
+                    gender: this.userCredentials.gender
+                }).then(() => {
+                    this.onSignedIn();
+                });
             }).catch((error) => {
-                console.log(error.message);
-                this.makeToast("Account with this e-mail exists", "Log in or use a different email", "danger");
-            });
-        },
-        signInWithGoogle() {
-            this.$store.dispatch('user/signInWithGoogle').then(() => {
-                this.onSignedIn();
-            }).catch((error) => {
-                console.log(error.message);
+                const message = error.message.split('.');
+                this.makeToast(message[0], message[1] + '.', "danger");
             });
         },
         onSignedIn() {
-            console.log("SUCCESSFULLY SIGNED IN.");
             this.$emit('cart-size-change');
             this.$router.push({name: 'home'});
-            api.test().then((data) => {
-                console.log(data);
-            }).catch((error) => console.log(error));
         }
     },
     mounted() {

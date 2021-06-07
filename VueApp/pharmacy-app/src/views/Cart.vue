@@ -7,15 +7,18 @@
                     <table class="table table-bordered">
                         <thead class="text-center">
                             <tr>
-                                <th>Image</th>
+                                <th>No.</th>
                                 <th>Product</th>
+                                <th>Name</th>
                                 <th>Price</th>
+                                <th>Quantity</th>
                                 <th>Total</th>
                                 <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(element, index) in cart" :key="index">
+                                <td>{{index + 1}}</td>
                                 <td >
                                     <img v-bind:src="element.product.image" class="img-fluid">
                                 </td>
@@ -23,6 +26,7 @@
                                     <h2 class="h5 text-black">{{element.product.name}}</h2>
                                 </td>
                                 <td width="130px !important"><h2 class="h5 text-black">{{getCost(element.product.cost)}} {{BILLING.CURRENCY.ABB}}</h2></td>
+                                <td width="130px !important"><h2 class="h5 text-black">{{element.amount}}</h2></td>
                                 <td width="130px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} {{BILLING.CURRENCY.ABB}}</h2></td>
                                 <td><b-button @click="removeItem(index)">X</b-button></td>
                             </tr>
