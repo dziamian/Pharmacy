@@ -41,7 +41,8 @@ namespace Pharmacy.Controllers
             string uid = GetUID();
             var cart = await _cartService.GetCart(uid);
 
-            return Ok(cart.ToList().Count);
+            //return Ok(cart.ToList().Count);
+            return Ok(cart.Count());
         }
 
         [HttpGet("{id}/{amount:int?}")]
