@@ -12,6 +12,7 @@ namespace Pharmacy.Models.Database
     {
         public PharmacyDBContext(DbContextOptions<PharmacyDBContext> options) : base(options) { }
 
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
     }

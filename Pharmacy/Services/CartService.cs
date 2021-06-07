@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using Pharmacy.Models.Converters;
 using Pharmacy.Models.Data_Transfrom_Objects;
 using Pharmacy.Models.Database.Entities;
-using Pharmacy.Models.Database.Repositories;
+using Pharmacy.Models.Database.Repositories.Interfaces;
 using Pharmacy.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,12 +12,10 @@ namespace Pharmacy.Services
 {
     public class CartService : ICartService
     {
-        private readonly IMapper _mapper;
         private readonly IProductsRepo _productsRepo;
         private readonly ICartRepo _cartRepo;
-        public CartService(IMapper mapper, IProductsRepo productsRepo, ICartRepo cartRepo)
+        public CartService(IProductsRepo productsRepo, ICartRepo cartRepo)
         {
-            _mapper = mapper;
             _productsRepo = productsRepo;
             _cartRepo = cartRepo;
         }
@@ -47,8 +45,9 @@ namespace Pharmacy.Services
         public async Task<IEnumerable<CartItemDTO>> GetCart(string uid)
         {
             var cartItems = await _cartRepo.GetByClientId(uid, true);
-            List<CartItemDTO> cart = _mapper.Map<List<CartItem>, List<CartItemDTO>>(cartItems.ToList());
             
+            var cart = CartConverter.ToCartItemDTOs(cartItems.ToList());
+
             return cart;
         }
 

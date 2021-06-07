@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pharmacy.Models.Database;
 
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(PharmacyDBContext))]
-    partial class PharmacyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210607161729_Accounts")]
+    partial class Accounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace Pharmacy.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("Date");
 
                     b.Property<string>("Email")

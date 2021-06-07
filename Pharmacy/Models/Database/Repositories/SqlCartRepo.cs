@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Pharmacy.Models.Data_Transfrom_Objects;
 using Pharmacy.Models.Database.Entities;
+using Pharmacy.Models.Database.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,32 +78,5 @@ namespace Pharmacy.Models.Database.Repositories
         {
             _context.Entry(item).State = EntityState.Modified;
         }
-
-        /*public async Task<CartItemDTO> AddItem(string uid, int productId, int amount = 1)
-        {
-            var item = await _context.CartItems.FirstOrDefaultAsync(x => x.ClientId == uid && x.ProductId == productId);
-            if (item == null)
-            {
-                var product = _productsRepo.GetProductById(productId);
-                _context.AddAsync(new CartItem { ClientId = uid, ProductId = productId, Product = product, Amount = amount });
-                return null;
-            }
-
-            item.Amount += amount;
-            await _context.SaveChangesAsync();
-            return await Task.FromResult(_mapper.Map<CartItem, CartItemDTO>(item));
-        }*/
-
-        /*public async Task<IEnumerable<CartItemDTO>> GetByClientId(string uid)
-        {
-            var cartItems = await _context.CartItems.Include(p => p.Product).ToListAsync();
-            List<CartItemDTO> cart = _mapper.Map<List<CartItem>, List<CartItemDTO>>(cartItems);
-            return cart;
-        }
-
-        public async Task<CartItemDTO> UpdateItem(string uid, int productId, int totalAmount = 1)
-        {
-            throw new NotImplementedException();
-        }*/
     }
 }

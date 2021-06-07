@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pharmacy.Models.Database;
 using Pharmacy.Models.Database.Repositories;
+using Pharmacy.Models.Database.Repositories.Interfaces;
 using Pharmacy.Models.Database.Entities;
 using Microsoft.AspNetCore.Identity;
 using FluentValidation.AspNetCore;
@@ -21,8 +22,6 @@ using Pharmacy.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using AutoMapper;
-using Pharmacy.Models.Mappings;
 using Pharmacy.Services.Interfaces;
 using Pharmacy.Services;
 using Pharmacy.Helpers;
@@ -47,6 +46,7 @@ namespace Pharmacy
 
             services.AddControllers();
 
+            services.AddScoped<IClientsRepo, SqlClientsRepo>();
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
             services.AddScoped<ICartRepo, SqlCartRepo>();
 
@@ -81,13 +81,7 @@ namespace Pharmacy
                     };
                 });
 
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new CartItemMapping());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PharmacyDBContext dBContext)

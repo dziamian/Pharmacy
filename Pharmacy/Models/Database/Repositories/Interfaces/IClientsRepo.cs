@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Database.Repositories.Interfaces
 {
-    public interface IProductsRepo
+    public interface IClientsRepo
     {
-        IEnumerable<Product> GetAllProducts();
-        Product GetProductById(int id);
+        Task CreateClient(Client client);
+        Task<Client> GetClient(string uid);
+        Task Save();
     }
 }

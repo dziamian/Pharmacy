@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pharmacy.Models.Database.Repositories
+namespace Pharmacy.Models.Database.Repositories.Interfaces
 {
     public interface ICartRepo
     {
