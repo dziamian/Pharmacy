@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,7 +31,10 @@ namespace Pharmacy.Models.Database.Entities
         [MaxLength(1024)]
         public string Description { get; set; }
 
-        public ICollection<ProductActiveSubstance> ActiveSubstances { get; set; }
+        [Required]
+		public DateTime CreationDate { get; set; }
+
+		public ICollection<ProductActiveSubstance> ActiveSubstances { get; set; }
 
         public ICollection<ProductPassiveSubstance> PassiveSubstances { get; set; }
 
