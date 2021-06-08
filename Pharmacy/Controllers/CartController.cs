@@ -10,7 +10,7 @@ using Pharmacy.Models.Data_Transfrom_Objects;
 using Pharmacy.Models.Database;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories;
-using Pharmacy.Services.Interfaces;
+using Pharmacy.Services;
 
 namespace Pharmacy.Controllers
 {
@@ -19,9 +19,9 @@ namespace Pharmacy.Controllers
     [ApiController]
     public class CartController : AuthControllerBase
     {
-        private readonly ICartService _cartService;
+        private readonly CartService _cartService;
 
-        public CartController(ICartService cartService)
+        public CartController(CartService cartService)
         {
             _cartService = cartService;
         }
@@ -33,6 +33,20 @@ namespace Pharmacy.Controllers
             var cart = await _cartService.GetCart(uid);
             
             return Ok(cart);
+        }
+
+        [HttpGet("validate")]
+        public async Task<ActionResult> ValidateCart()
+        {
+            string uid = GetUID();
+            var status = await _cartService.ValidateCart(uid);
+
+            if (!status) 
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         [HttpGet("size")]
@@ -57,19 +71,6 @@ namespace Pharmacy.Controllers
             return BadRequest("Product not found.");
         }
 
-        [HttpGet("update/{id}/{totalAmount:int?}")]
-        public async Task<ActionResult> UpdateItemInCart(int id, int totalAmount = 1)
-        {
-            string uid = GetUID();
-            var result = await _cartService.UpdateItemInCart(uid, id, totalAmount);
-
-            if (result)
-            {
-                return Ok("Successfully updated cart.");
-            }
-            return BadRequest("Product not found.");
-        }
-
         [HttpGet("remove/{id}")]
         public async Task<ActionResult> RemoveItemFromCart(int id)
         {
@@ -80,7 +81,7 @@ namespace Pharmacy.Controllers
             {
                 return Ok("Successfully removed item from cart.");
             }
-            return BadRequest("Product not found.");
+            return NotFound("Product not found.");
         }
 
         [HttpGet("remove")]

@@ -22,7 +22,6 @@ using Pharmacy.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Pharmacy.Services.Interfaces;
 using Pharmacy.Services;
 using Pharmacy.Helpers;
 
@@ -50,7 +49,7 @@ namespace Pharmacy
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
             services.AddScoped<ICartRepo, SqlCartRepo>();
 
-            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<CartService>();
 
             services.Configure<Contact>(Configuration.GetSection("Contact"));
 

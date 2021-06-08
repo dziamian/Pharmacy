@@ -66,9 +66,9 @@
                 </b-col>
                 <b-col class="col-lg-3">
                     <b-form-group v-slot="{ gender }" label="Gender">
-                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Male" value="male">Male</b-form-radio>
-                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Female" value="female">Female</b-form-radio>
-                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Other" value="other">Other </b-form-radio>
+                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Male" value="m">Male</b-form-radio>
+                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Female" value="f">Female</b-form-radio>
+                        <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Other" value="o">Other</b-form-radio>
                     </b-form-group>
                 </b-col>
             </b-row> 
@@ -153,7 +153,7 @@ export default {
                 email: '',
                 phone: '',
                 dateOfBirth: '',
-                gender: 'male',
+                gender: 'm',
                 password: '',
                 confirmPassword: ''
             },

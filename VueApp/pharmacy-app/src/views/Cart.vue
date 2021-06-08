@@ -23,12 +23,13 @@
                                     <img v-bind:src="element.product.image" class="img-fluid">
                                 </td>
                                 <td>
-                                    <h2 class="h5 text-black">{{element.product.name}}</h2>
+                                    <h2 :class="(element.isAvailable) ? 'h5 text-black' : 'h5 text-danger'">{{element.product.name}}</h2>
                                 </td>
-                                <td width="130px !important"><h2 class="h5 text-black">{{getCost(element.product.cost)}} {{BILLING.CURRENCY.ABB}}</h2></td>
-                                <td width="130px !important"><h2 class="h5 text-black">{{element.amount}}</h2></td>
-                                <td width="130px !important"><h2 class="h5 text-black">{{getCost(element.product.cost*element.amount)}} {{BILLING.CURRENCY.ABB}}</h2></td>
-                                <td><b-button @click="removeItem(index)">X</b-button></td>
+                                <td width="130px !important"><h2 :class="(element.isAvailable) ? 'h5 text-black' : 'h5 text-danger'">{{getCost(element.product.cost)}} {{BILLING.CURRENCY.ABB}}</h2></td>
+                                <td v-if="element.isAvailable" width="130px !important"><h2 class="h5 text-black">{{element.amount}}</h2></td>
+                                <td v-else width="150px !important"><h2 class="h5 text-danger">This amount ({{element.amount}}) is not available</h2></td>
+                                <td width="130px !important"><h2 :class="(element.isAvailable) ? 'h5 text-black' : 'h5 text-danger'">{{getCost(element.product.cost * element.amount)}} {{BILLING.CURRENCY.ABB}}</h2></td>
+                                <td><b-button :variant="(element.isAvailable) ? 'secondary' : 'danger'" @click="removeItem(index)">X</b-button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -36,7 +37,7 @@
             
                 <b-row class="mt-5">
                     <b-col class="col-lg-5">
-                        <button class="btn btn-outline-primary btn-md btn-block"><router-link to="/store">Continue Shopping</router-link></button>
+                        <button class="btn btn-outline-primary btn-md btn-block" @click="navigateToStore">Continue Shopping</button>
                     </b-col>
                     <b-col>
                         <b-row class="justify-content-end">
@@ -53,8 +54,8 @@
                         
                                     <b-row>
                                         <b-col class="md-12 mb-5">
-                                            <button class="btn btn-primary btn-lg btn-block" @click="manageSubmit">Proceed To
-                                            Checkout</button>
+                                            <b-button size="lg" @click="manageSubmit" :variant="isCartValid ? 'primary' : 'secondary'" :disabled="!isCartValid">Proceed To
+                                                Checkout</b-button>
                                             </b-col>
                                     </b-row>
                                 </b-row>
@@ -145,8 +146,21 @@ export default {
                     this.makeToast('Could not remove item', error, 'error');
                 });
         },
-        manageSubmit(){
+        manageSubmit() {
             this.$router.push({name: 'checkout'});
+        },
+        navigateToStore() {
+            this.$router.push({name: 'store'});
+        }
+    },
+    computed: {
+        isCartValid: function () {
+            for (const element in this.cart) {
+                if (!this.cart[element].isAvailable) {
+                    return false;
+                }
+            }
+            return true;
         }
     },
     mounted () {
@@ -171,9 +185,6 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-a {
-    text-decoration: none;
-    transition: .3s all ease;
-}
+
 
 </style>

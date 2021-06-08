@@ -33,7 +33,6 @@ export default {
                         accessToken: user.credential.accessToken
                     }).then(async (result) => {
                         const birthday = this.getFormattedDate(this.getDateOfBirthFromGoogle(result.birthdays));
-                        console.log(birthday);
                         await api.createAccount({
                             name: user.additionalUserInfo.profile.name,
                             email: user.additionalUserInfo.profile.email,

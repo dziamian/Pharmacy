@@ -53,14 +53,14 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Client>> GetAccount()
+        public async Task<ActionResult<ClientDTO>> GetAccount()
         {
             var client = await _clientsRepo.GetClient(GetUID());
             if (client == null)
             {
                 return BadRequest();
             }
-            return Ok(client);
+            return Ok(ClientsConverter.ToClientDTO(client));
         }
     }
 }

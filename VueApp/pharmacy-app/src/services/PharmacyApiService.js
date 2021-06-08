@@ -30,6 +30,9 @@ export default {
     removeItemFromCart(id) {
         return axios.execute('get', '/api/cart/remove/' + id);
     },
+    validateCart() {
+        return axios.execute('get', '/api/cart/validate');
+    },
     getContactInfo() {
         return axios.execute('get', '/api/contact');
     },

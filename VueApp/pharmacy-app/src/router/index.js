@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import api from '@/services/PharmacyApiService'
+
 import store from '@/store'
 
 import Home from '@/views/Home.vue'
@@ -14,7 +16,6 @@ import SuccessfulOrder from '@/views/SuccessfulOrder.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import Profile from '@/views/Profile.vue'
-
 
 Vue.use(VueRouter);
 
@@ -58,7 +59,8 @@ const routes = [
     name: 'checkout',
     component: Checkout,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      cartValidation: true
     }
   },
   {
@@ -113,7 +115,17 @@ const router = new VueRouter({
   }
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.cartValidation)) {
+    try {
+      await api.validateCart();
+    } catch (error) {
+      return next({
+        name: 'cart'
+      });
+    }
+    return next();
+  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (isAuthenticated()) {
       return next();
