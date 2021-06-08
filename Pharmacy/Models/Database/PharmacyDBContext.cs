@@ -21,16 +21,5 @@ namespace Pharmacy.Models.Database
 		public DbSet<Rating> Ratings { get; set; }
 
 		public PharmacyDBContext(DbContextOptions<PharmacyDBContext> options) : base(options) { }
-
-		public override int SaveChanges()
-		{
-			this.ChangeTracker
-				.Entries()
-				.Where(e => e.Entity is Product && e.State == EntityState.Added)
-				.ToList()
-				.ForEach(e => ((Product)e.Entity).CreationDate = DateTime.Now);
-
-			return base.SaveChanges();
-		}
 	}
 }

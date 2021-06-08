@@ -17,11 +17,19 @@ namespace Pharmacy.Models.Database.Entities
 		public Client Client { get; set; }
 
 		[Required]
-		[ForeignKey(nameof(Address))]
-		public int AddressId { get; set; }
+		[ForeignKey(nameof(ShippingAddress))]
+		public int ShippingAddressId { get; set; }
 		[Required]
-		public Address Address { get; set; }
+		public Address ShippingAddress { get; set; }
 
+		[ForeignKey(nameof(BillingAddress))]
+		public int BillingAddressId { get; set; }
+		public Address BillingAddress { get; set; }
+
+		[MaxLength(1024)]
+		public string RecipientName { get; set; }
+
+		// PayPal transaction identifier
 		[Required]
 		public string TransactionId { get; set; }
 

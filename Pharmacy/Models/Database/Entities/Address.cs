@@ -15,12 +15,9 @@ namespace Pharmacy.Models.Database.Entities
 		[MaxLength(6)]
 		public string PostalCode { get; set; }
 
-		[MaxLength(1024)]
-		public string Street { get; set; }
-
 		[Required]
-		[MaxLength(1024)]
-		public string BuildingNo { get; set; }
+		[MaxLength(2048)]
+		public string StreetAndBuildingNo { get; set; }
 
 		[MaxLength(1024)]
 		public string LocalNo { get; set; }

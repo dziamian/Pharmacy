@@ -8,7 +8,10 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
 {
     public interface IProductsRepo
     {
+        void CreateProduct(Product product);
         IEnumerable<Product> GetAllProducts();
         Product GetProductById(int id);
+        int SaveChanges();
+        void UpdateProduct(Product product);
     }
 }

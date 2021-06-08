@@ -11,17 +11,20 @@ namespace Pharmacy.Models.Database.Entities
         public string ClientId { get; set; }
 
         [Required]
+        [MaxLength(1024)]
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(1024)]
         public string Email { get; set; }
 
+        [MaxLength(1024)]
         public string Phone { get; set; }
 
         [Column(TypeName = "Date")]
         public DateTime? DateOfBirth { get; set; }
 
-        public string Gender { get; set; }
+        public char Gender { get; set; }
 
 		public ICollection<Product> FavouriteProducts { get; set; }
 

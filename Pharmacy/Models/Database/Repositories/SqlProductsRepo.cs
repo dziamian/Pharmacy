@@ -16,7 +16,13 @@ namespace Pharmacy.Models.Database.Repositories
             _context = context;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+		public void CreateProduct(Product product)
+		{
+            product.CreationDate = DateTime.Now;
+            _context.Add(product);
+		}
+
+		public IEnumerable<Product> GetAllProducts()
         {
             return _context.Products.ToList();
         }
@@ -25,5 +31,14 @@ namespace Pharmacy.Models.Database.Repositories
         {
             return _context.Products.FirstOrDefault((product) => product.Id == id);
         }
-    }
+
+		public int SaveChanges()
+		{
+            return _context.SaveChanges();
+		}
+
+		public void UpdateProduct(Product product)
+		{
+		}
+	}
 }
