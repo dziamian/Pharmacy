@@ -76,7 +76,7 @@
                 <b-col class="col-lg-3">
                     <b-form-group
                     label-for="password-input"
-                    invalid-feedback="Password must have at least 4 characters.">
+                    invalid-feedback="Password must have at least 6 characters.">
                     <template v-slot:label>
                         Password <span class="text-danger font-weight-bold h5">*</span>
                     </template>
@@ -198,7 +198,7 @@ export default {
             if (this.userCredentials.password.length == 0) {
                 return null;
             }
-            return this.userCredentials.password.length > 3;
+            return this.userCredentials.password.length > 5;
         },
         passwordConfirmState() {
             if (this.passwordState) {
