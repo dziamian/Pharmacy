@@ -42,18 +42,18 @@ namespace Pharmacy.Services
             if (item.Product.Supply >= item.Amount + amount)
             {
                 item.Amount += amount;
-                _cartRepo.UpdateItem(item);
+                _cartRepo.MarkForUpdate(item);
                 await _cartRepo.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public async Task<IEnumerable<CartItemDTO>> GetCart(string uid)
+        public async Task<IEnumerable<CartItemReadDto>> GetCart(string uid)
         {
             var cartItems = await _cartRepo.GetByClientId(uid, true);
             
-            var cart = CartConverter.ToCartItemDTOs(cartItems.ToList());
+            var cart = CartConverter.ToCartItemDtos(cartItems.ToList());
 
             return cart;
         }

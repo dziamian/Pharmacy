@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Pharmacy.Models.Data_Transfrom_Objects;
+using Pharmacy.Models.Data_Transfrom_Objects.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Validators
 {
-    public class ClientReadDTOValidator : AbstractValidator<ClientReadDTO>
+    public class ClientReadDTOValidator : AbstractValidator<ClientReadDto>
     {
         public ClientReadDTOValidator()
         {

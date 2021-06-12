@@ -13,6 +13,6 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
 		Task<Category> GetCategoryById(int id);
 		void MarkForUpdate(Category category);
 		Task<bool> CategoryExists(int id);
-		int SaveChanges();
+		Task SaveChanges();
 	}
 }

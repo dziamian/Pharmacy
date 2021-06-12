@@ -12,6 +12,6 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
         Task<IEnumerable<Product>> GetAllProducts();
         Task<Product> GetProductById(int id);
         void MarkForUpdate(Product product);
-        int SaveChanges();
+        Task SaveChanges();
     }
 }

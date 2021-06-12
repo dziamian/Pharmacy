@@ -2,7 +2,7 @@
 
 namespace Pharmacy.Models.Data_Transfrom_Objects
 {
-    public class CartItemDTO
+    public class CartItemReadDto
     {
         public Product Product { get; set; }
         public int Amount { get; set; }

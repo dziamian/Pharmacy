@@ -46,9 +46,9 @@ namespace Pharmacy.Models.Database.Repositories
 			}
 		}
 
-		public int SaveChanges()
+		public async Task SaveChanges()
 		{
-			return m_context.SaveChanges();
+			await m_context.SaveChangesAsync();
 		}
 	}
 }

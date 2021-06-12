@@ -1,4 +1,4 @@
-﻿using Pharmacy.Models.Data_Transfrom_Objects;
+﻿using Pharmacy.Models.Data_Transfrom_Objects.Client;
 using Pharmacy.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,9 @@ namespace Pharmacy.Models.Converters
 {
     public static class ClientsConverter
     {
-        public static ClientReadDTO ToClientReadDTO(Client client)
+        public static ClientReadDto ToClientReadDto(Client client)
         {
-            return new ClientReadDTO { 
+            return new ClientReadDto { 
                 Name = client.Name, 
                 Email = client.Email, 
                 Phone = client.Phone, 
@@ -20,7 +20,7 @@ namespace Pharmacy.Models.Converters
             };
         }
 
-        public static Client FromClientCreateDTO(ClientCreateDTO dto, string uid)
+        public static Client FromClientCreateDto(ClientCreateDto dto, string uid)
         {
             return new Client { 
                 ClientId = uid, 

@@ -67,14 +67,14 @@ namespace Pharmacy.Models.Database.Repositories
             return true;
         }
 
+        public void MarkForUpdate(CartItem item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
+
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
-        }
-
-        public void UpdateItem(CartItem item)
-        {
-            _context.Entry(item).State = EntityState.Modified;
         }
     }
 }

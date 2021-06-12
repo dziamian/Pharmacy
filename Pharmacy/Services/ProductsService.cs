@@ -61,7 +61,7 @@ namespace Pharmacy.Services
 				product.PassiveSubstances.Add(new ProductPassiveSubstance { PassiveSubstanceId = it.SubstanceId, Dose = it.Dose });
 			}
 
-			m_productsRepo.SaveChanges();
+			await m_productsRepo.SaveChanges();
 			return product;
 		}
 

@@ -32,7 +32,7 @@ namespace Pharmacy.Controllers
 			};
 
 			await m_categoryRepo.CreateCategory(category);
-			m_categoryRepo.SaveChanges();
+			await m_categoryRepo.SaveChanges();
 
 			return CreatedAtRoute(nameof(GetCategoryById), new { id = category.Id }, null);
 		}

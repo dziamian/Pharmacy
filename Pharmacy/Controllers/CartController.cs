@@ -27,7 +27,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CartItemDTO>>> GetCart()
+        public async Task<ActionResult<IEnumerable<CartItemReadDto>>> GetCart()
         {
             string uid = GetUID();
             var cart = await _cartService.GetCart(uid);

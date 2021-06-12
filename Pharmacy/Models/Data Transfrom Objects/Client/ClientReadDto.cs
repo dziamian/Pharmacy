@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pharmacy.Models.Data_Transfrom_Objects
+namespace Pharmacy.Models.Data_Transfrom_Objects.Client
 {
     [Validator(typeof(ClientReadDTOValidator))]
-    public class ClientReadDTO
+    public class ClientReadDto
     {
         public string Name { get; set; }
         public string Email { get; set; }
