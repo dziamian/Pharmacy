@@ -1,4 +1,4 @@
-<template> <!-- Dodać dane pobrane z servera do placeholderów-->
+<template> <!-- TODO: Dodać dane pobrane z servera do placeholderów-->
     <b-container class="mt-5">
         <b-container>
             <b-form v-model="editing">
@@ -13,8 +13,8 @@
                                 id="Name-input"
                                 type="text"
                                 v-model="userCredentials.name"
-                                placeholder="Bortolomeo Dziwisz"
-                                :state="nameState"/>
+                                :placeholder="userCredentials.name"
+                                :state="(editing) ? nameState : null"/>
                         </b-form-group>
                     </b-col>
                 </b-row>  
@@ -25,12 +25,12 @@
                             label-for="email-input"
                             invalid-feedback="Invalid email address.">
                             <b-form-input
-                                :disabled="editing == false"
+                                disabled
                                 id="email-input"
                                 type="email"
                                 v-model="userCredentials.email"
-                                placeholder="dupa@dupa.com"
-                                :state="emailState"/>
+                                :placeholder="userCredentials.email"
+                                :state="(editing) ? emailState : null"/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
@@ -43,8 +43,8 @@
                                 id="phone-input"
                                 type="tel"
                                 v-model="userCredentials.phone"
-                                placeholder="666666666"
-                                :state="phoneState"/>
+                                :placeholder="userCredentials.phone"
+                                :state="(editing) ? phoneState : null"/>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -60,10 +60,8 @@
                                 type="date"
                                 :max="currentDate"
                                 v-model="userCredentials.dateOfBirth"
-                                placeholder="11.11.2000"
-                                onfocus="(this.type='date')"
-                                onblur="(this.type='text')"
-                                :state="dateOfBirthState"/>
+                                :placeholder="userCredentials.dateOfBirth"
+                                :state="(editing) ? dateOfBirthState : null"/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
@@ -74,38 +72,6 @@
                         </b-form-group>
                     </b-col>
                 </b-row> 
-                <b-row class="justify-content-md-center" v-if="editing == true">
-                    <b-col class="col-lg-3">
-                        <b-form-group
-                        label="Password"
-                        label-for="password-input"
-                        invalid-feedback="Password must have at least 6 characters.">
-                            <b-form-input
-                                :disabled="editing == false"
-                                id="password-input"
-                                type="password"
-                                v-model="userCredentials.password"
-                                placeholder="Enter your password"
-                                :state="passwordState"
-                                required/>
-                            </b-form-group>
-                    </b-col>
-                    <b-col class="col-lg-3">
-                        <b-form-group
-                        label="Password confirm"
-                        label-for="passwordConf-input"
-                        invalid-feedback="Passwords do not match.">
-                            <b-form-input
-                                :disabled="editing == false"
-                                id="passwordConf-input"
-                                type="password"
-                                v-model="userCredentials.confirmPassword"
-                                placeholder="Repeat your password"
-                                :state="passwordConfirmState"
-                                required/>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
             </b-form>
             <b-row class="mt-5" v-if="editing==false">
                 <b-col class="text-right">
@@ -162,7 +128,6 @@ export default {
     },
     data() {
         return {
-            userData: Object,
             editing: false,
             currentDate: this.getFormattedDate(new Date()),
             userCredentials: {
@@ -170,21 +135,19 @@ export default {
                 email: '',
                 phone: '',
                 dateOfBirth: '',
-                gender: 'm',
-                password: '',
-                confirmPassword: ''
+                gender: 'm'
             },
         }
     },
     computed: {
         nameState() {
-            if (this.userCredentials.name.length == 0) {
+            if (!this.userCredentials.name || this.userCredentials.name.length == 0) {
                 return null;
             }
             return this.userCredentials.name.length > 4;
         },
         emailState() {
-            if (this.userCredentials.email.length == 0) {
+            if (!this.userCredentials.email || this.userCredentials.email.length == 0) {
                 return null;
             }
             return (this.userCredentials.email.indexOf('@') > -1) && 
@@ -192,32 +155,17 @@ export default {
                 (this.userCredentials.email.indexOf('.') > -1);
         },
         phoneState() {
-            if (this.userCredentials.phone.length == 0) {
+            if (!this.userCredentials.phone || this.userCredentials.phone.length == 0) {
                 return null;
             }
             return this.userCredentials.phone.length == 9; 
         },
         dateOfBirthState() {
-            if (this.userCredentials.dateOfBirth.length == 0) {
+            if (!this.userCredentials.dateOfBirth || this.userCredentials.dateOfBirth.length == 0) {
                 return null;
             }
             return Date.parse(this.userCredentials.dateOfBirth) <= new Date();
         },
-        passwordState() {
-            if (this.userCredentials.password.length == 0) {
-                return null;
-            }
-            return this.userCredentials.password.length > 5;
-        },
-        passwordConfirmState() {
-            if (this.passwordState) {
-                if (this.userCredentials.password == this.userCredentials.confirmPassword) {
-                    return true;
-                }
-                return false;
-            }
-            return null;
-        }
     },
     created() {
         this.getUserData();
@@ -226,7 +174,7 @@ export default {
         getUserData() {
             api.getAccountInfo()
                 .then((result) => {
-                    this.userData = result;
+                    this.userCredentials = result;
                 }).catch((errors) => {
                     this.makeToast("Couldn't load user data from the server");
                 });

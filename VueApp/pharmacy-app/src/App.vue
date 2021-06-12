@@ -48,6 +48,13 @@
               @click="navigateToProfilePage">
                 <b-icon icon="wrench"/>&nbsp;Profile
           </b-button>
+          <b-button 
+              v-if="user"
+              class="mr-1" 
+              variant="outline-dark"
+              @click="navigateToPlannerPage">
+                <b-icon icon="calendar2-check-fill"/>&nbsp;Planner
+          </b-button>
             <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
               <b-icon icon="handbag-fill"/>
               <span class="bag-number">{{cartSize}}</span>
@@ -118,8 +125,13 @@ export default {
       }
     },
     navigateToProfilePage() {
-      if (this.$route.name != 'Profile') {
-        this.$router.push({name: 'Profile'});
+      if (this.$route.name != 'profile') {
+        this.$router.push({name: 'profile'});
+      }
+    },
+    navigateToPlannerPage() {
+      if (this.$route.name != 'planner') {
+        this.$router.push({name: 'planner'});
       }
     }
   }
