@@ -23,7 +23,7 @@ namespace Pharmacy.Models.Database.Entities
 		public Address ShippingAddress { get; set; }
 
 		[ForeignKey(nameof(BillingAddress))]
-		public int BillingAddressId { get; set; }
+		public int? BillingAddressId { get; set; }
 		public Address BillingAddress { get; set; }
 
 		[MaxLength(1024)]
@@ -35,7 +35,7 @@ namespace Pharmacy.Models.Database.Entities
 
 		[Column(TypeName = "Date")]
 		public DateTime? CreationDate { get; set; }
-
+		
 		[Column(TypeName = "Date")]
 		public DateTime? CompletionDate { get; set; }
 

@@ -24,12 +24,12 @@ namespace Pharmacy.Models.Database.Entities
         [Column(TypeName = "Date")]
         public DateTime? DateOfBirth { get; set; }
 
-        public char Gender { get; set; }
+        public string Gender { get; set; }
 
-		public ICollection<Product> FavouriteProducts { get; set; }
+		public virtual ICollection<Product> FavouriteProducts { get; set; }
 
-        public ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; }
 
-		public ICollection<Order> Orders { get; set; }
+		public virtual ICollection<Order> Orders { get; set; }
 	}
 }

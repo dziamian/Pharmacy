@@ -20,6 +20,9 @@ namespace Pharmacy.Models.Database
 		public DbSet<OrderProduct> OrderProducts { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
 
-		public PharmacyDBContext(DbContextOptions<PharmacyDBContext> options) : base(options) { }
+		public PharmacyDBContext(DbContextOptions<PharmacyDBContext> options) : base(options) 
+		{
+		
+		}
 	}
 }

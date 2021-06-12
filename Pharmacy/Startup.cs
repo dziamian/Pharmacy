@@ -10,7 +10,6 @@ using Pharmacy.Models.Database.Repositories.Interfaces;
 using FluentValidation.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Pharmacy.Services.Interfaces;
 using Pharmacy.Services;
 using Pharmacy.Helpers;
 
@@ -37,8 +36,12 @@ namespace Pharmacy
             services.AddScoped<IClientsRepo, SqlClientsRepo>();
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
             services.AddScoped<ICartRepo, SqlCartRepo>();
+            services.AddScoped<IActiveSubstancesRepo, SqlActiveSubstancesRepo>();
+            services.AddScoped<IPassiveSubstancesRepo, SqlPassiveSubstancesRepo>();
 
-            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<CartService>();
+            services.AddScoped<SubstancesService>();
+            services.AddScoped<ProductsService>();
 
             services.Configure<Contact>(Configuration.GetSection("Contact"));
 
