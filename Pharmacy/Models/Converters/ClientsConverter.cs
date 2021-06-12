@@ -11,12 +11,25 @@ namespace Pharmacy.Models.Converters
     {
         public static ClientReadDTO ToClientReadDTO(Client client)
         {
-            return new ClientReadDTO { Name = client.Name, Email = client.Email, Phone = client.Phone, DateOfBirth = client.DateOfBirth.Value.ToString("yyyy-MM-dd"), Gender = client.Gender };
+            return new ClientReadDTO { 
+                Name = client.Name, 
+                Email = client.Email, 
+                Phone = client.Phone, 
+                DateOfBirth = client.DateOfBirth.Value.ToString("yyyy-MM-dd"), 
+                Gender = client.Gender 
+            };
         }
 
         public static Client FromClientCreateDTO(ClientCreateDTO dto, string uid)
         {
-            return new Client { ClientId = uid, Name = dto.Name, Email = dto.Email, Phone = dto.Phone, DateOfBirth = dto.DateOfBirth, Gender = dto.Gender };
+            return new Client { 
+                ClientId = uid, 
+                Name = dto.Name, 
+                Email = dto.Email, 
+                Phone = dto.Phone, 
+                DateOfBirth = dto.DateOfBirth, 
+                Gender = dto.Gender 
+            };
         }
     }
 }

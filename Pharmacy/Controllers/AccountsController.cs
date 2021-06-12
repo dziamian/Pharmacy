@@ -34,12 +34,6 @@ namespace Pharmacy.Controllers
         {
             var uid = GetUID();
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-                //remove account from firebase
-            }
-
             var createdClient = await _clientsRepo.GetClient(uid);
             if (createdClient != null)
             {
@@ -48,7 +42,7 @@ namespace Pharmacy.Controllers
             }
 
             await _clientsRepo.CreateClient(ClientsConverter.FromClientCreateDTO(client, uid));
-            await _clientsRepo.Save();
+            await _clientsRepo.SaveChanges();
             return Ok();
         }
 

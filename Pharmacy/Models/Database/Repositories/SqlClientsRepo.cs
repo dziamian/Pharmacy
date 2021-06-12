@@ -26,7 +26,7 @@ namespace Pharmacy.Models.Database.Repositories
             return await _context.Clients.FirstOrDefaultAsync(x => x.ClientId == uid);
         }
 
-        public async Task Save()
+        public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
         }

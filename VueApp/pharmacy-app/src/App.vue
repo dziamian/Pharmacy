@@ -39,24 +39,24 @@
               class="mr-1" 
               variant="outline-dark"
               @click="signOut">
-                <b-icon icon="person-circle"/>&nbsp;Log out
+                <b-icon icon="door-open"/>&nbsp;Log out
           </b-button>
           <b-button 
               v-if="user"
               class="mr-1" 
               variant="outline-dark"
               @click="navigateToProfilePage">
-                <b-icon icon="wrench"/>&nbsp;Profile
+                <b-icon icon="person-square"/>&nbsp;Profile
           </b-button>
           <b-button 
               v-if="user"
               class="mr-1" 
               variant="outline-dark"
               @click="navigateToPlannerPage">
-                <b-icon icon="calendar2-check-fill"/>&nbsp;Planner
+                <b-icon icon="journal-bookmark-fill"/>&nbsp;Planner
           </b-button>
             <b-button v-if="user" variant="outline-dark" @click="navigateToCart">
-              <b-icon icon="handbag-fill"/>
+              <b-icon icon="basket2"/>
               <span class="bag-number">{{cartSize}}</span>
             </b-button>
           </div>

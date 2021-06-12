@@ -24,12 +24,6 @@ namespace Pharmacy.Models.Database.Entities
         [Column(TypeName = "Date")]
         public DateTime? DateOfBirth { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(Category))]
-		public int CategoryId { get; set; }
-        [Required]
-		public Category Category { get; set; }
-
 		public string Gender { get; set; }
 
         public ICollection<Rating> Ratings { get; set; }

@@ -9,19 +9,17 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Products</th>
-                                <th>Total cost</th>
-                                <th>Date of order</th>
+                                <th>Quantity</th>
+                                <th>time of use</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
                             <tr>
                                 <td>1</td>
-                                <td>Przykład <br>
-                                    1. Apap x 2 <br>
-                                    2. Paracetamol x 5 <br>
+                                <td>Apap<br>
                                 </td>
-                                <td>150 zł</td>
-                                <td>10.06.2021</td>
+                                <td>1</td>
+                                <td>after dinner</td>
                             </tr>
                         </tbody>
                     </table>

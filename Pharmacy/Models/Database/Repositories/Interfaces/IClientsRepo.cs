@@ -10,6 +10,6 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
     {
         Task CreateClient(Client client);
         Task<Client> GetClient(string uid);
-        Task Save();
+        Task SaveChanges();
     }
 }

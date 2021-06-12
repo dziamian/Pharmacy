@@ -118,9 +118,6 @@ namespace Pharmacy.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("Date");
 
@@ -142,8 +139,6 @@ namespace Pharmacy.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.HasKey("ClientId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Clients");
                 });
@@ -370,17 +365,6 @@ namespace Pharmacy.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Pharmacy.Models.Database.Entities.Client", b =>
-                {
-                    b.HasOne("Pharmacy.Models.Database.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Order", b =>

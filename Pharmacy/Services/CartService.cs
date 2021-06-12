@@ -33,7 +33,7 @@ namespace Pharmacy.Services
                 if (product.Supply >= amount)
                 {
                     await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = amount });
-                    await _cartRepo.Save();
+                    await _cartRepo.SaveChanges();
                     return true;
                 }
                 return false;
@@ -43,7 +43,7 @@ namespace Pharmacy.Services
             {
                 item.Amount += amount;
                 _cartRepo.UpdateItem(item);
-                await _cartRepo.Save();
+                await _cartRepo.SaveChanges();
                 return true;
             }
             return false;
@@ -84,7 +84,7 @@ namespace Pharmacy.Services
             var result = await _cartRepo.RemoveClientItem(uid, productId);
             if (result)
             {
-                await _cartRepo.Save();
+                await _cartRepo.SaveChanges();
                 return true;
             }
             return false;
@@ -93,7 +93,7 @@ namespace Pharmacy.Services
         public async Task RemoveItemsFromCart(string uid)
         {
             await _cartRepo.RemoveClientItems(uid);
-            await _cartRepo.Save();
+            await _cartRepo.SaveChanges();
         }
     }
 }

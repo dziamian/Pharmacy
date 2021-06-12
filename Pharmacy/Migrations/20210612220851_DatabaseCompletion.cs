@@ -51,6 +51,22 @@ namespace Pharmacy.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.ClientId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PassiveSubstances",
                 columns: table => new
                 {
@@ -61,29 +77,6 @@ namespace Pharmacy.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PassiveSubstances", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.ClientId);
-                    table.ForeignKey(
-                        name: "FK_Clients_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,11 +287,6 @@ namespace Pharmacy.Migrations
                 name: "IX_CartItems_ProductId",
                 table: "CartItems",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Clients_CategoryId",
-                table: "Clients",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProducts_OrderId",
