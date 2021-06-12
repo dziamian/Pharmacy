@@ -38,6 +38,7 @@ namespace Pharmacy
             services.AddScoped<ICartRepo, SqlCartRepo>();
             services.AddScoped<IActiveSubstancesRepo, SqlActiveSubstancesRepo>();
             services.AddScoped<IPassiveSubstancesRepo, SqlPassiveSubstancesRepo>();
+            services.AddScoped<ICategoryRepo, SqlCategoryRepo>();
 
             services.AddScoped<CartService>();
             services.AddScoped<SubstancesService>();

@@ -110,7 +110,7 @@ namespace Pharmacy.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Client", b =>
@@ -242,6 +242,9 @@ namespace Pharmacy.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
@@ -270,6 +273,8 @@ namespace Pharmacy.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -420,6 +425,17 @@ namespace Pharmacy.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.Product", b =>
+                {
+                    b.HasOne("Pharmacy.Models.Database.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.ProductActiveSubstance", b =>

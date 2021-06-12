@@ -32,8 +32,8 @@ namespace Pharmacy.Models.Database.Entities
 
 		public string Gender { get; set; }
 
-        public virtual ICollection<Rating> Ratings { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
 
-		public virtual ICollection<Order> Orders { get; set; }
+		public ICollection<Order> Orders { get; set; }
 	}
 }
