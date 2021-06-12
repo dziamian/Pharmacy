@@ -1,26 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Pharmacy.Models.Database;
 using Pharmacy.Models.Database.Repositories;
 using Pharmacy.Models.Database.Repositories.Interfaces;
-using Pharmacy.Models.Database.Entities;
-using Microsoft.AspNetCore.Identity;
 using FluentValidation.AspNetCore;
-using Pharmacy.Models;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Pharmacy.Services;
 using Pharmacy.Helpers;
@@ -48,8 +36,12 @@ namespace Pharmacy
             services.AddScoped<IClientsRepo, SqlClientsRepo>();
             services.AddScoped<IProductsRepo, SqlProductsRepo>();
             services.AddScoped<ICartRepo, SqlCartRepo>();
+            services.AddScoped<IActiveSubstancesRepo, SqlActiveSubstancesRepo>();
+            services.AddScoped<IPassiveSubstancesRepo, SqlPassiveSubstancesRepo>();
 
             services.AddScoped<CartService>();
+            services.AddScoped<SubstancesService>();
+            services.AddScoped<ProductsService>();
 
             services.Configure<Contact>(Configuration.GetSection("Contact"));
 
