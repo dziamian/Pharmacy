@@ -4,29 +4,10 @@
             <b-col class="md-6 mb-5 mb-md-0">
                 <h2 class="h3 mb-3 text-black">Billing Details</h2>
                 <div class="p-3 p-lg-5 border">
-
-                    <div class="form-group">
-                        <label for="country" class="text-black">Country <span class="text-danger">*</span></label>
-                        <select id="country" class="form-control">
-                            <option value="1">Select a country</option>
-                            <option value="2">Poland</option>
-                            <option value="3">Germany</option>
-                            <option value="4">France</option>
-                            <option value="5">Spain</option>
-                            <option value="6">Russia</option>
-                            <option value="7">The Czech Republic</option>
-                            <option value="8">Slovakia</option>
-                        </select>
-                    </div>
-
                     <div class="form-group row">
                         <b-col class="md-6">
-                            <label for="firstName" class="text-black">First Name <span class="text-danger">*</span></label>
+                            <label for="firstName" class="text-black">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="firstName" name="firstName">
-                        </b-col>
-                        <b-col class="md-6">
-                            <label for="lastName" class="text-black">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="lastName" name="lastName">
                         </b-col>
                     </div>
             
@@ -43,26 +24,15 @@
 
                     <div class="form-group row">
                         <b-col class="md-6">
-                            <label for="provinceCountry" class="text-black">Province / Country <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="provinceCountry" name="provinceCountry">
+                            <label for="city" class="text-black">City <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="city" name="city">
                         </b-col>
                         <b-col class="md-6">
                                 <label for="postcode" class="text-black">Postcode<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="postcode" name="postcode">
                         </b-col>
                     </div>
-
-                    <div class="form-group row mb-5">
-                        <b-col class="md-6">
-                            <label for="emailAdress" class="text-black">Email Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="emailAdress" name="emailAdress">
-                        </b-col>
-                        <b-col class="md-6">
-                            <label for="phoneNumber" class="text-black">Phone <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number">
-                        </b-col>
-                    </div>
-
+                    
                     <div class="form-group">
                         <label for="shipDiffrentAddress" class="text-black" data-toggle="collapse"
                             href="#shipDiffrentAddress" role="button" aria-expanded="false"
@@ -70,32 +40,6 @@
                             Ship To A Different Address?</label>
                         <b-collapse id="shipDiffrentAddress">
                             <div class="py-2">
-                                <div class="form-group">
-                                    <label for="diffrentCountry" class="text-black">Country <span class="text-danger">*</span></label>
-                                    <select id="diffrentCountry" class="form-control">
-                                        <option value="1">Select a country</option>
-                                        <option value="2">Poland</option>
-                                        <option value="3">Germany</option>
-                                        <option value="4">France</option>
-                                        <option value="5">Spain</option>
-                                        <option value="6">Russia</option>
-                                        <option value="7">The Czech Republic</option>
-                                        <option value="8">Slovakia</option>
-                                    </select>
-                                </div>
-                
-                
-                                <div class="form-group row">
-                                    <b-col class="md-6">
-                                        <label for="diffrentFirstName" class="text-black">First Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentFirstName" name="diffrentFirstName">
-                                    </b-col>
-                                    <b-col class="md-6">
-                                        <label for="diffrentLastName" class="text-black">Last Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentLastName" name="diffrentLastName">
-                                    </b-col>
-                                </div>
-                
                                 <div class="form-group row">
                                     <b-col class="md-12">
                                         <label for="diffrentAddress" class="text-black">Address <span class="text-danger">*</span></label>
@@ -105,32 +49,19 @@
                                 </div>
                 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Apartment, suite, unit etc. (optional)">
+                                    <input type="text" class="form-control" placeholder="Apartment, suite, unit etc.">
                                 </div>
                 
                                 <div class="form-group row">
                                     <b-col class="md-6">
-                                        <label for="diffrentProvinceCountry" class="text-black">Province / Country<span
+                                        <label for="diffrentCity" class="text-black">City<span
                                             class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentProvinceCountry" name="diffrentProvinceCountry">
+                                        <input type="text" class="form-control" id="diffrentCity" name="diffrentCity">
                                     </b-col>
                                     <b-col class="md-6">
-                                        <label for="diffrentPostalCode" class="text-black">Posta / Zip <span
+                                        <label for="diffrentPostalCode" class="text-black">Postcode<span
                                             class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="diffrentPostalCode" name="diffrentPostalCode">
-                                    </b-col>
-                                </div>
-                
-                                <div class="form-group row mb-5">
-                                    <b-col class="md-6">
-                                        <label for="diffrentEmailAddress" class="text-black">Email Address <span
-                                            class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentEmailAddress" name="diffrentEmailAddress">
-                                    </b-col>
-                                    <b-col class="md-6">
-                                        <label for="diffrentPhoneNumber" class="text-black">Phone <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentPhoneNumber" name="diffrentPhoneNumber"
-                                        placeholder="Phone Number">
                                     </b-col>
                                 </div>
                             </div>
@@ -200,7 +131,6 @@ export default {
     methods: {
         getItemsFromCart() {
             this.loading = true;
-
             api.getItemsFromCart()
                 .then((result) => {
                     this.cart = result;
@@ -241,7 +171,7 @@ export default {
                     console.log(order);
                 },
                 onError: (error) => {
-                    console.log("XDDD");
+                    
                 }
             }).render('#paypal-button');
         }

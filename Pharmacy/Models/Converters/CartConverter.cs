@@ -11,7 +11,11 @@ namespace Pharmacy.Models.Converters
     {
         public static CartItemDTO ToCartItemDTO(CartItem cartItem)
         {
-            return new CartItemDTO { Product = cartItem.Product, Amount = cartItem.Amount };
+            return new CartItemDTO { 
+                Product = cartItem.Product, 
+                Amount = cartItem.Amount, 
+                IsAvailable = cartItem.Product != null && cartItem.Product.Supply >= cartItem.Amount 
+            };
         }
 
         public static List<CartItemDTO> ToCartItemDTOs(List<CartItem> cartItems)

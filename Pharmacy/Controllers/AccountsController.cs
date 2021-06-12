@@ -37,28 +37,30 @@ namespace Pharmacy.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+                //remove account from firebase
             }
 
             var createdClient = await _clientsRepo.GetClient(uid);
             if (createdClient != null)
             {
                 return BadRequest();
+                //remove account from firebase
             }
-            
+
             await _clientsRepo.CreateClient(ClientsConverter.FromClientDTO(client, uid));
             await _clientsRepo.Save();
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult<Client>> GetAccount()
+        public async Task<ActionResult<ClientDTO>> GetAccount()
         {
             var client = await _clientsRepo.GetClient(GetUID());
             if (client == null)
             {
                 return BadRequest();
             }
-            return Ok(client);
+            return Ok(ClientsConverter.ToClientDTO(client));
         }
     }
 }

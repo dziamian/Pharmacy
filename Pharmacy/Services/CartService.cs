@@ -1,8 +1,8 @@
-﻿using Pharmacy.Models.Converters;
+﻿using Microsoft.EntityFrameworkCore;
+using Pharmacy.Models.Converters;
 using Pharmacy.Models.Data_Transfrom_Objects;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
-using Pharmacy.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Services
 {
-    public class CartService : ICartService
+    public class CartService
     {
         private readonly IProductsRepo _productsRepo;
         private readonly ICartRepo _cartRepo;
@@ -22,7 +22,7 @@ namespace Pharmacy.Services
 
         public async Task<bool> AddItemToCart(string uid, int productId, int amount = 1)
         {
-            var item = await _cartRepo.GetByClientAndProductId(uid, productId, false);
+            var item = await _cartRepo.GetByClientAndProductId(uid, productId, true);
             if (item == null)
             {
                 var product = _productsRepo.GetProductById(productId);
@@ -30,16 +30,23 @@ namespace Pharmacy.Services
                 {
                     return false;
                 }
-                await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = amount });
+                if (product.Supply >= amount)
+                {
+                    await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = amount });
+                    await _cartRepo.Save();
+                    return true;
+                }
+                return false;
+            }
+
+            if (item.Product.Supply >= item.Amount + amount)
+            {
+                item.Amount += amount;
+                _cartRepo.UpdateItem(item);
                 await _cartRepo.Save();
                 return true;
             }
-
-            item.Amount += amount;
-            _cartRepo.UpdateItem(item);
-            await _cartRepo.Save();
-
-            return true;
+            return false;
         }
 
         public async Task<IEnumerable<CartItemDTO>> GetCart(string uid)
@@ -49,6 +56,27 @@ namespace Pharmacy.Services
             var cart = CartConverter.ToCartItemDTOs(cartItems.ToList());
 
             return cart;
+        }
+
+        public async Task<bool> ValidateCart(string uid)
+        {
+
+            var cartItems = await _cartRepo.GetByClientId(uid, true);
+
+            if (cartItems.Count() == 0)
+            {
+                return false;
+            }
+
+            foreach (var cartItem in cartItems)
+            {
+                if (cartItem.Amount > cartItem.Product.Supply)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public async Task<bool> RemoveItemFromCart(string uid, int productId)
@@ -66,28 +94,6 @@ namespace Pharmacy.Services
         {
             await _cartRepo.RemoveClientItems(uid);
             await _cartRepo.Save();
-        }
-
-        public async Task<bool> UpdateItemInCart(string uid, int productId, int totalAmount = 1)
-        {
-            var item = await _cartRepo.GetByClientAndProductId(uid, productId, false);
-            if (item == null)
-            {
-                var product = _productsRepo.GetProductById(productId);
-                if (product == null)
-                {
-                    return false;
-                }
-                await _cartRepo.CreateItem(new CartItem { ClientId = uid, ProductId = productId, Amount = totalAmount });
-                await _cartRepo.Save();
-                return true;
-            }
-
-            item.Amount = totalAmount;
-            _cartRepo.UpdateItem(item);
-            await _cartRepo.Save();
-
-            return true;
         }
     }
 }

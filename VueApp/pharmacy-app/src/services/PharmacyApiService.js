@@ -1,6 +1,14 @@
 import axios from '@/plugins/axios'
 
+const isReachable = require('is-reachable');
+
 export default {
+    createAccount(accountInfo) {
+        return axios.execute('post', '/api/accounts', accountInfo);
+    },
+    getAccountInfo() {
+        return axios.execute('get', '/api/accounts');
+    },
     getAllProducts() {
         return axios.execute('get', '/api/products');
     },
@@ -22,14 +30,16 @@ export default {
     removeItemFromCart(id) {
         return axios.execute('get', '/api/cart/remove/' + id);
     },
-    //TODO: remove this test
-    test() {
-        return axios.execute('get', '/api/profile');
+    validateCart() {
+        return axios.execute('get', '/api/cart/validate');
     },
     getContactInfo() {
         return axios.execute('get', '/api/contact');
     },
     _getBaseURL() {
         return axios.instance.defaults.baseURL;
+    },
+    _isReachable() {
+        return isReachable(this._getBaseURL(), {timeout: 1000});
     }
 }
