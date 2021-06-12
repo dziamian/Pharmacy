@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/substances/")]
 	[ApiController]
 	public class SubstancesController : ControllerBase
 	{
@@ -24,7 +24,7 @@ namespace Pharmacy.Controllers
 		public async Task<ActionResult> CreateActiveSubstance(SubstanceCreateDto activeSubstanceCreateDto)
 		{
 			var substance = await m_substancesService.CreateActiveSubstance(activeSubstanceCreateDto);
-			return CreatedAtRoute(nameof(GetActiveSubstanceById), new { substance.Id });
+			return CreatedAtRoute(nameof(GetActiveSubstanceById), new { substance.Id }, null);
 		}
 
 		[HttpGet]
@@ -34,8 +34,8 @@ namespace Pharmacy.Controllers
 			return Ok(await m_substancesService.GetAllActiveSubstances());
 		}
 
-		[HttpGet("{id}", Name = nameof(GetActiveSubstanceById))]
 		[Route("active/")]
+		[HttpGet("{id}", Name = nameof(GetActiveSubstanceById))]
 		public async Task<ActionResult<SubstanceReadDto>> GetActiveSubstanceById(int id)
 		{
 			var substance = await m_substancesService.GetActiveSubstanceById(id);

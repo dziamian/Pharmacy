@@ -33,7 +33,7 @@ namespace Pharmacy.Controllers
                 return BadRequest();
 			}
 
-            return CreatedAtRoute(nameof(GetProductById), new { product.Id }, ProductConverter.ToProductReadDto(product));
+            return CreatedAtRoute(nameof(GetProductById), new { product.Id }, null);
 		}
 
         [HttpGet]

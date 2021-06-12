@@ -25,7 +25,7 @@ namespace Pharmacy.Services
             var item = await _cartRepo.GetByClientAndProductId(uid, productId, true);
             if (item == null)
             {
-                var product = _productsRepo.GetProductById(productId);
+                var product = await _productsRepo.GetProductById(productId);
                 if (product == null)
                 {
                     return false;
