@@ -38,6 +38,7 @@ namespace Pharmacy.Models.Converters
 				Description = product.Description,
 				Supply = product.Supply,
 				Image = product.Image,
+				CategoryId = product.CategoryId,
 				ActiveSubstances = activeSubstances,
 				PassiveSubstances = passiveSubstances
 			};

@@ -14,33 +14,18 @@ namespace Pharmacy.Services
 		private readonly IProductsRepo m_productsRepo;
 		private readonly IActiveSubstancesRepo m_activeSubstancesRepo;
 		private readonly IPassiveSubstancesRepo m_passiveSubstancesRepo;
+		private readonly ICategoryRepo m_categoryRepo;
 
-		private async Task<bool> ValidateProductCreateDto(ProductCreateDto productCreateDto)
-		{
-			foreach (var it in productCreateDto.ActiveSubstances)
-			{
-				if (!await m_activeSubstancesRepo.ActiveSubstanceExists(it.SubstanceId))
-				{
-					return false;
-				}
-			}
-
-			foreach (var it in productCreateDto.PassiveSubstances)
-			{
-				if (!await m_passiveSubstancesRepo.PassiveSubstanceExists(it.SubstanceId))
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		public ProductsService(IProductsRepo productsRepo, IActiveSubstancesRepo activeSubstancesRepo, IPassiveSubstancesRepo passiveSubstancesRepo)
+		public ProductsService(
+			IProductsRepo productsRepo, 
+			IActiveSubstancesRepo activeSubstancesRepo, 
+			IPassiveSubstancesRepo passiveSubstancesRepo,
+			ICategoryRepo categoryRepo)
 		{
 			m_productsRepo = productsRepo;
 			m_activeSubstancesRepo = activeSubstancesRepo;
 			m_passiveSubstancesRepo = passiveSubstancesRepo;
+			m_categoryRepo = categoryRepo;
 		}
 
 		public async Task<Product> CreateProduct(ProductCreateDto productCreateDto)
@@ -59,6 +44,7 @@ namespace Pharmacy.Services
 				Description = productCreateDto.Description,
 				Image = productCreateDto.Image,
 				CreationDate = DateTime.Now,
+				CategoryId = productCreateDto.CategoryId,
 				ActiveSubstances = new List<ProductActiveSubstance>(),
 				PassiveSubstances = new List<ProductPassiveSubstance>()
 			};
@@ -87,6 +73,32 @@ namespace Pharmacy.Services
 		public async Task<ProductReadDto> GetProductById(int id)
 		{
 			return ProductConverter.ToProductReadDto(await m_productsRepo.GetProductById(id));
+		}
+
+		private async Task<bool> ValidateProductCreateDto(ProductCreateDto productCreateDto)
+		{
+			if (!await m_categoryRepo.CategoryExists(productCreateDto.CategoryId))
+			{
+				return false;
+			}
+
+			foreach (var it in productCreateDto.ActiveSubstances)
+			{
+				if (!await m_activeSubstancesRepo.ActiveSubstanceExists(it.SubstanceId))
+				{
+					return false;
+				}
+			}
+
+			foreach (var it in productCreateDto.PassiveSubstances)
+			{
+				if (!await m_passiveSubstancesRepo.PassiveSubstanceExists(it.SubstanceId))
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 	}

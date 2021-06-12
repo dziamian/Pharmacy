@@ -29,6 +29,9 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Products
         [MaxLength(1024)]
         public string Description { get; set; }
 
+        [Required]
+		public int CategoryId { get; set; }
+
 		public IEnumerable<SubstanceDoseDto> ActiveSubstances { get; set; }
 
 		public IEnumerable<SubstanceDoseDto> PassiveSubstances { get; set; }

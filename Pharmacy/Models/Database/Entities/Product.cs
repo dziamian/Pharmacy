@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pharmacy.Models.Database.Entities
 {
@@ -32,6 +33,12 @@ namespace Pharmacy.Models.Database.Entities
         public string Description { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Category))]
+		public int CategoryId { get; set; }
+        [Required]
+		public Category Category { get; set; }
+
+		[Required]
 		public DateTime CreationDate { get; set; }
 
 		public ICollection<ProductActiveSubstance> ActiveSubstances { get; set; }
