@@ -95,7 +95,7 @@ export default {
             if (this.userCredentials.password.length == 0) {
                 return null;
             }
-            return this.userCredentials.password.length > 3;
+            return this.userCredentials.password.length > 5;
         },
     },
     methods: { 

@@ -16,6 +16,7 @@ import SuccessfulOrder from '@/views/SuccessfulOrder.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import Profile from '@/views/Profile.vue'
+import Planner from '@/views/Planner.vue'
 
 Vue.use(VueRouter);
 
@@ -89,8 +90,16 @@ const routes = [
   },
   {
     path: '/profile',
-    name: 'Profile',
+    name: 'profile',
     component: Profile,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/planner',
+    name: 'planner',
+    component: Planner,
     meta: {
       requiresAuth: true
     }
@@ -99,7 +108,7 @@ const routes = [
     path: '*',
     name: 'notFound',
     component: PageNotFound
-  }
+  },
 ]
 
 const router = new VueRouter({

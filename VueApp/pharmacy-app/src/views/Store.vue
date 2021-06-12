@@ -1,22 +1,26 @@
 <template>
     <Loading v-if="loading==true"/>
     <div v-else class="store-section">
-        <div class="search mt-2">
-            <b-input-group>
-                <b-input-group-prepend is-text>
-                    <b-icon icon="search"/>
-                </b-input-group-prepend>
-                <vue-bootstrap-typeahead
-                    :data="filter.products"
-                    v-model="filter.settings.query"
-                    :serializer="p => p.name"
-                    placeholder="Search for product..."
-                />
-                <b-input-group-append>
-                    <b-button v-b-toggle.collapse-2>FILTERS</b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </div>
+        <b-container class="mt-5">
+            <b-row class="ml-3 justify-content-md-center">
+                <b-col class="col-sm-4 col-lg-5">
+                    <b-input-group class="ml-0">
+                        <b-input-group-prepend is-text>
+                            <b-icon icon="search"/>
+                        </b-input-group-prepend>
+                        <vue-bootstrap-typeahead
+                            :data="filter.products"
+                            v-model="filter.settings.query"
+                            :serializer="p => p.name"
+                            placeholder="Search for product..."
+                        />
+                        <b-input-group-append>
+                            <b-button v-b-toggle.collapse-2>FILTERS</b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </b-col>
+            </b-row>
+        </b-container>
         <b-collapse id="collapse-2" class="filters mt-2">
             <b-card>
                 <div class="row">
@@ -100,6 +104,14 @@
                 </div>
             </b-card>
         </b-collapse>
+        <b-pagination
+            class='mt-5'
+            v-model="pagination.settings.currentPage"
+            @change="onPageChanged"
+            :total-rows="productRows"
+            :per-page="pagination.settings.perPage"
+            align="center">
+        </b-pagination>
         <div class="container mt-5">
             <b-row v-if="pagination.products.length > 0">
                 <b-col class="col-sm-4 col-lg-4 text-center item mb-4" v-for="(product, index) in pagination.products"  :key="index">
@@ -184,7 +196,7 @@ export default {
             pagination: {
                 products: [],
                 settings: {
-                    perPage: 3,
+                    perPage: 9,
                     currentPage: 1
                 }
             }
@@ -274,10 +286,6 @@ export default {
 
 <style scoped>
 
-.search {
-    width: 75%;
-    margin: auto;
-}
 
 .filters {
     width: 75%;
@@ -298,7 +306,7 @@ img {
 }
 
 .price-input-group {
-    width: 22%;
+    width: 25%;
 }
 
 ul.list-inline {

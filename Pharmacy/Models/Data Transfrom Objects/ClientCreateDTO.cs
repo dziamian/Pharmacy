@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Data_Transfrom_Objects
 {
-    [Validator(typeof(ClientDTOValidator))]
-    public class ClientDTO
+    [Validator(typeof(ClientCreateDTOValidator))]
+    public class ClientCreateDTO
     {
         public string Name { get; set; }
         public string Email { get; set; }
