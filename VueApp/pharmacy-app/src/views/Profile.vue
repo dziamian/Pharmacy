@@ -1,53 +1,19 @@
-<template>
+<template> <!-- Dodać dane pobrane z servera do placeholderów-->
     <b-container class="mt-5">
-        <b-container v-if="editing==false">
-            <b-row class="mb-3">
-                <b-col class="col-lg-12 text-center">
-                    <h5 class="mb-4">Name:</h5>
-                    <p></p>
-                </b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col class="text-center">
-                    <h5 class="mb-4">E-mail:</h5>
-                    <p></p>
-                </b-col>
-                <b-col class="text-center">
-                    <h5 class="mb-4">Phone number:</h5>
-                    <p></p>
-                </b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col class="text-center">
-                    <h5 class="mb-4">Date of birth:</h5>
-                    <p></p>
-                </b-col>
-                <b-col class="text-center">
-                    <h5 class="mb-4">Gender:</h5>
-                    <p></p>
-                </b-col>
-            </b-row>
-            <b-row class="mt-5">
-                <b-col class="text-right">
-                    <b-button class="mr-3" variant="primary" :pressed.sync="editing">Edit user data</b-button>
-                    <b-button class="mr-5"  v-b-toggle.ordersTable variant="primary">Show orders</b-button>   
-                </b-col>
-            </b-row>
-        </b-container>
-        <b-container v-else>
+        <b-container>
             <b-form v-model="editing">
                 <b-row class="justify-content-md-center">
                     <b-col class="col-lg-6">
                         <b-form-group
-                        label="Name"
-                        label-for="Name-input"
-                        invalid-feedback="Enter at least 5 characters.">
+                            label="Name"
+                            label-for="Name-input"
+                            invalid-feedback="Enter at least 5 characters.">
                             <b-form-input
                                 :disabled="editing == false"
                                 id="Name-input"
                                 type="text"
                                 v-model="userCredentials.name"
-                                placeholder="Enter your name"
+                                placeholder="Bortolomeo Dziwisz"
                                 :state="nameState"/>
                         </b-form-group>
                     </b-col>
@@ -55,27 +21,29 @@
                 <b-row class="justify-content-md-center">
                     <b-col class="col-lg-3">
                         <b-form-group
-                        label="Email"
-                        label-for="email-input"
-                        invalid-feedback="Invalid email address.">
+                            label="Email"
+                            label-for="email-input"
+                            invalid-feedback="Invalid email address.">
                             <b-form-input
+                                :disabled="editing == false"
                                 id="email-input"
                                 type="email"
                                 v-model="userCredentials.email"
-                                placeholder="Enter your e-mail"
+                                placeholder="dupa@dupa.com"
                                 :state="emailState"/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
                         <b-form-group
-                        label="Phone number"
-                        label-for="phone-input"
-                        invalid-feedback="Invalid phone number.">
+                            label="Phone number"
+                            label-for="phone-input"
+                            invalid-feedback="Invalid phone number.">
                             <b-form-input
+                                :disabled="editing == false"
                                 id="phone-input"
                                 type="tel"
                                 v-model="userCredentials.phone"
-                                placeholder="Enter your phone number"
+                                placeholder="666666666"
                                 :state="phoneState"/>
                         </b-form-group>
                     </b-col>
@@ -87,28 +55,33 @@
                             label-for="age-input"
                             invalid-feedback="Date of birth must be in the past.">
                             <b-form-input
+                                :disabled="editing == false"
                                 id="age-input"
                                 type="date"
                                 :max="currentDate"
                                 v-model="userCredentials.dateOfBirth"
+                                placeholder="11.11.2000"
+                                onfocus="(this.type='date')"
+                                onblur="(this.type='text')"
                                 :state="dateOfBirthState"/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
-                        <b-form-group v-slot="{ gender }" label="Gender">
+                        <b-form-group v-slot="{ gender }" label="Gender" :disabled="editing == false">
                             <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Male" value="m">Male</b-form-radio>
                             <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Female" value="f">Female</b-form-radio>
                             <b-form-radio v-model="userCredentials.gender" :aria-describedby="gender" name="Other" value="o">Other</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row> 
-                <b-row class="justify-content-md-center">
+                <b-row class="justify-content-md-center" v-if="editing == true">
                     <b-col class="col-lg-3">
                         <b-form-group
                         label="Password"
                         label-for="password-input"
                         invalid-feedback="Password must have at least 6 characters.">
                             <b-form-input
+                                :disabled="editing == false"
                                 id="password-input"
                                 type="password"
                                 v-model="userCredentials.password"
@@ -123,6 +96,7 @@
                         label-for="passwordConf-input"
                         invalid-feedback="Passwords do not match.">
                             <b-form-input
+                                :disabled="editing == false"
                                 id="passwordConf-input"
                                 type="password"
                                 v-model="userCredentials.confirmPassword"
@@ -133,7 +107,13 @@
                     </b-col>
                 </b-row>
             </b-form>
-            <b-row class="mt-5">
+            <b-row class="mt-5" v-if="editing==false">
+                <b-col class="text-right">
+                    <b-button class="mr-3" variant="primary" :pressed.sync="editing">Edit user data</b-button>
+                    <b-button class="mr-5"  v-b-toggle.ordersTable variant="primary">Show orders</b-button>   
+                </b-col>
+            </b-row>
+            <b-row class="mt-5" v-else>
                 <b-col class="text-right">
                     <b-button class="mr-3" variant="primary" :pressed.sync="editing">Cancel changes</b-button>
                     <b-button class="mr-3" variant="primary" :pressed.sync="editing">Save changes</b-button>  
