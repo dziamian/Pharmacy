@@ -30,7 +30,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAccount([FromBody] ClientDTO client)
+        public async Task<ActionResult> CreateAccount([FromBody] ClientCreateDTO client)
         {
             var uid = GetUID();
 
@@ -47,20 +47,20 @@ namespace Pharmacy.Controllers
                 //remove account from firebase
             }
 
-            await _clientsRepo.CreateClient(ClientsConverter.FromClientDTO(client, uid));
+            await _clientsRepo.CreateClient(ClientsConverter.FromClientCreateDTO(client, uid));
             await _clientsRepo.Save();
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult<ClientDTO>> GetAccount()
+        public async Task<ActionResult<ClientReadDTO>> GetAccount()
         {
             var client = await _clientsRepo.GetClient(GetUID());
             if (client == null)
             {
                 return BadRequest();
             }
-            return Ok(ClientsConverter.ToClientDTO(client));
+            return Ok(ClientsConverter.ToClientReadDTO(client));
         }
     }
 }
