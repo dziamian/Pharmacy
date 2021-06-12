@@ -10,7 +10,7 @@ using Pharmacy.Models.Database;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(PharmacyDBContext))]
-    [Migration("20210612171141_DatabaseCompletion")]
+    [Migration("20210612183824_DatabaseCompletion")]
     partial class DatabaseCompletion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,10 +94,34 @@ namespace Pharmacy.Migrations
                     b.ToTable("CartItems");
                 });
 
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Client", b =>
                 {
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("Date");
@@ -120,6 +144,8 @@ namespace Pharmacy.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.HasKey("ClientId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Clients");
                 });
@@ -218,9 +244,6 @@ namespace Pharmacy.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
@@ -249,8 +272,6 @@ namespace Pharmacy.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.ToTable("Products");
                 });
@@ -348,6 +369,17 @@ namespace Pharmacy.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Pharmacy.Models.Database.Entities.Client", b =>
+                {
+                    b.HasOne("Pharmacy.Models.Database.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Order", b =>
                 {
                     b.HasOne("Pharmacy.Models.Database.Entities.Address", "BillingAddress")
@@ -390,13 +422,6 @@ namespace Pharmacy.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Pharmacy.Models.Database.Entities.Product", b =>
-                {
-                    b.HasOne("Pharmacy.Models.Database.Entities.Client", null)
-                        .WithMany("FavouriteProducts")
-                        .HasForeignKey("ClientId");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.ProductActiveSubstance", b =>
@@ -463,8 +488,6 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Models.Database.Entities.Client", b =>
                 {
-                    b.Navigation("FavouriteProducts");
-
                     b.Navigation("Orders");
 
                     b.Navigation("Ratings");

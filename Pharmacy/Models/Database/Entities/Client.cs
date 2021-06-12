@@ -24,9 +24,13 @@ namespace Pharmacy.Models.Database.Entities
         [Column(TypeName = "Date")]
         public DateTime? DateOfBirth { get; set; }
 
-        public string Gender { get; set; }
+        [Required]
+        [ForeignKey(nameof(Category))]
+		public int CategoryId { get; set; }
+        [Required]
+		public Category Category { get; set; }
 
-		public virtual ICollection<Product> FavouriteProducts { get; set; }
+		public string Gender { get; set; }
 
         public virtual ICollection<Rating> Ratings { get; set; }
 

@@ -12,8 +12,8 @@ using Pharmacy.Services;
 
 namespace Pharmacy.Controllers
 {
-    [Route("api/products")]
     [ApiController]
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
         private readonly ProductsService m_productsService;
@@ -30,7 +30,7 @@ namespace Pharmacy.Controllers
 
             if (product == null)
 			{
-                return BadRequest();
+                return BadRequest(ModelState);
 			}
 
             return CreatedAtRoute(nameof(GetProductById), new { product.Id }, null);
