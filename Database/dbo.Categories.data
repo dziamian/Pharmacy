@@ -1,0 +1,7 @@
+SET IDENTITY_INSERT [dbo].[Categories] ON
+INSERT INTO [dbo].[Categories] ([Id], [Name], [Description]) VALUES (1, 'Painkillers', 'Painkillers')
+INSERT INTO [dbo].[Categories] ([Id], [Name], [Description]) VALUES (2, 'Antibiotics', 'Antibiotics')
+INSERT INTO [dbo].[Categories] ([Id], [Name], [Description]) VALUES (3, 'Antiseptics', 'Antiseptics')
+INSERT INTO [dbo].[Categories] ([Id], [Name], [Description]) VALUES (4, 'Bandages', 'Bandages')
+INSERT INTO [dbo].[Categories] ([Id], [Name], [Description]) VALUES (5, 'Health', 'Health')
+SET IDENTITY_INSERT [dbo].[Categories] OFF
