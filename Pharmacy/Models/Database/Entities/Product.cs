@@ -64,18 +64,5 @@ namespace Pharmacy.Models.Database.Entities
             return false;
 		}
 
-		private class ActiveSubstanceEqualityComparer : EqualityComparer<ActiveSubstance>
-		{
-			public override bool Equals([AllowNull] ActiveSubstance x, [AllowNull] ActiveSubstance y)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override int GetHashCode([DisallowNull] ActiveSubstance obj)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
 	}
 }

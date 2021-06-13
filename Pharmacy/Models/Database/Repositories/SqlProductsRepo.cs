@@ -19,15 +19,15 @@ namespace Pharmacy.Models.Database.Repositories
 
 		public async Task CreateProduct(Product product)
 		{
-			m_context.Products.Include("Products.ActiveSubstances").Include("Products.PassiveSubstances");
+			m_context.Products.Include(p => p.ActiveSubstances).Include(p => p.PassiveSubstances);
 			await m_context.Products.AddAsync(product);
 		}
 
 		public async Task<IEnumerable<Product>> GetAllProducts()
 		{
 			return await m_context.Products
-				.Include(p => p.ActiveSubstances)
-				.Include(p => p.PassiveSubstances)
+				.Include(p => p.ActiveSubstances).ThenInclude(p => p.ActiveSubstance)
+				.Include(p => p.PassiveSubstances).ThenInclude(p => p.PassiveSubstance)
 				.Include(p => p.Ratings)
 				.ToListAsync();
 		}
@@ -35,8 +35,9 @@ namespace Pharmacy.Models.Database.Repositories
 		public async Task<Product> GetProductById(int id)
 		{
 			return await m_context.Products
-				.Include(p => p.ActiveSubstances)
-				.Include(p => p.PassiveSubstances)
+				.Where(p => p.Id == id)
+				.Include(p => p.ActiveSubstances).ThenInclude(p => p.ActiveSubstance)
+				.Include(p => p.PassiveSubstances).ThenInclude(p => p.PassiveSubstance)
 				.Include(p => p.Ratings)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
