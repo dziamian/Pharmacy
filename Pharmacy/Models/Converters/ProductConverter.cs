@@ -17,8 +17,8 @@ namespace Pharmacy.Models.Converters
 				return null;
 			}
 
-			ICollection<SubstanceDoseDto> activeSubstances = new List<SubstanceDoseDto>();
-			ICollection<SubstanceDoseDto> passiveSubstances = new List<SubstanceDoseDto>();
+			ICollection<DoseReadDto> activeSubstances = new List<DoseReadDto>();
+			ICollection<DoseReadDto> passiveSubstances = new List<DoseReadDto>();
 
 			foreach (var it in product.ActiveSubstances)
 			{

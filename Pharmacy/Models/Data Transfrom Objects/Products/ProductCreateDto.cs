@@ -27,9 +27,9 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Products
 		public int CategoryId { get; set; }
 
 		[Required]
-        public IEnumerable<SubstanceDoseDto> ActiveSubstances { get; set; }
+		public IEnumerable<DoseCreateDto> ActiveSubstances { get; set; }
 
         [Required]
-        public IEnumerable<SubstanceDoseDto> PassiveSubstances { get; set; }
+        public IEnumerable<DoseCreateDto> PassiveSubstances { get; set; }
     }
 }

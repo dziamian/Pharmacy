@@ -32,9 +32,9 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Products
         [Required]
 		public int CategoryId { get; set; }
 
-		public IEnumerable<SubstanceDoseDto> ActiveSubstances { get; set; }
+		public IEnumerable<DoseReadDto> ActiveSubstances { get; set; }
 
-		public IEnumerable<SubstanceDoseDto> PassiveSubstances { get; set; }
+		public IEnumerable<DoseReadDto> PassiveSubstances { get; set; }
 
 		public IEnumerable<int> Ratings { get; set; }
     }

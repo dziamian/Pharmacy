@@ -28,7 +28,10 @@ namespace Pharmacy
         {
             services.AddDbContext<PharmacyDBContext>(options => 
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DBConnection"));
+                options
+                .UseSqlServer(
+                    Configuration.GetConnectionString("DBConnection"), 
+                    p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             });
 
             services.AddControllers();

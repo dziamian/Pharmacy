@@ -24,5 +24,10 @@ namespace Pharmacy.Models.Database
 		{
 		
 		}
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+
+		}
 	}
 }

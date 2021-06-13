@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Data_Transfrom_Objects.Substances
 {
-	public class SubstanceDoseDto
+	public class DoseReadDto
 	{
 		public int Id { get; set; }
 

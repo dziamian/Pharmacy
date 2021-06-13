@@ -21,14 +21,14 @@ namespace Pharmacy.Models.Converters
 			return list;
 		}
 
-		public static SubstanceDoseDto ToSubstanceDoseDto(ActiveSubstance activeSubstance, int dose)
+		public static DoseReadDto ToSubstanceDoseDto(ActiveSubstance activeSubstance, int dose)
 		{
 			if (activeSubstance == null || dose <= 0)
 			{
 				return null;
 			}
 
-			return new SubstanceDoseDto
+			return new DoseReadDto
 			{
 				Id = activeSubstance.Id,
 				Name = activeSubstance.Name,

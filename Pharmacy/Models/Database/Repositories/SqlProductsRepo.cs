@@ -54,7 +54,9 @@ namespace Pharmacy.Models.Database.Repositories
 			var products = m_context.Products
 				.Include(p => p.ActiveSubstances)
 				.Where(p => !p.Supplement && p.ActiveSubstances.Count == product.ActiveSubstances.Count)
-				.Include(p => p.ActiveSubstances).ThenInclude(p => p.ActiveSubstance);
+				.Include(p => p.ActiveSubstances).ThenInclude(p => p.ActiveSubstance)
+				.Include(p => p.PassiveSubstances).ThenInclude(p => p.PassiveSubstance)
+				.AsEnumerable();
 
 			return products.Where(p => product.IsSubstitutedBy(p, 0.05f));
 		}
