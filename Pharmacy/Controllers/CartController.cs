@@ -55,11 +55,10 @@ namespace Pharmacy.Controllers
             string uid = GetUID();
             var cart = await _cartService.GetCart(uid);
 
-            //return Ok(cart.ToList().Count);
             return Ok(cart.Count());
         }
 
-        [HttpGet("{id}/{amount:int?}")]
+        [HttpPost]
         public async Task<ActionResult> AddItemToCart(int id, int amount = 1)
         {
             string uid = GetUID();
@@ -72,7 +71,7 @@ namespace Pharmacy.Controllers
             return BadRequest("Product not found.");
         }
 
-        [HttpGet("remove/{id}")]
+        [HttpDelete("remove")]
         public async Task<ActionResult> RemoveItemFromCart(int id)
         {
             string uid = GetUID();
