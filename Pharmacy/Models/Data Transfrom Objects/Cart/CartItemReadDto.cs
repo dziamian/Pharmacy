@@ -5,7 +5,7 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Cart
 {
     public class CartItemReadDto
     {
-        public ProductReadDto Product { get; set; }
+        public CartProductReadDto Product { get; set; }
         public int Amount { get; set; }
         public bool IsAvailable { get; set; }
     }
