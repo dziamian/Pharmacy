@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Pharmacy.Models.Database.Entities
 {
@@ -46,5 +48,34 @@ namespace Pharmacy.Models.Database.Entities
         public ICollection<ProductPassiveSubstance> PassiveSubstances { get; set; }
 
 		public ICollection<Rating> Ratings { get; set; }
+
+		public bool IsSubstitutedBy(Product product, float dosageInaccuracy)
+		{
+            var actives1 = this.ActiveSubstances.ToList();
+            var actives2 = product.ActiveSubstances.ToList();
+
+            if (actives1.Count < actives2.Count)
+			{
+                return false;
+			}
+            
+
+
+            return false;
+		}
+
+		private class ActiveSubstanceEqualityComparer : EqualityComparer<ActiveSubstance>
+		{
+			public override bool Equals([AllowNull] ActiveSubstance x, [AllowNull] ActiveSubstance y)
+			{
+				throw new NotImplementedException();
+			}
+
+			public override int GetHashCode([DisallowNull] ActiveSubstance obj)
+			{
+				throw new NotImplementedException();
+			}
+		}
+
 	}
 }

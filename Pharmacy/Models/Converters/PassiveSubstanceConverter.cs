@@ -23,5 +23,18 @@ namespace Pharmacy.Models.Converters
 			}
 			return list;
 		}
+
+		public static SubstanceDoseDto ToSubstanceDoseDto(PassiveSubstance passiveSubstance, int dose)
+		{
+			return passiveSubstance != null && dose > 0 ?
+				new SubstanceDoseDto
+				{
+					Id = passiveSubstance.Id,
+					Name = passiveSubstance.Name,
+					Active = false,
+					Dose = dose
+				} :
+				null;
+		}
 	}
 }

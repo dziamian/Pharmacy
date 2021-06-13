@@ -41,6 +41,19 @@ namespace Pharmacy.Models.Database.Repositories
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
 
+		public async Task<IEnumerable<Product>> GetSubstitutes(int id)
+		{
+			var product = (await GetProductById(id));
+			if (product == null)
+			{
+				return new Product[0];
+			}
+
+			var products = m_context.Products.Include(p => p.ActiveSubstances);
+
+			return products.Where(p => product.IsSubstitutedBy(p, 0.05f));
+		}
+
 		public void MarkForUpdate(Product product)
 		{
 			var entry = m_context.Entry(product);

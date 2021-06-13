@@ -22,12 +22,12 @@ namespace Pharmacy.Models.Converters
 
 			foreach (var it in product.ActiveSubstances)
 			{
-				activeSubstances.Add(new SubstanceDoseDto { SubstanceId = it.ActiveSubstanceId, Dose = it.Dose });
+				activeSubstances.Add(ActiveSubstanceConverter.ToSubstanceDoseDto(it.ActiveSubstance, it.Dose));
 			}
 
 			foreach (var it in product.PassiveSubstances)
 			{
-				passiveSubstances.Add(new SubstanceDoseDto { SubstanceId = it.PassiveSubstanceId, Dose = it.Dose });
+				passiveSubstances.Add(PassiveSubstanceConverter.ToSubstanceDoseDto(it.PassiveSubstance, it.Dose));
 			}
 
 			return new ProductReadDto 

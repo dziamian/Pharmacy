@@ -52,13 +52,13 @@ namespace Pharmacy.Services
 			await m_productsRepo.CreateProduct(product);
 
 			foreach (var it in productCreateDto.ActiveSubstances)
-			{
-				product.ActiveSubstances.Add(new ProductActiveSubstance { ActiveSubstanceId = it.SubstanceId, Dose = it.Dose });
+			{ 
+				product.ActiveSubstances.Add(new ProductActiveSubstance { ActiveSubstanceId = it.Id, Dose = it.Dose });
 			}
 
 			foreach (var it in productCreateDto.PassiveSubstances)
 			{
-				product.PassiveSubstances.Add(new ProductPassiveSubstance { PassiveSubstanceId = it.SubstanceId, Dose = it.Dose });
+				product.PassiveSubstances.Add(new ProductPassiveSubstance { PassiveSubstanceId = it.Id, Dose = it.Dose });
 			}
 
 			m_productsRepo.SaveChanges();
@@ -84,7 +84,7 @@ namespace Pharmacy.Services
 
 			foreach (var it in productCreateDto.ActiveSubstances)
 			{
-				if (!await m_activeSubstancesRepo.ActiveSubstanceExists(it.SubstanceId))
+				if (!await m_activeSubstancesRepo.ActiveSubstanceExists(it.Id))
 				{
 					return false;
 				}
@@ -92,7 +92,7 @@ namespace Pharmacy.Services
 
 			foreach (var it in productCreateDto.PassiveSubstances)
 			{
-				if (!await m_passiveSubstancesRepo.PassiveSubstanceExists(it.SubstanceId))
+				if (!await m_passiveSubstancesRepo.PassiveSubstanceExists(it.Id))
 				{
 					return false;
 				}
