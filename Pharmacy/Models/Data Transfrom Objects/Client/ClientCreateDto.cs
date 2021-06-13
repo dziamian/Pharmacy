@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pharmacy.Models.Data_Transfrom_Objects
+namespace Pharmacy.Models.Data_Transfrom_Objects.Client
 {
     [Validator(typeof(ClientCreateDTOValidator))]
-    public class ClientCreateDTO
+    public class ClientCreateDto
     {
         public string Name { get; set; }
         public string Email { get; set; }

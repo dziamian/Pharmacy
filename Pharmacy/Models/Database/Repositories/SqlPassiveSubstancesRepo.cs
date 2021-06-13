@@ -50,9 +50,9 @@ namespace Pharmacy.Models.Database.Repositories
 			return await m_context.PassiveSubstances.AnyAsync(p => p.Id == id);
 		}
 
-		public int SaveChanges()
+		public async Task SaveChanges()
 		{
-			return m_context.SaveChanges();
+			await m_context.SaveChangesAsync();
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace Pharmacy.Services
 		{
 			var substance = new ActiveSubstance { Name = substanceCreateDto.Name };
 			await m_activeSubstanceRepo.CreateActiveSubstance(substance);
-			m_activeSubstanceRepo.SaveChanges();
+			await m_activeSubstanceRepo.SaveChanges();
 			return substance;
 		}
 
@@ -47,7 +47,7 @@ namespace Pharmacy.Services
 		{
 			var substance = new PassiveSubstance { Name = substanceCreateDto.Name };
 			await m_passiveSubstanceRepo.CreatePassiveSubstance(substance);
-			m_passiveSubstanceRepo.SaveChanges();
+			await m_passiveSubstanceRepo.SaveChanges();
 			return substance;
 		}
 

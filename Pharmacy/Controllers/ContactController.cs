@@ -25,7 +25,7 @@ namespace Pharmacy.Controllers
         {
             if (_contact.Value == null)
             {
-                return NoContent();
+                return NotFound();
             }
             return Ok(_contact.Value);
         }

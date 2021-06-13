@@ -9,21 +9,21 @@ namespace Pharmacy.Models.Converters
 {
     public static class CartConverter
     {
-        public static CartItemDTO ToCartItemDTO(CartItem cartItem)
+        public static CartItemReadDto ToCartItemDto(CartItem cartItem)
         {
-            return new CartItemDTO { 
+            return new CartItemReadDto { 
                 Product = cartItem.Product, 
                 Amount = cartItem.Amount, 
                 IsAvailable = cartItem.Product != null && cartItem.Product.Supply >= cartItem.Amount 
             };
         }
 
-        public static List<CartItemDTO> ToCartItemDTOs(List<CartItem> cartItems)
+        public static List<CartItemReadDto> ToCartItemDtos(List<CartItem> cartItems)
         {
-            var dtos = new List<CartItemDTO>();
+            var dtos = new List<CartItemReadDto>();
             cartItems.ForEach((cartItem) =>
             {
-                dtos.Add(ToCartItemDTO(cartItem));
+                dtos.Add(ToCartItemDto(cartItem));
             });
             return dtos;
         }

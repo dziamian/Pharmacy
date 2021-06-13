@@ -12,7 +12,7 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
         Task CreateItem(CartItem item);
         Task<bool> RemoveClientItem(string uid, int productId);
         Task RemoveClientItems(string uid);
-        void UpdateItem(CartItem item);
+        void MarkForUpdate(CartItem item);
         Task SaveChanges();
     }
 }

@@ -11,6 +11,6 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
 		Task<ActiveSubstance> GetActiveSubstanceById(int id);
 		void MarkForUpdate(ActiveSubstance activeSubstance);
 		Task<bool> ActiveSubstanceExists(int id);
-		int SaveChanges();
+		Task SaveChanges();
 	}
 }

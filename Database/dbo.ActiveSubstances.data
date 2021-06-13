@@ -1,0 +1,11 @@
+﻿SET IDENTITY_INSERT [dbo].[ActiveSubstances] ON
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (1, 'Paracetamol')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (2, 'Phenoxyethanol')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (3, 'Iodized Povidone')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (4, 'Penicillin')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (5, 'Cephalosporin')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (6, 'Polopyrin')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (7, 'Hydrogen Peroxide')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (8, 'Ibuprofenum')
+INSERT INTO [dbo].[ActiveSubstances] ([Id], [Name]) VALUES (9, 'Acidum acetylsalicylicum')
+SET IDENTITY_INSERT [dbo].[ActiveSubstances] OFF
