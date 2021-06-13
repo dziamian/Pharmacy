@@ -1,0 +1,16 @@
+SET IDENTITY_INSERT [dbo].[ProductActiveSubstances] ON
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (1, 1, 1, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (2, 2, 1, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (3, 3, 2, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (4, 6, 3, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (5, 7, 4, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (6, 9, 4, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (7, 11, 5, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (8, 12, 6, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (9, 13, 5, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (10, 14, 7, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (11, 16, 9, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (12, 18, 8, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (13, 19, 8, 1)
+INSERT INTO [dbo].[ProductActiveSubstances] ([Id], [ProductId], [ActiveSubstanceId], [Dose]) VALUES (14, 20, 9, 1)
+SET IDENTITY_INSERT [dbo].[ProductActiveSubstances] OFF
