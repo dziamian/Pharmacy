@@ -30,7 +30,7 @@ namespace Pharmacy.Controllers
 
             if (product == null)
 			{
-                return BadRequest(ModelState);
+                return BadRequest();
 			}
 
             return CreatedAtRoute(nameof(GetProductById), new { product.Id }, null);

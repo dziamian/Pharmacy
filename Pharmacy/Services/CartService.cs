@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pharmacy.Models.Converters;
-using Pharmacy.Models.Data_Transfrom_Objects;
+using Pharmacy.Models.Data_Transfrom_Objects.Cart;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using System;
@@ -56,6 +56,13 @@ namespace Pharmacy.Services
             var cart = CartConverter.ToCartItemDtos(cartItems.ToList());
 
             return cart;
+        }
+
+        public async Task<CartItemReadDto> GetCartItem(string uid, int id)
+        {
+            var cartItem = await _cartRepo.GetByClientAndProductId(uid, id, true);
+
+            return CartConverter.ToCartItemDto(cartItem); 
         }
 
         public async Task<bool> ValidateCart(string uid)

@@ -31,14 +31,44 @@
                                 <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
                             </b-input-group-append>
                         </b-input-group>
-                        <b-col v-if="user" class="col-sm-4 col-lg-12 mt-4 mb-3">
+                        <b-col v-if="user" class="col-sm-4 col-lg-12 mt-5 mb-3">
                             <b-button variant="primary" size="lg" @click="addItem">Add to cart</b-button>
                         </b-col>
                     </b-row>
-                    <div v-else>
+                    <b-col v-else>
                         <h2 class="text-black">This product is unavailable.</h2>
-                    </div>
+                    </b-col>
+                    <b-col class="mt-4 ml-3">
+                        <b-button class="mr-3" variant="primary" @click="changeActive">Active substances</b-button>
+                        <b-button class="mr-3" variant="primary"  @click="changePassive">Passive substances</b-button>
+                    </b-col>
+                    <b-col class="mt-4" v-if="whichSubstances == true">
+                        <b-table :items="product.activeSubstances" :fields="[
+                            {key: 'index', label: 'No.'}, 
+                            {key: 'name', sortable: true}, 
+                            {key: 'dose', sortable: true}]"
+                        >
+                            <template v-slot:cell(index)="data">
+                                {{data.index + 1}}
+                            </template>
+                        </b-table>
+                    </b-col>
+                    <b-col class="mt-4" v-else>
+                        <b-table :items="product.passiveSubstances" :fields="[{key: 'index', label: 'No.'},{key: 'name', sortable: true}]">
+                            <template v-slot:cell(index)="data">
+                                {{data.index + 1}}
+                            </template>
+                        </b-table>
+                    </b-col>
                 </b-col>
+            </b-row>
+            <b-row>
+                <b-col>
+                    <hr>
+                </b-col>
+            </b-row>
+            <b-row>
+                <!--<products-gallery :products="product" :priceLabel="BILLING.CURRENCY.ABB"/>-->
             </b-row>
         </b-container>
         <Footer/>
@@ -52,9 +82,11 @@
 import api from '@/services/PharmacyApiService'
 import Footer from '@/components/Footer'
 import Loading from '@/components/Loading'
+import ProductsGallery from '@/components/ProductsGallery'
 
 export default {
     components:{
+        ProductsGallery,
         Footer,
         Loading
     },
@@ -62,6 +94,7 @@ export default {
     data() {
         let minQuantity = 1;
         return {
+            whichSubstances: true,
             loading: true,
             product: Object,
             minQuantity: minQuantity,
@@ -112,6 +145,12 @@ export default {
                 }).catch(error => {
                     this.makeToast('Could not add item', error, 'danger');
                 });
+        },
+        changeActive() {
+            this.whichSubstances = true;
+        },
+        changePassive() {
+            this.whichSubstances = false;
         }
     },
     mounted () {

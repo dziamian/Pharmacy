@@ -10,11 +10,9 @@
               <b-nav-item to="/" v-bind:class="{ active: isActive('home') }">Home</b-nav-item>
               <b-nav-item to="/store" v-bind:class="{ active: isActive('store') }">Store</b-nav-item>
               <b-nav-item-dropdown text="Products">
-                <b-dropdown-item to="/">Painkillers</b-dropdown-item>
-                <b-dropdown-item to="/">Antibiotic</b-dropdown-item>
-                <b-dropdown-item to="/">Antiseptic</b-dropdown-item>
-                <b-dropdown-item to="/">Bandage</b-dropdown-item>
-                <b-dropdown-item to="/">Health</b-dropdown-item>
+                <b-dropdown-item v-for="(category, index) in categories" :key="index" to="/">
+                  {{category.name}}
+                </b-dropdown-item> 
               </b-nav-item-dropdown>
               <b-nav-item to="/contact" v-bind:class="{ active: isActive('contact') }">Contact</b-nav-item>
             </b-navbar-nav>
@@ -75,10 +73,12 @@ export default {
   data () {
     return {
       activeItem: 'home',
+      categories: [],
       cartSize: 0
     }
   },
   created() {
+    this.getCategories();
     this.setCartAmount();
   },
   computed: {
@@ -93,6 +93,12 @@ export default {
           this.$router.push({name: 'home'});
         }
       });
+    },
+    getCategories() {
+      api.getCategories()
+        .then((result) => {
+          this.categories = result;
+        });
     },
     setCartAmount() {
       if (!this.user) {

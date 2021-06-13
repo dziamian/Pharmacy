@@ -2,9 +2,9 @@
   <Loading v-if="loading==true"/>
   <main v-else class="pb-3">
     <div class="home-cover">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
+      <b-container>
+        <b-row>
+          <b-col class="col-lg-7 mx-auto order-lg-2 align-self-center">
             <div class="home-cover-content text-center">
               <h2>
                 Take care of your health every day!
@@ -18,25 +18,25 @@
                 Check new products
               </b-button>
             </div>
-          </div>
-        </div>
-      </div>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
     <div id="newProducts" class="home-section new-products">
-      <div class="container pt-5">
-        <div class="row">
-          <div class="title-section text-center col-12">
+      <b-container class="pt-5">
+        <b-row>
+          <b-col class="title-section text-center col-12">
             <h2 class="text-uppercase">
               New products
             </h2>
-          </div>
-        </div>
-        <div class="row">
+          </b-col>
+        </b-row>
+        <b-row>
           <products-gallery v-if="newProducts.length > 0" :products="newProducts" :priceLabel="BILLING.CURRENCY.ABB"/>
-        </div>
-      </div>
+        </b-row>
+      </b-container>
     </div>
-    <Footer></Footer>
+    <Footer/>
   </main>
 </template>
 

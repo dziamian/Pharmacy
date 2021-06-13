@@ -18,17 +18,26 @@ export default {
     getProduct(id) {
         return axios.execute('get', '/api/products/' + id);
     },
+    getSubstitutes(id) {
+        return axios.execute('get', '/api/products/' + id + '/substitutes');
+    },
+    getCategories() {
+        return axios.execute('get', '/api/categories');
+    },
     getItemsFromCart() {
         return axios.execute('get', '/api/cart');
     },
     getCartAmount() {
         return axios.execute('get', '/api/cart/size');
     },
-    addItemToCart(id, amount = '') {
-        return axios.execute('get', '/api/cart/' + id + '/' + amount);
+    addItemToCart(id, amount = 1) {
+        return axios.execute('put', '/api/cart/', {productId: id, amount: amount});
     },
     removeItemFromCart(id) {
-        return axios.execute('get', '/api/cart/remove/' + id);
+        return axios.execute('delete', '/api/cart/remove/' + id);
+    },
+    removeCart() {
+        return axios.execute('delete', '/api/cart');
     },
     validateCart() {
         return axios.execute('get', '/api/cart/validate');

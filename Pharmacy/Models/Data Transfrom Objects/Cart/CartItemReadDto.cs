@@ -1,6 +1,6 @@
 ﻿using Pharmacy.Models.Database.Entities;
 
-namespace Pharmacy.Models.Data_Transfrom_Objects
+namespace Pharmacy.Models.Data_Transfrom_Objects.Cart
 {
     public class CartItemReadDto
     {

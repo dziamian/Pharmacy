@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Controllers.BaseControllers;
-using Pharmacy.Models.Data_Transfrom_Objects;
-using Pharmacy.Models.Database;
-using Pharmacy.Models.Database.Entities;
-using Pharmacy.Models.Database.Repositories;
+using Pharmacy.Models.Data_Transfrom_Objects.Cart;
 using Pharmacy.Services;
 
 namespace Pharmacy.Controllers
@@ -33,6 +29,20 @@ namespace Pharmacy.Controllers
             var cart = await _cartService.GetCart(uid);
             
             return Ok(cart);
+        }
+        
+        [HttpGet("{id}", Name = nameof(GetCartItem))]
+        public async Task<ActionResult<CartItemReadDto>> GetCartItem(int id)
+        {
+            string uid = GetUID();
+            var cartItem = await _cartService.GetCartItem(uid, id);
+
+            if (cartItem == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cartItem);
         }
 
         [HttpGet("validate")]
@@ -58,20 +68,26 @@ namespace Pharmacy.Controllers
             return Ok(cart.Count());
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddItemToCart(int id, int amount = 1)
+        [HttpPut]
+        public async Task<ActionResult> AddItemToCart(CartItemCreateDto cartItemCreateDto)
         {
-            string uid = GetUID();
-            var result = await _cartService.AddItemToCart(uid, id, amount);
-            
-            if (result)
+            if (cartItemCreateDto.Amount <= 0)
             {
-                return Ok("Successfully added to cart.");
+                return BadRequest();
             }
-            return BadRequest("Product not found.");
+
+            string uid = GetUID();
+            var result = await _cartService.AddItemToCart(uid, cartItemCreateDto.ProductId, cartItemCreateDto.Amount);
+            
+            if (!result)
+            {
+                return NotFound("Product not found.");
+            }
+
+            return Ok("Successfully added to cart.");
         }
 
-        [HttpDelete("remove")]
+        [HttpDelete("remove/{id}")]
         public async Task<ActionResult> RemoveItemFromCart(int id)
         {
             string uid = GetUID();
@@ -84,7 +100,7 @@ namespace Pharmacy.Controllers
             return NotFound("Product not found.");
         }
 
-        [HttpGet("remove")]
+        [HttpDelete("remove")]
         public async Task<ActionResult> RemoveCart()
         {
             string uid = GetUID();

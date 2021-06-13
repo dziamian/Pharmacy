@@ -64,12 +64,6 @@ namespace Pharmacy.Models.Database.Entities
                 dosageInaccuracy = 0.0f;
 			}
 
-            // If there are no active substances, there can be no possible substitutes
-            if (this.ActiveSubstances.Count != product.ActiveSubstances.Count || this.ActiveSubstances.Count < 1)
-			{
-                return false;
-			}
-
             // Order collections by id so iterators can advance simultaneously and can be compared to each other instead of entire collections
 			var actives1 = this.ActiveSubstances.OrderBy(p => p.ActiveSubstance.Id);
             var actives2 = product.ActiveSubstances.OrderBy(p => p.ActiveSubstance.Id);

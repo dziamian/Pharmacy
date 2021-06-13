@@ -18,11 +18,13 @@
         class="mt-4">
         <slide v-for="(product, i) in products" :index ="i" :key="i">
             <figure>
-                <img :src="product.image" width="360" height="280" />
-                <figcaption>
-                    <span class="title">{{product.name}}</span><br>
-                    <span class="subtitle">{{getCost(product.cost)}} {{priceLabel}}</span>
-                </figcaption>
+                <router-link :to="'/store/product/' + product.id">
+                    <img :src="product.image" width="360" height="280" />
+                    <figcaption>
+                        <span class="title">{{product.name}}</span><br>
+                        <span class="subtitle">{{getCost(product.cost)}} {{priceLabel}}</span>
+                    </figcaption>
+                </router-link>
             </figure>
         </slide>
     </carousel-3d>

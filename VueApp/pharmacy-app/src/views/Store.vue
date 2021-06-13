@@ -168,7 +168,7 @@ export default {
             },
             params: {
                 products: [],
-                tags: ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'],
+                tags: [],
                 references: [{
                     name: 'Name, A to Z',
                     condition: (p1, p2) => (p1.name > p2.name) ? 1 : -1
@@ -203,6 +203,7 @@ export default {
         };
     },
     created() {
+        this.getCategories();
         this.getAllProducts();
     },
     computed: {
@@ -229,6 +230,11 @@ export default {
                     this.initPagination();
                     this.loading = false;
                 });
+        },
+        getCategories() {
+            this.$parent.categories.forEach((category) => {
+                this.params.tags.push(category.name);
+            });
         },
         formatter(value) {
             if (!value || value < this.init.minPrice) {
