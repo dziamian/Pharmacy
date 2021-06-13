@@ -56,5 +56,18 @@ namespace Pharmacy.Controllers
 
             return Ok(product);
         }
+
+        [HttpGet("{id}/substitutes", Name = nameof(GetSubstitutes))]
+        public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetSubstitutes(int id)
+		{
+            var substitutes = await m_productsService.GetSubstitutes(id);
+
+            if (substitutes == null)
+			{
+                return NotFound();
+			}
+
+            return Ok(substitutes);
+		}
     }
 }

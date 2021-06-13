@@ -75,6 +75,11 @@ namespace Pharmacy.Services
 			return ProductConverter.ToProductReadDto(await m_productsRepo.GetProductById(id));
 		}
 
+		public async Task<IEnumerable<ProductReadDto>> GetSubstitutes(int id)
+		{
+			return ProductConverter.ToProductReadDtos(await m_productsRepo.GetSubstitutes(id));
+		}
+
 		private async Task<bool> ValidateProductCreateDto(ProductCreateDto productCreateDto)
 		{
 			if (!await m_categoryRepo.CategoryExists(productCreateDto.CategoryId))
