@@ -50,7 +50,10 @@ namespace Pharmacy.Models.Database.Repositories
 				return new Product[0];
 			}
 
-			var products = m_context.Products.Include(p => p.ActiveSubstances);
+			var products = m_context.Products
+				.Include(p => p.ActiveSubstances)
+				.Where(p => !p.Supplement && p.ActiveSubstances.Count == product.ActiveSubstances.Count)
+				.Include(p => p.ActiveSubstances).ThenInclude(p => p.ActiveSubstance);	
 
 			return products.Where(p => product.IsSubstitutedBy(p, 0.05f));
 		}
