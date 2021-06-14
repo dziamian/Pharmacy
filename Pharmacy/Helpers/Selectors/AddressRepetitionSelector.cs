@@ -9,9 +9,16 @@ namespace Pharmacy.Helpers.Selectors
 {
 	public class AddressRepetitionSelector
 	{
+		public Address OriginalAddress { get; set; }
+		public Address TestedAddress { get; set; }
+		public bool RepetitionOccured { get; set; }
 
 		public bool TestForRepetition([AllowNull] Address original, [AllowNull] Address tested)
 		{
+			this.OriginalAddress = original;
+			this.TestedAddress = tested;
+			this.RepetitionOccured = false;
+
 			if (original == null || tested == null)
 			{
 				return false;
@@ -42,6 +49,7 @@ namespace Pharmacy.Helpers.Selectors
 				return false;
 			}
 
+			this.RepetitionOccured = true;
 			return original.LocalNo == null && tested.LocalNo == null || original.LocalNo.ToLower().Equals(tested.LocalNo.ToLower());
 		}
 
