@@ -10,6 +10,7 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
     {
         Task CreateProduct(Product product);
         Task<IEnumerable<Product>> GetAllProducts();
+        Task<IEnumerable<Product>> GetNewestProducts(int count);
         Task<Product> GetProductById(int id);
         Task<IEnumerable<Product>> GetSubstitutes(int id);
         void MarkForUpdate(Product product);

@@ -33,6 +33,11 @@ namespace Pharmacy.Models.Database.Repositories
 				.ToListAsync();
 		}
 
+		public async Task<IEnumerable<Product>> GetNewestProducts(int count)
+		{
+			return await Task.Run(() => m_context.Products.OrderBy(product => product.CreationDate.Ticks).Take(count));
+		}
+
 		public async Task<Product> GetProductById(int id)
 		{
 			return await m_context.Products

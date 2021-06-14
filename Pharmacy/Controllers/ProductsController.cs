@@ -44,6 +44,21 @@ namespace Pharmacy.Controllers
             return Ok(products);
         }
 
+        // Consider modifying request in order to retrieve product count in another way
+        // This one is rather nonintuitive
+        [HttpGet("newest/{count}")]
+        public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetNewestProducts(int count)
+		{
+            var newestProducts = await m_productsService.GetNewestProducts(count);
+
+            if (count <= 0)
+			{
+                return BadRequest();
+			}
+
+            return Ok(newestProducts);
+		}
+
         [HttpGet("{id}", Name = nameof(GetProductById))]
         public async Task<ActionResult<ProductReadDto>> GetProductById(int id)
         {

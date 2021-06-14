@@ -70,6 +70,11 @@ namespace Pharmacy.Services
 			return ProductConverter.ToProductReadDtos(await m_productsRepo.GetAllProducts());
 		}
 
+		public async Task<IEnumerable<ProductReadDto>> GetNewestProducts(int count)
+		{
+			return ProductConverter.ToProductReadDtos(await m_productsRepo.GetNewestProducts(count >= 1 ? count : 1));
+		}
+
 		public async Task<ProductReadDto> GetProductById(int id)
 		{
 			return ProductConverter.ToProductReadDto(await m_productsRepo.GetProductById(id));
