@@ -23,7 +23,7 @@ namespace Pharmacy.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateCategory(CategoryCreateDto categoryCreateDto)
+		public async Task<ActionResult> CreateCategory([FromBody] CategoryCreateDto categoryCreateDto)
 		{
 			Category category = new Category 
 			{ 

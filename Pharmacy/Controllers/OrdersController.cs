@@ -52,7 +52,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(OrderCreateDto dto)
+        public async Task<ActionResult> CreateOrder([FromBody] OrderCreateDto dto)
 		{
             var uid = GetUID();
             
