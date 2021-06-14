@@ -1,3 +1,4 @@
 .vs/
 Pharmacy/bin/
 Pharmacy/obj/
+*.cache
