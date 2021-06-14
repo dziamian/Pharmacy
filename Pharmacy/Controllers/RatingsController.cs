@@ -15,7 +15,7 @@ namespace Pharmacy.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api")]
+    [Route("api/")]
     public class RatingsController : AuthControllerBase
     {
         private readonly IRatingsRepo _ratingsRepo;
@@ -25,8 +25,7 @@ namespace Pharmacy.Controllers
             _ratingsRepo = ratingsRepo;
         }
 
-        [HttpPost]
-        [Route("ratings")]
+        [HttpPost("ratings/")]
         public async Task<ActionResult> CreateRating([FromBody] RatingDto dto)
         {
             var uid = GetUID();
@@ -49,7 +48,7 @@ namespace Pharmacy.Controllers
             return CreatedAtRoute(nameof(GetRating), new { id = dto.ProductId }, null);
         }
 
-        [HttpGet("ratings")]
+        [HttpGet("ratings/")]
         public async Task<ActionResult<IEnumerable<RatingDto>>> GetAllRatings()
         {
             return Ok(RatingConverter.ToRatingDtos(await _ratingsRepo.GetAllRatings(GetUID())));
