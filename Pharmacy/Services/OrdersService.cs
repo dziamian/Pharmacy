@@ -14,12 +14,15 @@ namespace Pharmacy.Services
 		private readonly IAddressesRepo m_addressesRepo;
 		private readonly ICartRepo m_cartRepo;
 		private readonly IOrdersRepo m_ordersRepo;
+		private readonly IProductsRepo m_productsRepo;
+		private readonly CartService m_cartService;
 
-		public OrdersService(IAddressesRepo addressesRepo, ICartRepo cartRepo, IOrdersRepo ordersRepo)
+		public OrdersService(IAddressesRepo addressesRepo, ICartRepo cartRepo, IOrdersRepo ordersRepo, IProductsRepo productsRepo, CartService cartService)
 		{
 			m_addressesRepo = addressesRepo;
 			m_cartRepo = cartRepo;
 			m_ordersRepo = ordersRepo;
+			m_cartService = cartService;
 		}
 
 		public async Task<Order> CreateOrder(OrderCreateDto dto, string userId)
@@ -33,6 +36,11 @@ namespace Pharmacy.Services
 			{
 				return null;
 			}
+
+			if (!await m_cartService.ValidateCart(userId))
+			{
+				return null;
+			}	
 
 			var shippingAddress = await m_addressesRepo.GetOrCreateAddress(
 				dto.ShippingAddress.City,
@@ -48,7 +56,7 @@ namespace Pharmacy.Services
 					dto.BillingAddress.LocalNo) : 
 				null;
 
-			var cartItems = await m_cartRepo.GetByClientId(userId, false);
+			var cartItems = await m_cartRepo.GetByClientId(userId, true);
 
 			Order order = new Order
 			{
@@ -75,8 +83,15 @@ namespace Pharmacy.Services
 				});
 			}
 
+			foreach (var it in cartItems)
+			{
+				it.Product.Supply -= it.Amount;
+				m_productsRepo.MarkForUpdate(it.Product);
+			}
+
 			await m_cartRepo.RemoveClientItems(userId);
 
+			await m_productsRepo.SaveChanges();
 			await m_ordersRepo.SaveChanges();
 			await m_addressesRepo.SaveChanges();
 			await m_cartRepo.SaveChanges();
