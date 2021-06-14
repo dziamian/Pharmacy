@@ -52,7 +52,7 @@ namespace Pharmacy.Models.Database.Repositories
 
 			var selector = new AddressRepetitionSelector();
 
-			var address = await m_context.Addresses.FirstOrDefaultAsync(a => selector.TestForRepetition(tmp, a));
+			var address = m_context.Addresses.AsEnumerable().FirstOrDefault(a => selector.TestForRepetition(tmp, a));
 
 			if (address != null)
 			{
