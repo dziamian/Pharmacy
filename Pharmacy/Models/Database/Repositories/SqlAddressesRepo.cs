@@ -29,6 +29,7 @@ namespace Pharmacy.Models.Database.Repositories
 
 		public async Task<Address> GetOrCreateAddress(string city, string postCode, string streetBuilding, string localNo)
 		{
+			//zjebane
 			var address = await m_context.Addresses.FirstOrDefaultAsync(
 				address =>
 					address.City.ToLower().Equals(city.ToLower()) &&
