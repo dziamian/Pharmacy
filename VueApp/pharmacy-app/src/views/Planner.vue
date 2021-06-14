@@ -141,11 +141,6 @@ export default {
 
 <style scoped>
 
-@media print {
-    #table {
-        background-color: #ffffff;   
-    }
-}
 
 td {
     vertical-align: middle !important;
