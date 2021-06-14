@@ -21,7 +21,7 @@ namespace Pharmacy.Controllers
 
 		[HttpPost]
 		[Route("active/")]
-		public async Task<ActionResult> CreateActiveSubstance(SubstanceCreateDto activeSubstanceCreateDto)
+		public async Task<ActionResult> CreateActiveSubstance([FromBody] SubstanceCreateDto activeSubstanceCreateDto)
 		{
 			var substance = await m_substancesService.CreateActiveSubstance(activeSubstanceCreateDto);
 			return CreatedAtRoute(nameof(GetActiveSubstanceById), new { substance.Id }, null);

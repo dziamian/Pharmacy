@@ -24,7 +24,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(ProductCreateDto productCreateDto)
+        public async Task<ActionResult> CreateProduct([FromBody] ProductCreateDto productCreateDto)
 		{
             var product = await m_productsService.CreateProduct(productCreateDto);
 
@@ -45,7 +45,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet("newest")]
-        public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetNewestProducts([FromQuery(Name = "count")]int count)
+        public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetNewestProducts([FromQuery(Name = "count")] int count)
 		{
             var newestProducts = await m_productsService.GetNewestProducts(count);
 

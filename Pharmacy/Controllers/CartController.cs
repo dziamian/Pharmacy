@@ -69,7 +69,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> AddItemToCart(CartItemCreateDto cartItemCreateDto)
+        public async Task<ActionResult> AddItemToCart([FromBody] CartItemCreateDto cartItemCreateDto)
         {
             if (cartItemCreateDto.Amount <= 0)
             {

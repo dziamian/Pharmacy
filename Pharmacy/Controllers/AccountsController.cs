@@ -30,7 +30,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAccount(ClientCreateDto client)
+        public async Task<ActionResult> CreateAccount([FromBody] ClientCreateDto client)
         {
             var uid = GetUID();
 
