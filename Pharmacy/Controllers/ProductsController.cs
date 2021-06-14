@@ -84,10 +84,11 @@ namespace Pharmacy.Controllers
             return Ok(substitutes);
         }
 
+        [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetPagedSpecificProducts(
-            int pageIndex, 
-            int pageSize,
-            ProductsFilterDto filter)
+            [FromQuery(Name = "pageIndex")] int pageIndex,
+            [FromQuery(Name = "pageSize")] int pageSize,
+            [FromBody] ProductsFilterDto filter)
 		{
             var list = await m_productsService.GetPagedSpecificProducts(pageIndex, pageSize, filter);
 
@@ -111,7 +112,6 @@ namespace Pharmacy.Controllers
             return Ok(list);
 		}
 
-        [HttpGet("filter", Name = nameof(GetSpecificProducts))]
         public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetSpecificProducts(
             ProductsFilterDto filter)
 		{
