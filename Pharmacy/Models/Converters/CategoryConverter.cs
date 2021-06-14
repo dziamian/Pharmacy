@@ -21,6 +21,11 @@ namespace Pharmacy.Models.Converters
 
 		public static IEnumerable<CategoryReadDto> ToCategoryReadDtos(IEnumerable<Category> categories)
 		{
+			if (categories == null)
+			{
+				return null;
+			}
+
 			var collection = new List<CategoryReadDto>();
 
 			foreach (var it in categories)

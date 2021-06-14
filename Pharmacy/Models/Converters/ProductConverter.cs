@@ -56,12 +56,12 @@ namespace Pharmacy.Models.Converters
 
 		public static IEnumerable<ProductReadDto> ToProductReadDtos(IEnumerable<Product> products)
 		{
-			ICollection<ProductReadDto> collection = new List<ProductReadDto>();
-
 			if (products == null)
 			{
-				return collection;
+				return null;
 			}
+
+			ICollection<ProductReadDto> collection = new List<ProductReadDto>();
 
 			foreach (var it in products)
 			{

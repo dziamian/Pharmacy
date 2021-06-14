@@ -16,6 +16,11 @@ namespace Pharmacy.Models.Converters
 
 		public static IEnumerable<SubstanceReadDto> ToSubstanceReadDtos(IEnumerable<PassiveSubstance> passiveSubstances)
 		{
+			if (passiveSubstances == null)
+			{
+				return null;
+			}
+
 			List<SubstanceReadDto> list = new List<SubstanceReadDto>();
 			foreach (var it in passiveSubstances)
 			{

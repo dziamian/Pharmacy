@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pharmacy.Helpers.Selectors;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using System;
@@ -58,7 +59,9 @@ namespace Pharmacy.Models.Database.Repositories
 				.Include(p => p.PassiveSubstances).ThenInclude(p => p.PassiveSubstance)
 				.AsEnumerable();
 
-			return products.Where(p => product.IsSubstitutedBy(p, 0.05f)).Where(p => p.Id != id);
+			var selector = new ProductSubstituteSelector(0.05f);
+
+			return products.Where(p => selector.TestForSubstitution(product, p)).Where(p => p.Id != id);
 		}
 
 		public void MarkForUpdate(Product product)

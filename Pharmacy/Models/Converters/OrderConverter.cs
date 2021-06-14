@@ -43,12 +43,12 @@ namespace Pharmacy.Models.Converters
 
 		public static IEnumerable<OrderReadDto> ToOrderReadDtos(IEnumerable<Order> orders)
 		{
-			ICollection<OrderReadDto> collection = new List<OrderReadDto>();
-
 			if (orders == null)
 			{
-				return collection;
+				return null;
 			}
+
+			ICollection<OrderReadDto> collection = new List<OrderReadDto>();
 
 			foreach (var it in orders)
 			{
