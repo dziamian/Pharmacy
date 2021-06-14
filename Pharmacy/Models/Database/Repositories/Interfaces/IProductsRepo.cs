@@ -1,4 +1,6 @@
-﻿using Pharmacy.Models.Database.Entities;
+﻿using Pharmacy.Helpers;
+using Pharmacy.Models.Data_Transfrom_Objects.Product;
+using Pharmacy.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,13 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
         Task<IEnumerable<Product>> GetAllProducts();
         Task<IEnumerable<Product>> GetNewestProducts(int count);
         Task<Product> GetProductById(int id);
+        Task<IEnumerable<Product>> GetSpecificProducts(
+            string name,
+            int minPrice, 
+            int maxPrice, 
+            IEnumerable<int> categories, 
+            IEnumerable<(int, int)> activeSubstances, 
+            IEnumerable<(int, int)> passiveSubstances);
         Task<IEnumerable<Product>> GetSubstitutes(int id);
         void MarkForUpdate(Product product);
         Task SaveChanges();

@@ -1,4 +1,5 @@
-﻿using Pharmacy.Models.Converters;
+﻿using Pharmacy.Helpers;
+using Pharmacy.Models.Converters;
 using Pharmacy.Models.Data_Transfrom_Objects.Product;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
@@ -80,30 +81,49 @@ namespace Pharmacy.Services
 			return ProductConverter.ToProductReadDto(await m_productsRepo.GetProductById(id));
 		}
 
-		public async Task<IEnumerable<ProductReadDto>> GetSpecificProducts(ProductsFilterDto filters)
+		public async Task<PagedList<ProductReadDto>> GetPagedSpecificProducts(int pageIndex, int pageSize, ProductsFilterDto filter)
 		{
-			var products = (await m_productsRepo.GetAllProducts())
-				.Where(p => p.Cost >= filters.MinPrice && p.Cost <= filters.MaxPrice)
-				.Where(p => p.Name.Contains(filters.Name))
-				.Where(p => filters.CategoriesIds.Contains(p.CategoryId));
+			var productReadDtos = await this.GetSpecificProducts(filter);
+			return PagedList<ProductReadDto>.ToPagedList(productReadDtos, pageIndex, pageSize);
+		}
 
-			foreach (var it in filters.ActiveSubstances)
+		public async Task<IEnumerable<ProductReadDto>> GetSpecificProducts(ProductsFilterDto filter)
+		{
+			List<int> categories = new List<int>();
+			var actives = new List<(int, int)>();
+			var passives = new List<(int, int)>();
+
+			if (filter.CategoryIds != null)
 			{
-				products = products.Where(
-					p => p.ActiveSubstances.Any(
-						activeSubstance =>
-							activeSubstance.ActiveSubstanceId == it.SubstanceId &&
-							activeSubstance.Dose == it.Amount));
+				foreach (var it in filter.CategoryIds)
+				{
+					categories.Add(it);
+				}
 			}
 
-			foreach (var it in filters.PassiveSubstances)
+			if (filter.ActiveSubstances != null)
 			{
-				products = products.Where(
-					product => product.PassiveSubstances.Any(
-						passiveSubstance =>
-							passiveSubstance.PassiveSubstanceId == it.SubstanceId &&
-							passiveSubstance.Dose == it.Amount));
+				foreach (var it in filter.ActiveSubstances)
+				{
+					actives.Add((it.SubstanceId, it.Amount));
+				}
 			}
+
+			if (filter.PassiveSubstances != null)
+			{
+				foreach (var it in filter.PassiveSubstances)
+				{
+					passives.Add((it.SubstanceId, it.Amount));
+				}
+			}
+
+			var products = await m_productsRepo.GetSpecificProducts(
+					filter.Name,
+					filter.MinPrice,
+					filter.MaxPrice,
+					categories,
+					actives,
+					passives);
 
 			return ProductConverter.ToProductReadDtos(products);
 		}
