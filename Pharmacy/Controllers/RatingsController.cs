@@ -14,8 +14,8 @@ using Pharmacy.Models.Database.Repositories.Interfaces;
 namespace Pharmacy.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api")]
     public class RatingsController : AuthControllerBase
     {
         private readonly IRatingsRepo _ratingsRepo;
@@ -26,6 +26,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
+        [Route("ratings")]
         public async Task<ActionResult> CreateRating([FromBody] RatingDto dto)
         {
             var uid = GetUID();
@@ -48,13 +49,13 @@ namespace Pharmacy.Controllers
             return CreatedAtRoute(nameof(GetRating), new { id = dto.ProductId }, null);
         }
 
-        [HttpGet]
+        [HttpGet("ratings")]
         public async Task<ActionResult<IEnumerable<RatingDto>>> GetAllRatings()
         {
             return Ok(RatingConverter.ToRatingDtos(await _ratingsRepo.GetAllRatings(GetUID())));
         }
 
-        [HttpGet("{id}", Name = nameof(GetRating))]
+        [HttpGet("ratings/{id}", Name = nameof(GetRating))]
         public async Task<ActionResult<RatingDto>> GetRating(int id)
         {
             var uid = GetUID();
@@ -70,14 +71,14 @@ namespace Pharmacy.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("{id}/all")]
+        [HttpGet("products/{id}/ratings")]
         public async Task<ActionResult<IEnumerable<RatingDto>>> GetAllProductRatings(int id)
         {
             return Ok(RatingConverter.ToRatingDtos(await _ratingsRepo.GetAllProductRatings(id)));
         }
 
         [AllowAnonymous]
-        [HttpGet("{id}/average")]
+        [HttpGet("products/{id}/ratings/average")]
         public async Task<ActionResult<double>> GetAverageRating(int id)
         {
             var ratingAverage = await _ratingsRepo.GetAverageRating(id);
@@ -90,7 +91,7 @@ namespace Pharmacy.Controllers
             return Ok(ratingAverage);
         }
 
-        [HttpDelete("{id}/remove")]
+        [HttpDelete("ratings/remove/{id}")]
         public async Task<ActionResult> RemoveRating(int id)
         {
             var uid = GetUID();
