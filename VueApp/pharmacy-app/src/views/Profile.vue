@@ -1,5 +1,6 @@
 <template> <!-- TODO: Dodać dane pobrane z servera do placeholderów-->
-    <b-container class="mt-5">
+    <Loading v-if="loading==true"/>
+    <b-container v-else class="mt-5">
         <b-container>
             <b-form v-model="editing">
                 <b-row class="justify-content-md-center">
@@ -120,14 +121,18 @@
 <script>
 
 import api from '@/services/PharmacyApiService'
+
 import Footer from '@/components/Footer'
+import Loading from '@/components/Loading'
 
 export default {
     components: {
         Footer,
+        Loading
     },
     data() {
         return {
+            loading: true,
             editing: false,
             currentDate: this.getFormattedDate(new Date()),
             userCredentials: {
@@ -172,11 +177,15 @@ export default {
     },
     methods: {
         getUserData() {
+            this.loading = true;
+
             api.getAccountInfo()
                 .then((result) => {
                     this.userCredentials = result;
                 }).catch((errors) => {
                     this.makeToast("Couldn't load user data from the server");
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
     },

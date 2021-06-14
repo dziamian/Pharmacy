@@ -47,7 +47,7 @@
                             {key: 'index', label: 'No.'}, 
                             {key: 'name', sortable: true}, 
                             {key: 'dose', sortable: true}]"
-                        >
+                            >
                             <template v-slot:cell(index)="data">
                                 {{data.index + 1}}
                             </template>
@@ -68,7 +68,10 @@
                 </b-col>
             </b-row>
             <b-row>
-                <!--<products-gallery :products="product" :priceLabel="BILLING.CURRENCY.ABB"/>-->
+                <b-col class="text-center">
+                    <h2 class="text-black">Substitutes:</h2>
+                </b-col>
+                <products-gallery :products="substitutes" :priceLabel="BILLING.CURRENCY.ABB"/>
             </b-row>
         </b-container>
         <Footer/>
@@ -97,12 +100,14 @@ export default {
             whichSubstances: true,
             loading: true,
             product: Object,
+            substitutes: [],
             minQuantity: minQuantity,
             quantity: 1
         }
     },
     created() {
         this.getProduct();
+        this.getSubstitutes();
     },
     methods: {
         getProduct() {
@@ -112,9 +117,23 @@ export default {
                 .then((result) => {
                     this.product = result;
                     this.product.image = api._getBaseURL() + this.product.image;
-                    this.loading = false;
                 }).catch((errors) => {
                     this.$router.push({name: 'store'});
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
+        getSubstitutes() {
+            this.loading = true;
+            
+            api.getSubstitutes(this.id)
+                .then((result) => {
+                    this.substitutes = result;
+                    this.substitutes.forEach(substitute => {
+                        substitute.image = api._getBaseURL() + substitute.image;
+                    });
+                }).catch((errors) => {
+                    this.makeToast("Couldn't download substitutes from server.");
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -165,6 +184,7 @@ export default {
     watch: {
         id() {
             this.getProduct();
+            this.getSubstitutes();
         }
     }
 }
