@@ -39,10 +39,13 @@ namespace Pharmacy
             services.AddScoped<IActiveSubstancesRepo, SqlActiveSubstancesRepo>();
             services.AddScoped<IPassiveSubstancesRepo, SqlPassiveSubstancesRepo>();
             services.AddScoped<ICategoryRepo, SqlCategoryRepo>();
+            services.AddScoped<IAddressesRepo, SqlAddressesRepo>();
+            services.AddScoped<IOrdersRepo, SqlOrdersRepo>();
 
             services.AddScoped<CartService>();
             services.AddScoped<SubstancesService>();
             services.AddScoped<ProductsService>();
+            services.AddScoped<OrdersService>();
 
             services.Configure<Contact>(Configuration.GetSection("Contact"));
 

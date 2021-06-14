@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pharmacy.Models.Data_Transfrom_Objects.Products
+namespace Pharmacy.Models.Data_Transfrom_Objects.Product
 {
     public class CartProductReadDto
     {
