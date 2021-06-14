@@ -93,11 +93,12 @@ namespace Pharmacy.Controllers
             string uid = GetUID();
             var result = await _cartService.RemoveItemFromCart(uid, id);
             
-            if (result)
+            if (!result)
             {
-                return Ok("Successfully removed item from cart.");
+                return NotFound("Product not found.");
             }
-            return NotFound("Product not found.");
+
+            return Ok("Successfully removed item from cart.");
         }
 
         [HttpDelete("remove")]

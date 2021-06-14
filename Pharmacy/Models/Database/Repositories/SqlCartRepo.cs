@@ -69,7 +69,11 @@ namespace Pharmacy.Models.Database.Repositories
 
         public void MarkForUpdate(CartItem item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            var entry = _context.Entry(item);
+            if (entry != null)
+            {
+                entry.State = EntityState.Modified;
+            }
         }
 
         public async Task SaveChanges()

@@ -41,6 +41,7 @@ namespace Pharmacy
             services.AddScoped<ICategoryRepo, SqlCategoryRepo>();
             services.AddScoped<IAddressesRepo, SqlAddressesRepo>();
             services.AddScoped<IOrdersRepo, SqlOrdersRepo>();
+            services.AddScoped<IRatingsRepo, SqlRatingsRepo>();
 
             services.AddScoped<CartService>();
             services.AddScoped<SubstancesService>();

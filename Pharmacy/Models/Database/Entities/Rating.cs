@@ -21,6 +21,7 @@ namespace Pharmacy.Models.Database.Entities
 		public Product Product { get; set; }
 
 		[Required]
+		[Range(1,5)]
 		public int Score { get; set; }
 	}
 }
