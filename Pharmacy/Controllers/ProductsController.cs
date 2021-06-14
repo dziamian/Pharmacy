@@ -91,7 +91,7 @@ namespace Pharmacy.Controllers
             [FromBody] ProductsFilterDto filter)
 		{
             var list = await m_productsService.GetPagedSpecificProducts(pageIndex, pageSize, filter);
-
+            
             if (list == null)
 			{
                 return BadRequest();
@@ -112,6 +112,7 @@ namespace Pharmacy.Controllers
             return Ok(list);
 		}
 
+        [HttpGet("filter/all")]
         public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetSpecificProducts(
             ProductsFilterDto filter)
 		{
