@@ -44,6 +44,16 @@ namespace Pharmacy.Models.Converters
 			};
 		}
 
+		public static CartProductReadDto ToCartProductReadDto(Product product)
+        {
+			return new CartProductReadDto {
+				Id = product.Id,
+				Name = product.Name,
+				Cost = product.Cost,
+				Image = product.Image
+			};
+        }
+
 		public static IEnumerable<ProductReadDto> ToProductReadDtos(IEnumerable<Product> products)
 		{
 			ICollection<ProductReadDto> collection = new List<ProductReadDto>();
@@ -56,6 +66,23 @@ namespace Pharmacy.Models.Converters
 			foreach (var it in products)
 			{
 				collection.Add(ToProductReadDto(it));
+			}
+
+			return collection;
+		}
+
+		public static IEnumerable<CartProductReadDto> ToCartProductReadDtos(IEnumerable<Product> products)
+		{
+			ICollection<CartProductReadDto> collection = new List<CartProductReadDto>();
+
+			if (products == null)
+			{
+				return collection;
+			}
+
+			foreach (var it in products)
+			{
+				collection.Add(ToCartProductReadDto(it));
 			}
 
 			return collection;

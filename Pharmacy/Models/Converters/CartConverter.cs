@@ -12,7 +12,7 @@ namespace Pharmacy.Models.Converters
         public static CartItemReadDto ToCartItemDto(CartItem cartItem)
         {
             return new CartItemReadDto { 
-                Product = ProductConverter.ToProductReadDto(cartItem.Product), 
+                Product = ProductConverter.ToCartProductReadDto(cartItem.Product), 
                 Amount = cartItem.Amount, 
                 IsAvailable = cartItem.Product != null && cartItem.Product.Supply >= cartItem.Amount 
             };

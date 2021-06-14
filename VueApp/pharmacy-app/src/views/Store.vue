@@ -228,6 +228,7 @@ export default {
                     this.params.products = [];
                 }).finally(() => {
                     this.initPagination();
+                    this.filterProducts(this.filter.settings);
                     this.loading = false;
                 });
         },
