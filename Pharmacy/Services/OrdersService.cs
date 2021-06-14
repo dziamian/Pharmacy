@@ -22,6 +22,7 @@ namespace Pharmacy.Services
 			m_addressesRepo = addressesRepo;
 			m_cartRepo = cartRepo;
 			m_ordersRepo = ordersRepo;
+			m_productsRepo = productsRepo;
 			m_cartService = cartService;
 		}
 
