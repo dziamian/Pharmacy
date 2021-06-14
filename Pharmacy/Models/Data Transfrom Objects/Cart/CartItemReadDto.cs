@@ -1,4 +1,4 @@
-﻿using Pharmacy.Models.Data_Transfrom_Objects.Products;
+﻿using Pharmacy.Models.Data_Transfrom_Objects.Product;
 using Pharmacy.Models.Database.Entities;
 
 namespace Pharmacy.Models.Data_Transfrom_Objects.Cart

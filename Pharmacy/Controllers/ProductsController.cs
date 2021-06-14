@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models.Converters;
-using Pharmacy.Models.Data_Transfrom_Objects.Products;
+using Pharmacy.Models.Data_Transfrom_Objects.Product;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using Pharmacy.Services;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pharmacy.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,6 +32,7 @@ namespace Pharmacy.Models.Database.Entities
 
 		// PayPal transaction identifier
 		[Required]
+		[ExternalApiItem(ApiName = "paypal")]
 		public string TransactionId { get; set; }
 
 		[Column(TypeName = "Date")]

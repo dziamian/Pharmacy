@@ -1,5 +1,5 @@
-﻿using Pharmacy.Models.Data_Transfrom_Objects.Products;
-using Pharmacy.Models.Data_Transfrom_Objects.Substances;
+﻿using Pharmacy.Models.Data_Transfrom_Objects.Product;
+using Pharmacy.Models.Data_Transfrom_Objects.Substance;
 using Pharmacy.Models.Database.Entities;
 using System;
 using System.Collections.Generic;

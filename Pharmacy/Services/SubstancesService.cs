@@ -1,5 +1,5 @@
 ﻿using Pharmacy.Models.Converters;
-using Pharmacy.Models.Data_Transfrom_Objects.Substances;
+using Pharmacy.Models.Data_Transfrom_Objects.Substance;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using System;

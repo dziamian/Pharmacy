@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pharmacy.Models.Data_Transfrom_Objects.Substances;
+using Pharmacy.Models.Data_Transfrom_Objects.Substance;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using Pharmacy.Services;
 using System.Collections.Generic;

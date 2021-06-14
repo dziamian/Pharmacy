@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Pharmacy.Models.Data_Transfrom_Objects.Substances
+namespace Pharmacy.Models.Data_Transfrom_Objects.Substance
 {
 	public class SubstanceCreateDto
 	{
