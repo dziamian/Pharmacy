@@ -64,13 +64,13 @@ namespace Pharmacy.Controllers
             } 
             catch (Exception)
             {
-				return BadRequest();
+				return BadRequest("Invalid order state.");
             }
 
             var order = await m_ordersService.CreateOrder(dto, uid);
             if (order == null)
 			{
-                return BadRequest();
+                return BadRequest("Invalid order state.");
 			}
 
             return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, null);
