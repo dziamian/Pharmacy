@@ -15,7 +15,7 @@
               <b-button 
                 class="btn-shop px-5 py-3" 
                 variant="primary" v-scroll-to="{el: '#newProducts', offset: appHeight}">
-                Check new products
+                Check newest products
               </b-button>
             </div>
           </b-col>
@@ -27,12 +27,12 @@
         <b-row>
           <b-col class="title-section text-center col-12">
             <h2 class="text-uppercase">
-              New products
+              Newest products
             </h2>
           </b-col>
         </b-row>
         <b-row>
-          <products-gallery v-if="newProducts.length > 0" :products="newProducts" :priceLabel="BILLING.CURRENCY.ABB"/>
+          <products-gallery v-if="newestProducts.length > 0" :products="newestProducts" :priceLabel="BILLING.CURRENCY.ABB"/>
         </b-row>
       </b-container>
     </div>
@@ -57,7 +57,8 @@ export default {
 	  return {
       loading: true,
       authRedirected: this.$route.params.authRedirect,
-      newProducts: []
+      newestProducts: [],
+      amountOfNewestProducts: 5
     }
   },
   created() {
@@ -72,14 +73,14 @@ export default {
     getNewProducts() {
       this.loading = true;
       
-      api.getNewProducts()
+      api.getNewestProducts(this.amountOfNewestProducts)
         .then((result) => {
-          this.newProducts = result;
-          this.newProducts.forEach(product => {
+          this.newestProducts = result;
+          this.newestProducts.forEach(product => {
             product.image = api._getBaseURL() + product.image;
           });
         }).catch((errors) => {
-          this.newProducts = [];
+          this.newestProducts = [];
           this.makeToast('Connection failed', 'No server response. Please refresh the page.', 'danger');
         }).finally(() => {
           this.loading = false;

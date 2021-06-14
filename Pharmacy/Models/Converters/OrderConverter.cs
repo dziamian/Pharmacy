@@ -18,8 +18,8 @@ namespace Pharmacy.Models.Converters
 				Id = order.Id,
 				ShippingAddress = AddressConverter.ToAddressReadDto(order.ShippingAddress),
 				BillingAddress = AddressConverter.ToAddressReadDto(order.BillingAddress),
-				CreationDate = order.CreationDate,
-				CompletionDate = order.CompletionDate,
+				CreationDate = order.CreationDate.ToString("yyyy-MM-dd"),
+				CompletionDate = order.CompletionDate?.ToString("yyyy-MM-dd"),
 				Items = items,
 				TotalCost = 0
 			};

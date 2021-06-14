@@ -12,11 +12,14 @@ export default {
     getAllProducts() {
         return axios.execute('get', '/api/products');
     },
-    getNewProducts() {
-        return axios.execute('get', '/api/products');
+    getNewestProducts(amount) {
+        return axios.execute('get', '/api/products/newest?count=' + amount);
     },
     getProduct(id) {
         return axios.execute('get', '/api/products/' + id);
+    },
+    getUserOrders() {
+        return axios.execute('get', '/api/orders');
     },
     getSubstitutes(id) {
         return axios.execute('get', '/api/products/' + id + '/substitutes');

@@ -20,7 +20,9 @@
                             <tr v-for="(element, index) in cart" :key="index">
                                 <td>{{index + 1}}</td>
                                 <td >
-                                    <img v-bind:src="element.product.image" class="img-fluid">
+                                    <router-link :to="'/store/product/' + element.product.id"> 
+                                        <img v-bind:src="element.product.image" class="img-fluid">
+                                    </router-link>
                                 </td>
                                 <td>
                                     <h2 :class="(element.isAvailable) ? 'h5 text-black' : 'h5 text-danger'">{{element.product.name}}</h2>

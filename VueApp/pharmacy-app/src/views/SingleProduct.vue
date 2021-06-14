@@ -39,8 +39,8 @@
                         <h2 class="text-black">This product is unavailable.</h2>
                     </b-col>
                     <b-col class="mt-4 ml-3">
-                        <b-button class="mr-3" variant="primary" @click="changeActive">Active substances</b-button>
-                        <b-button class="mr-3" variant="primary"  @click="changePassive">Passive substances</b-button>
+                        <b-button :pressed.sync="choosedActive" class="mr-3" variant="outline-primary" @click="changeActive" >Active substances</b-button>
+                        <b-button :pressed.sync="choosedPassive" class="mr-3" variant="outline-primary"  @click="changePassive" >Passive substances</b-button>
                     </b-col>
                     <b-col class="mt-4" v-if="whichSubstances == true">
                         <b-table :items="product.activeSubstances" :fields="[
@@ -67,7 +67,7 @@
                     <hr>
                 </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="substitutes.length > 0">
                 <b-col class="text-center">
                     <h2 class="text-black">Substitutes:</h2>
                 </b-col>
@@ -99,6 +99,8 @@ export default {
         return {
             whichSubstances: true,
             loading: true,
+            choosedActive: false,
+            choosedPassive: false,
             product: Object,
             substitutes: [],
             minQuantity: minQuantity,
@@ -167,9 +169,15 @@ export default {
         },
         changeActive() {
             this.whichSubstances = true;
+            if(this.choosedPassive == true){
+                this.choosedPassive = false;
+            }
         },
         changePassive() {
             this.whichSubstances = false;
+            if(this.choosedActive == true){
+                this.choosedActive = false;
+            }
         }
     },
     mounted () {

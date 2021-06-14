@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Models.Converters
 {
-    public static class ClientsConverter
+    public static class AccountsConverter
     {
         public static ClientReadDto ToClientReadDto(Client client)
         {
