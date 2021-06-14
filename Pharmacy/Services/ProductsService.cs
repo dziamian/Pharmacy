@@ -80,6 +80,34 @@ namespace Pharmacy.Services
 			return ProductConverter.ToProductReadDto(await m_productsRepo.GetProductById(id));
 		}
 
+		public async Task<IEnumerable<ProductReadDto>> GetSpecificProducts(ProductsFilterDto filters)
+		{
+			var products = (await m_productsRepo.GetAllProducts())
+				.Where(p => p.Cost >= filters.MinPrice && p.Cost <= filters.MaxPrice)
+				.Where(p => p.Name.Contains(filters.Name))
+				.Where(p => filters.CategoriesIds.Contains(p.CategoryId));
+
+			foreach (var it in filters.ActiveSubstances)
+			{
+				products = products.Where(
+					p => p.ActiveSubstances.Any(
+						activeSubstance =>
+							activeSubstance.ActiveSubstanceId == it.SubstanceId &&
+							activeSubstance.Dose == it.Amount));
+			}
+
+			foreach (var it in filters.PassiveSubstances)
+			{
+				products = products.Where(
+					product => product.PassiveSubstances.Any(
+						passiveSubstance =>
+							passiveSubstance.PassiveSubstanceId == it.SubstanceId &&
+							passiveSubstance.Dose == it.Amount));
+			}
+
+			return ProductConverter.ToProductReadDtos(products);
+		}
+
 		public async Task<IEnumerable<ProductReadDto>> GetSubstitutes(int id)
 		{
 			return ProductConverter.ToProductReadDtos(await m_productsRepo.GetSubstitutes(id));
