@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pharmacy.Helpers.Selectors;
 using Pharmacy.Models.Database.Entities;
 using Pharmacy.Models.Database.Repositories.Interfaces;
 using System;
@@ -29,7 +30,7 @@ namespace Pharmacy.Models.Database.Repositories
 
 		public async Task<Address> GetOrCreateAddress(string city, string postCode, string streetBuilding, string localNo)
 		{
-			//zjebane
+			/* zjebane
 			var address = await m_context.Addresses.FirstOrDefaultAsync(
 				address =>
 					address.City.ToLower().Equals(city.ToLower()) &&
@@ -39,19 +40,26 @@ namespace Pharmacy.Models.Database.Repositories
 					!(address.LocalNo == null && localNo != null) &&
 					((address.LocalNo == null && localNo == null) ||
 					address.LocalNo.ToLower().Equals(localNo.ToLower())));
+			//*/
 
-			if (address != null)
-			{
-				return address;
-			}
-
-			address = new Address
+			var tmp = new Address
 			{
 				City = city,
 				PostalCode = postCode,
 				StreetAndBuildingNo = streetBuilding,
 				LocalNo = localNo
 			};
+
+			var selector = new AddressRepetitionSelector();
+
+			var address = await m_context.Addresses.FirstOrDefaultAsync(a => selector.TestForRepetition(tmp, a));
+
+			if (address != null)
+			{
+				return address;
+			}
+
+			address = tmp;
 
 			await m_context.Addresses.AddAsync(address);
 			return address;

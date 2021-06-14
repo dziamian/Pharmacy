@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Helpers.Selectors
 {
-	public class ProductSubstituteSelector 
+	public class ProductSubstituteSelector
 	{
 		public float DosageInaccuracy { get; set; }
 		public float Ratio { get; protected set; }
@@ -73,6 +73,11 @@ namespace Pharmacy.Helpers.Selectors
             // Save last products in case user is interested in given pair
             return (this.SubstitutionPossible = true);
         }
+
+        public bool Invoke([AllowNull] Product p1, [AllowNull] Product p2)
+		{
+            return TestForSubstitution(p1, p2);
+		}
 
 	}
 }
