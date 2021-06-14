@@ -75,6 +75,8 @@ namespace Pharmacy.Services
 				});
 			}
 
+			await m_cartRepo.RemoveClientItems(userId);
+
 			await m_ordersRepo.SaveChanges();
 			await m_addressesRepo.SaveChanges();
 			await m_cartRepo.SaveChanges();
