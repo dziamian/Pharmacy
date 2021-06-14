@@ -1,4 +1,4 @@
-<template> <!-- TODO: Dodać dane pobrane z servera do placeholderów-->
+<template>
     <Loading v-if="loading==true"/>
     <b-container v-else class="mt-5">
         <b-container>
@@ -99,15 +99,14 @@
                                 <th>Date of order</th>
                             </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody class="text-center" v-for="(element, index) in userOrders" :key="index">
                             <tr>
-                                <td>1</td>
-                                <td>Przykład <br>
-                                    1. Apap x 2 <br>
-                                    2. Paracetamol x 5 <br>
+                                <td>{{index + 1}}</td>
+                                <td>
+                                    <p v-for="(product, index) in element.items" :key="index"><span id="productName">{{product.productName}}</span> ({{getCost(product.productCost)}} {{BILLING.CURRENCY.ABB}} x {{product.amount}})</p>
                                 </td>
-                                <td>150 zł</td>
-                                <td>10.06.2021</td>
+                                <td>{{getCost(element.totalCost)}} {{BILLING.CURRENCY.ABB}}</td>
+                                <td>{{element.creationDate}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -135,6 +134,7 @@ export default {
             loading: true,
             editing: false,
             currentDate: this.getFormattedDate(new Date()),
+            userOrders: [],
             userCredentials: {
                 name: '',
                 email: '',
@@ -174,6 +174,7 @@ export default {
     },
     created() {
         this.getUserData();
+        this.getUserOrders();
     },
     methods: {
         getUserData() {
@@ -188,6 +189,18 @@ export default {
                     this.loading = false;
                 });
         },
+        getUserOrders() {
+            this.loading = true;
+
+            api.getUserOrders()
+                .then((result) => {
+                    this.userOrders= result;
+                }).catch((errors) => {
+                    this.makeToast("Couldn't load user orders data from the server");
+                }).finally(() => {
+                    this.loading = false;
+                });
+        }
     },
     mounted() {
         this.$parent.setActive('');
@@ -201,6 +214,10 @@ export default {
 td{
     vertical-align: middle !important;
     text-align: center !important;
+}
+
+#productName {
+    font-weight: bold;
 }
 
 </style>

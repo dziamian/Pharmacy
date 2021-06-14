@@ -2,78 +2,175 @@
     <b-container class="mt-5">
         <b-row class="mb-5">   
             <b-col class="md-6 mb-5 mb-md-0">
-                <h2 class="h3 mb-3 text-black">Billing Details</h2>
-                <div class="p-3 p-lg-5 border">
-                    <div class="form-group row">
-                        <b-col class="md-6">
-                            <label for="firstName" class="text-black">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="firstName" name="firstName">
-                        </b-col>
-                    </div>
-            
-                    <div class="form-group row">
-                        <b-col class="md-12">
-                            <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Street address">
-                        </b-col>
-                    </div>
-            
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Apartment, suite, unit etc.">
-                    </div>
+                <b-form>
+                    <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                    <div class="p-3 p-lg-5 border">
+                        <div class="form-group row">
+                            <b-col class="md-6">
+                                <b-form-group
+                                    label-for="name-input">
+                                    <template v-slot:label>
+                                        Name <span class="text-danger font-weight-bold h5">*</span>
+                                    </template>
+                                    <b-form-input
+                                        id="name-input"
+                                        type="text"
+                                        v-model="userData.name"
+                                        placeholder="Enter your name"
+                                        :state="nameState"
+                                        required/>
+                                </b-form-group>
+                            </b-col>
+                        </div>
+                
+                        <div class="form-group row">
+                            <b-col class="md-12">
+                                <b-form-group
+                                    label-for="streetAddress-input">
+                                    <template v-slot:label>
+                                        Address <span class="text-danger font-weight-bold h5">*</span>
+                                    </template>
+                                    <b-form-input
+                                        id="streetAddress-input"
+                                        type="text"
+                                        v-model="userAddressInfo.streetAddress"
+                                        placeholder="Street address"
+                                        :state="streetAddressState"
+                                        required/>
+                                </b-form-group>
+                            </b-col>
+                        </div>
+                
+                        <div class="form-group row">
+                            <b-col  class="md-12">
+                                <b-form-group
+                                    label-for="apartmentAddress-input">
+                                    <b-form-input
+                                        id="apartmentAddress-input"
+                                        type="text"
+                                        v-model="userAddressInfo.apartmentAddress"
+                                        placeholder="Apartment, suite, unit etc."
+                                        :state="apartmentAddressState"/>
+                                </b-form-group>
+                            </b-col>
+                        </div>
 
-                    <div class="form-group row">
-                        <b-col class="md-6">
-                            <label for="city" class="text-black">City <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="city" name="city">
-                        </b-col>
-                        <b-col class="md-6">
-                                <label for="postcode" class="text-black">Postcode<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="postcode" name="postcode">
-                        </b-col>
-                    </div>
+                        <div class="form-group row">
+                            <b-col class="md-6">
+                                <b-form-group
+                                    label-for="city-input">
+                                    <template v-slot:label>
+                                        City <span class="text-danger font-weight-bold h5">*</span>
+                                    </template>
+                                    <b-form-input
+                                        id="city-input"
+                                        type="text"
+                                        v-model="userAddressInfo.city"
+                                        placeholder="City name"
+                                        :state="cityState"
+                                        required/>
+                                </b-form-group>
+                            </b-col>
+                            <b-col class="md-6">
+                                <b-form-group
+                                    label-for="postcode-input">
+                                    <template v-slot:label>
+                                        Postcode <span class="text-danger font-weight-bold h5">*</span>
+                                    </template>
+                                    <b-form-input
+                                        id="postcode-input"
+                                        type="text"
+                                        v-model="userAddressInfo.postcode"
+                                        placeholder="Postcode number"
+                                        :state="postcodeState"
+                                        required/>
+                                    </b-form-group>
+                            </b-col>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="shipDiffrentAddress" class="text-black" data-toggle="collapse"
+                                href="#shipDiffrentAddress" role="button" aria-expanded="false"
+                                aria-controls="shipDiffrentAddress"><input v-b-toggle.shipDiffrentAddress type="checkbox" id="shipDiffrentAddress">
+                                Ship To A Different Address?</label>
+                            <b-collapse id="shipDiffrentAddress">
+                                <div class="py-2">
+                                    <div class="form-group row">
+                                        <b-col class="md-12">
+                                            <b-form-group
+                                                label-for="alternativeStreetAddress-input">
+                                                <template v-slot:label>
+                                                    Address <span class="text-danger font-weight-bold h5">*</span>
+                                                </template>
+                                                <b-form-input
+                                                    id="alternativeStreetAddress-input"
+                                                    type="text"
+                                                    v-model="userAddressInfo.alternativeStreetAddress"
+                                                    placeholder="Street address"/>
+                                            </b-form-group>
+                                        </b-col>
+                                    </div>
                     
-                    <div class="form-group">
-                        <label for="shipDiffrentAddress" class="text-black" data-toggle="collapse"
-                            href="#shipDiffrentAddress" role="button" aria-expanded="false"
-                            aria-controls="shipDiffrentAddress"><input v-b-toggle.shipDiffrentAddress type="checkbox" id="shipDiffrentAddress">
-                            Ship To A Different Address?</label>
-                        <b-collapse id="shipDiffrentAddress">
-                            <div class="py-2">
-                                <div class="form-group row">
-                                    <b-col class="md-12">
-                                        <label for="diffrentAddress" class="text-black">Address <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentAddress" name="diffrentAddress"
-                                        placeholder="Street address">
-                                    </b-col>
+                                    <div class="form-group row">
+                                        <b-col  class="md-12">
+                                            <b-form-group
+                                                label-for="alternativeApartmentAddress-input">
+                                                <b-form-input
+                                                    id="alternativeApartmentAddress-input"
+                                                    type="text"
+                                                    v-model="userAddressInfo.alternativeApartmentAddress"
+                                                    placeholder="Apartment, suite, unit etc."/>
+                                            </b-form-group>
+                                        </b-col>
+                                    </div>
+                    
+                                    <div class="form-group row">
+                                        <b-col class="md-6">
+                                            <b-form-group
+                                                label-for="alternativeCity-input">
+                                                <template v-slot:label>
+                                                    City <span class="text-danger font-weight-bold h5">*</span>
+                                                </template>
+                                                <b-form-input
+                                                    id="alternativeCity-input"
+                                                    type="text"
+                                                    v-model="userAddressInfo.alternativeCity"
+                                                    placeholder="City name"/>
+                                            </b-form-group>
+                                        </b-col>
+                                        <b-col class="md-6">
+                                            <b-form-group
+                                                label-for="alternativePostcode-input">
+                                                <template v-slot:label>
+                                                    Postcode <span class="text-danger font-weight-bold h5">*</span>
+                                                </template>
+                                                <b-form-input
+                                                    id="alternativePostcode-input"
+                                                    type="text"
+                                                    v-model="userAddressInfo.alternativePostcode"
+                                                    placeholder="Postcode number"/>
+                                                </b-form-group>
+                                        </b-col>
+                                    </div>
                                 </div>
-                
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Apartment, suite, unit etc.">
-                                </div>
-                
-                                <div class="form-group row">
-                                    <b-col class="md-6">
-                                        <label for="diffrentCity" class="text-black">City<span
-                                            class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentCity" name="diffrentCity">
-                                    </b-col>
-                                    <b-col class="md-6">
-                                        <label for="diffrentPostalCode" class="text-black">Postcode<span
-                                            class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="diffrentPostalCode" name="diffrentPostalCode">
-                                    </b-col>
-                                </div>
-                            </div>
-                        </b-collapse>
-                    </div>
+                            </b-collapse>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="orderNotes" class="text-black">Order Notes</label>
-                        <textarea name="orderNotes" id="orderNotes" cols="30" rows="5" class="form-control"
-                            placeholder="Write your notes here..."></textarea>
+                        <div class="form-group">
+                            <b-form-group
+                                label-for="orderNotes-input">
+                                <template v-slot:label>
+                                    Order notes <span class="text-danger font-weight-bold h5">*</span>
+                                </template>
+                                <b-form-input
+                                    id="orderNotes-input"
+                                    type="text"
+                                    v-model="userAddressInfo.orderNotes"
+                                    placeholder="Write your notes here..."/>
+                            </b-form-group>
+                        </div>
                     </div>
-                </div>
+                </b-form>
             </b-col>
             <b-col class="md-6">
                 <b-row class="mb-5">
@@ -121,12 +218,28 @@ export default {
         return {
             paypal: null,
             cart: [],
+            userOrders: [],
             selectedPaymentOption: "paypal",
-            loading: true
+            loading: true,
+            userData: {
+                name: '',
+            },
+            userAddressInfo: {
+                streetAddress: '',
+                apartmentAddress: '',
+                city: '',
+                postcode: '',
+                orderNotes: '',
+                alternativeAddress: '',
+                alternativeCity: '',
+                alternativeapartmentAddress: '',
+                alternativePostCode: ''
+            },
         }
     },
     created() {
         this.getItemsFromCart();
+        this.getUserData();
     },
     methods: {
         getItemsFromCart() {
@@ -174,7 +287,59 @@ export default {
                     
                 }
             }).render('#paypal-button');
-        }
+        },
+        getUserData() {
+            this.loading = true;
+
+            api.getAccountInfo()
+                .then((result) => {
+                    this.userData = result;
+                }).catch((errors) => {
+                    this.makeToast("Couldn't load user data from the server");
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
+    },
+    computed: {
+        formState() {
+            return (this.nameState == null || this.nameState) && 
+                (this.streetAddressState == null || this.streetAddressState) && 
+                (this.apartmentAddressState == null || this.apartmentAddressState) &&
+                (this.cityState == null || this.cityState) &&
+                (this.postcodeState == null || this.postcodeState);
+        },
+        nameState() {
+            if (this.userData.name.length == 0) {
+                return null;
+            }
+            return this.userData.name.length > 4;
+        },
+        streetAddressState() {
+            if (this.userAddressInfo.streetAddress.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.streetAddress.length > 1;
+        },
+        apartmentAddressState() {
+            if (this.userAddressInfo.apartmentAddress.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.apartmentAddress.length > 1;
+        },
+        cityState() {
+            if (this.userAddressInfo.city.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.city.length > 1;
+        },
+        postcodeState() {
+            if (this.userAddressInfo.postcode.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.postcode.length > 1;
+        },
+
     },
     mounted() {
         this.$parent.setActive('store');
