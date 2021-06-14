@@ -30,7 +30,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAccount([FromBody] ClientCreateDto client)
+        public async Task<ActionResult> CreateAccount([FromBody] ClientCreateDto dto)
         {
             var uid = GetUID();
 
@@ -40,7 +40,7 @@ namespace Pharmacy.Controllers
                 return Conflict();
             }
 
-            await _clientsRepo.CreateClient(ClientsConverter.FromClientCreateDto(client, uid));
+            await _clientsRepo.CreateClient(AccountsConverter.FromClientCreateDto(dto, uid));
             await _clientsRepo.SaveChanges();
             
             return Ok();
@@ -54,7 +54,29 @@ namespace Pharmacy.Controllers
             {
                 return NotFound();
             }
-            return Ok(ClientsConverter.ToClientReadDto(client));
+            return Ok(AccountsConverter.ToClientReadDto(client));
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> UpdateAccount([FromBody] ClientUpdateDto dto)
+        {
+            var uid = GetUID();
+
+            var createdClient = await _clientsRepo.GetClient(uid);
+            if (createdClient == null)
+            {
+                return NotFound();
+            }
+
+            createdClient.Name = dto.Name;
+            createdClient.Phone = dto.Phone ?? createdClient.Phone;
+            createdClient.DateOfBirth = dto.DateOfBirth ?? createdClient.DateOfBirth;
+            createdClient.Gender = dto.Gender ?? createdClient.Gender;
+
+            _clientsRepo.MarkForUpdate(createdClient);
+            await _clientsRepo.SaveChanges();
+
+            return Ok();
         }
     }
 }

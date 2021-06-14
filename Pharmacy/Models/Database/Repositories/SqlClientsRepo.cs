@@ -26,6 +26,16 @@ namespace Pharmacy.Models.Database.Repositories
             return await _context.Clients.FirstOrDefaultAsync(x => x.ClientId == uid);
         }
 
+        public void MarkForUpdate(Client client)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            _context.Entry(client).State = EntityState.Modified;
+        }
+
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();

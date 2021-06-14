@@ -14,9 +14,9 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Order
 
 		public AddressReadDto ShippingAddress { get; set; }
 
-		public DateTime? CompletionDate { get; set; }
+		public string CompletionDate { get; set; }
 
-		public DateTime CreationDate { get; set; }
+		public string CreationDate { get; set; }
 
 		public IEnumerable<OrderItemReadDto> Items { get; set; }
 
