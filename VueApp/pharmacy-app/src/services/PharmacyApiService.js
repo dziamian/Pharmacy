@@ -9,6 +9,9 @@ export default {
     getAccountInfo() {
         return axios.execute('get', '/api/accounts');
     },
+    updateUserInfo(accountInfo) {
+        return axios.execute('patch', '/api/accounts', accountInfo);
+    },
     getAllProducts() {
         return axios.execute('get', '/api/products');
     },
@@ -44,6 +47,27 @@ export default {
     },
     validateCart() {
         return axios.execute('get', '/api/cart/validate');
+    },
+    createRating() {
+        return axios.execute('post', '/api/ratings');
+    },
+    getAllRatingsForProduct(id) {
+        return axios.execute('get', '/api/products/'+ id + '/ratings/all');
+    },
+    getAverageRatingsForProduct(id) {
+        return axios.execute('get', '/api/products/'+ id + '/ratings/average');
+    },
+    getRating(id) {
+        return axios.execute('get', '/api/ratings/'+ id);
+    },
+    getAllRating() {
+        return axios.execute('get', '/api/ratings');
+    },
+    removeRating(id) {
+        return axios.execute('delete', '/api/ratings/remove/' + id);
+    },
+    makeOrder(details) {
+        return axios.execute('post', '/api/orders', details);
     },
     getContactInfo() {
         return axios.execute('get', '/api/contact');

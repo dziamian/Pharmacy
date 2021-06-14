@@ -2,22 +2,24 @@
     <b-container class="mt-5">
         <b-row class="mb-5">   
             <b-col class="md-6 mb-5 mb-md-0">
-                <b-form>
-                    <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                <b-form @submit.stop.prevent="changeValidationState">
+                    <h2 class="h3 mb-3 text-black">Shipping Details</h2>
                     <div class="p-3 p-lg-5 border">
                         <div class="form-group row">
                             <b-col class="md-6">
                                 <b-form-group
-                                    label-for="name-input">
+                                    label-for="name-input"
+                                    invalid-feedback="Enter at least 5 characters.">
                                     <template v-slot:label>
                                         Name <span class="text-danger font-weight-bold h5">*</span>
                                     </template>
                                     <b-form-input
                                         id="name-input"
                                         type="text"
-                                        v-model="userData.name"
+                                        v-model="userName"
                                         placeholder="Enter your name"
                                         :state="nameState"
+                                        :disabled="validated"
                                         required/>
                                 </b-form-group>
                             </b-col>
@@ -26,7 +28,8 @@
                         <div class="form-group row">
                             <b-col class="md-12">
                                 <b-form-group
-                                    label-for="streetAddress-input">
+                                    label-for="streetAddress-input"
+                                    invalid-feedback="Enter at least 2 characters.">
                                     <template v-slot:label>
                                         Address <span class="text-danger font-weight-bold h5">*</span>
                                     </template>
@@ -36,6 +39,7 @@
                                         v-model="userAddressInfo.streetAddress"
                                         placeholder="Street address"
                                         :state="streetAddressState"
+                                        :disabled="validated"
                                         required/>
                                 </b-form-group>
                             </b-col>
@@ -49,8 +53,8 @@
                                         id="apartmentAddress-input"
                                         type="text"
                                         v-model="userAddressInfo.apartmentAddress"
-                                        placeholder="Apartment, suite, unit etc."
-                                        :state="apartmentAddressState"/>
+                                        placeholder="Apartment, suite, unit etc. (optional)"
+                                        :disabled="validated"/>
                                 </b-form-group>
                             </b-col>
                         </div>
@@ -58,7 +62,8 @@
                         <div class="form-group row">
                             <b-col class="md-6">
                                 <b-form-group
-                                    label-for="city-input">
+                                    label-for="city-input"
+                                    invalid-feedback="Enter at least 2 characters.">
                                     <template v-slot:label>
                                         City <span class="text-danger font-weight-bold h5">*</span>
                                     </template>
@@ -68,12 +73,14 @@
                                         v-model="userAddressInfo.city"
                                         placeholder="City name"
                                         :state="cityState"
+                                        :disabled="validated"
                                         required/>
                                 </b-form-group>
                             </b-col>
                             <b-col class="md-6">
                                 <b-form-group
-                                    label-for="postcode-input">
+                                    label-for="postcode-input"
+                                    invalid-feedback="Enter exactly 6 characters.">
                                     <template v-slot:label>
                                         Postcode <span class="text-danger font-weight-bold h5">*</span>
                                     </template>
@@ -83,17 +90,20 @@
                                         v-model="userAddressInfo.postcode"
                                         placeholder="Postcode number"
                                         :state="postcodeState"
+                                        :disabled="validated"
                                         required/>
                                     </b-form-group>
                             </b-col>
                         </div>
                         
                         <div class="form-group">
-                            <label for="shipDiffrentAddress" class="text-black" data-toggle="collapse"
-                                href="#shipDiffrentAddress" role="button" aria-expanded="false"
-                                aria-controls="shipDiffrentAddress"><input v-b-toggle.shipDiffrentAddress type="checkbox" id="shipDiffrentAddress">
-                                Ship To A Different Address?</label>
-                            <b-collapse id="shipDiffrentAddress">
+                            <label for="billingDiffrentAddress" class="text-black" data-toggle="collapse"
+                                href="#billingDiffrentAddress" role="button" aria-expanded="false"
+                                aria-controls="billingDiffrentAddress">
+                                <input v-b-toggle.billingDiffrentAddress @click="changeState" type="checkbox" id="billingDiffrentAddress"/>
+                                Different Billing Details
+                            </label>
+                            <b-collapse id="billingDiffrentAddress">
                                 <div class="py-2">
                                     <div class="form-group row">
                                         <b-col class="md-12">
@@ -106,7 +116,9 @@
                                                     id="alternativeStreetAddress-input"
                                                     type="text"
                                                     v-model="userAddressInfo.alternativeStreetAddress"
-                                                    placeholder="Street address"/>
+                                                    placeholder="Street address"
+                                                    :disabled="validated"
+                                                    :state="alternativeStreetAddressState"/>
                                             </b-form-group>
                                         </b-col>
                                     </div>
@@ -119,7 +131,8 @@
                                                     id="alternativeApartmentAddress-input"
                                                     type="text"
                                                     v-model="userAddressInfo.alternativeApartmentAddress"
-                                                    placeholder="Apartment, suite, unit etc."/>
+                                                    placeholder="Apartment, suite, unit etc. (optional)"
+                                                    :disabled="validated"/>
                                             </b-form-group>
                                         </b-col>
                                     </div>
@@ -135,7 +148,9 @@
                                                     id="alternativeCity-input"
                                                     type="text"
                                                     v-model="userAddressInfo.alternativeCity"
-                                                    placeholder="City name"/>
+                                                    placeholder="City name"
+                                                    :disabled="validated"
+                                                    :state="alternativeCityState"/>
                                             </b-form-group>
                                         </b-col>
                                         <b-col class="md-6">
@@ -148,7 +163,9 @@
                                                     id="alternativePostcode-input"
                                                     type="text"
                                                     v-model="userAddressInfo.alternativePostcode"
-                                                    placeholder="Postcode number"/>
+                                                    placeholder="Postcode number"
+                                                    :disabled="validated"
+                                                    :state="alternativePostcodeState"/>
                                                 </b-form-group>
                                         </b-col>
                                     </div>
@@ -158,17 +175,20 @@
 
                         <div class="form-group">
                             <b-form-group
+                                label="Order notes"
                                 label-for="orderNotes-input">
-                                <template v-slot:label>
-                                    Order notes <span class="text-danger font-weight-bold h5">*</span>
-                                </template>
-                                <b-form-input
+                                <b-form-textarea
                                     id="orderNotes-input"
                                     type="text"
                                     v-model="userAddressInfo.orderNotes"
-                                    placeholder="Write your notes here..."/>
+                                    placeholder="Write your notes here..."
+                                    rows="5"
+                                    no-resize/>
                             </b-form-group>
                         </div>
+                        <b-button type="submit">
+                            Confirm Form
+                        </b-button>
                     </div>
                 </b-form>
             </b-col>
@@ -193,7 +213,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div id="paypal-button"></div>
+                            <div id="paypal-button" :hidden="!validated"></div>
                         </div>
                     </b-col>
                 </b-row>
@@ -221,25 +241,80 @@ export default {
             userOrders: [],
             selectedPaymentOption: "paypal",
             loading: true,
-            userData: {
-                name: '',
-            },
+            validated: false,
+            userName: '',
+            status: false,
             userAddressInfo: {
                 streetAddress: '',
                 apartmentAddress: '',
                 city: '',
                 postcode: '',
                 orderNotes: '',
-                alternativeAddress: '',
+                alternativeStreetAddress: '',
                 alternativeCity: '',
-                alternativeapartmentAddress: '',
-                alternativePostCode: ''
+                alternativeApartmentAddress: '',
+                alternativePostcode: ''
             },
         }
     },
     created() {
         this.getItemsFromCart();
-        this.getUserData();
+        this.getUserName();
+    },
+    computed: {
+        formState() {
+            return ((this.nameState == null || this.nameState) && 
+                (this.streetAddressState == null || this.streetAddressState) &&
+                (this.cityState == null || this.cityState) &&
+                (this.postcodeState == null || this.postcodeState)) 
+                &&
+                ((this.status && 
+                this.alternativeStreetAddressState && this.alternativeCityState && this.alternativePostcodeState) || 
+                (!this.status && 
+                this.alternativeStreetAddressState == null && this.alternativeCityState == null && this.alternativePostcodeState == null));
+        },
+        nameState() {
+            if (this.userName.length == 0) {
+                return null;
+            }
+            return this.userName.length > 4;
+        },
+        streetAddressState() {
+            if (this.userAddressInfo.streetAddress.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.streetAddress.length > 1;
+        },
+        cityState() {
+            if (this.userAddressInfo.city.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.city.length > 1;
+        },
+        postcodeState() {
+            if (this.userAddressInfo.postcode.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.postcode.length == 6;
+        },
+        alternativeStreetAddressState() {
+            if (this.userAddressInfo.alternativeStreetAddress.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.alternativeStreetAddress.length > 1;
+        },
+        alternativeCityState() {
+            if (this.userAddressInfo.alternativeCity.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.alternativeCity.length > 1;
+        },
+        alternativePostcodeState() {
+            if (this.userAddressInfo.alternativePostcode.length == 0) {
+                return null;
+            }
+            return this.userAddressInfo.alternativePostcode.length == 6;
+        }
     },
     methods: {
         getItemsFromCart() {
@@ -265,15 +340,21 @@ export default {
         },
         setLoaded() {
             this.loading = false;
+            
             this.paypal = window.paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'blue',
+                    layout: 'vertical',
+                    label: 'pay'
+                },
                 fundingSource: window.paypal.FUNDING.PAYPAL,
                 createOrder: (data, actions) => {
                     return actions.order.create({
                         purchase_units: [
                             {
-                                description: "XDDesc",
                                 amount: {
-                                    value: "50.55"
+                                    value: this.getCost(this.getTotalCost(), '.')
                                 }
                             }
                         ]
@@ -281,65 +362,68 @@ export default {
                 },
                 onApprove: async (data, actions, response) => {
                     const order = await actions.order.capture();
-                    console.log(order);
+                    const orderObject = {
+                        shippingAddress: {
+                            streetAndBuildingNo: this.userAddressInfo.streetAddress,
+                            city: this.userAddressInfo.city,
+                            postalCode: this.userAddressInfo.postcode,
+                            localNo: (this.userAddressInfo.apartmentAddress == '') ? null : this.userAddressInfo.apartmentAddress
+                        },
+                        billingAddress: this.status ? {
+                            streetAndBuildingNo: this.userAddressInfo.alternativeStreetAddress,
+                            city: this.userAddressInfo.alternativeCity,
+                            postalCode: this.userAddressInfo.alternativePostcode,
+                            localNo: (this.userAddressInfo.alternativeApartmentAddress == '') ? null : this.userAddressInfo.alternativeApartmentAddress
+                        } : null,
+                        recipientName: this.userName,
+                        transactionId: order.id,
+                        notes: (this.userAddressInfo.orderNotes == '') ? null : this.userAddressInfo.orderNotes
+                    };
+                    console.log(orderObject);
+                    api.makeOrder(orderObject)
+                        .then(() => {
+                            this.$emit('cart-size-change');
+                            this.$router.push({name: 'successfulOrder'});
+                        })
+                        .catch(() => {
+                            this.makeToast("Order Error", "Payment was not made due to an error with order data.", "danger");
+                        });
                 },
                 onError: (error) => {
-                    
+                    this.makeToast("Payment Error", "Payment was not made due to an error with payment method.", "danger");
                 }
             }).render('#paypal-button');
         },
-        getUserData() {
+        getUserName() {
             this.loading = true;
 
             api.getAccountInfo()
                 .then((result) => {
-                    this.userData = result;
+                    this.userName = result.name;
                 }).catch((errors) => {
                     this.makeToast("Couldn't load user data from the server");
                 }).finally(() => {
                     this.loading = false;
                 });
         },
-    },
-    computed: {
-        formState() {
-            return (this.nameState == null || this.nameState) && 
-                (this.streetAddressState == null || this.streetAddressState) && 
-                (this.apartmentAddressState == null || this.apartmentAddressState) &&
-                (this.cityState == null || this.cityState) &&
-                (this.postcodeState == null || this.postcodeState);
+        getAllCost() {
+            var sum = 0;
+            this.cart.forEach((element) => {
+                sum += element.product.cost * element.amount;
+            });
+            return sum;
         },
-        nameState() {
-            if (this.userData.name.length == 0) {
-                return null;
+        changeValidationState() {
+            if(this.validated == false && this.formState) {
+                this.validated = true;
             }
-            return this.userData.name.length > 4;
-        },
-        streetAddressState() {
-            if (this.userAddressInfo.streetAddress.length == 0) {
-                return null;
+            else {
+                this.validated = false;
             }
-            return this.userAddressInfo.streetAddress.length > 1;
         },
-        apartmentAddressState() {
-            if (this.userAddressInfo.apartmentAddress.length == 0) {
-                return null;
-            }
-            return this.userAddressInfo.apartmentAddress.length > 1;
-        },
-        cityState() {
-            if (this.userAddressInfo.city.length == 0) {
-                return null;
-            }
-            return this.userAddressInfo.city.length > 1;
-        },
-        postcodeState() {
-            if (this.userAddressInfo.postcode.length == 0) {
-                return null;
-            }
-            return this.userAddressInfo.postcode.length > 1;
-        },
-
+        changeState() {
+            this.status = !this.status;
+        }
     },
     mounted() {
         this.$parent.setActive('store');

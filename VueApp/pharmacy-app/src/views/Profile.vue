@@ -2,7 +2,7 @@
     <Loading v-if="loading==true"/>
     <b-container v-else class="mt-5">
         <b-container>
-            <b-form v-model="editing">
+            <b-form @submit.stop.prevent="updateUserInfo">
                 <b-row class="justify-content-md-center">
                     <b-col class="col-lg-6">
                         <b-form-group
@@ -15,7 +15,8 @@
                                 type="text"
                                 v-model="userCredentials.name"
                                 :placeholder="userCredentials.name"
-                                :state="(editing) ? nameState : null"/>
+                                :state="(editing) ? nameState : null"
+                                required/>
                         </b-form-group>
                     </b-col>
                 </b-row>  
@@ -31,7 +32,8 @@
                                 type="email"
                                 v-model="userCredentials.email"
                                 :placeholder="userCredentials.email"
-                                :state="(editing) ? emailState : null"/>
+                                :state="(editing) ? emailState : null"
+                                required/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
@@ -62,7 +64,8 @@
                                 :max="currentDate"
                                 v-model="userCredentials.dateOfBirth"
                                 :placeholder="userCredentials.dateOfBirth"
-                                :state="(editing) ? dateOfBirthState : null"/>
+                                :state="(editing) ? dateOfBirthState : null"
+                                required/>
                         </b-form-group>
                     </b-col>
                     <b-col class="col-lg-3">
@@ -73,19 +76,19 @@
                         </b-form-group>
                     </b-col>
                 </b-row> 
+                <b-row class="mt-5" v-if="editing==false">
+                    <b-col class="text-right">
+                        <b-button class="mr-3" variant="primary" @click="changePressed">Edit user data</b-button>
+                        <b-button class="mr-5"  v-b-toggle.ordersTable variant="primary">Show orders</b-button>   
+                    </b-col>
+                </b-row>
+                <b-row class="mt-5" v-else>
+                    <b-col class="text-right">
+                        <b-button class="mr-3" variant="primary" @click="changePressed">Cancel changes</b-button>
+                        <b-button type="submit" class="mr-3" variant="primary">Save changes</b-button>  
+                    </b-col>
+                </b-row>
             </b-form>
-            <b-row class="mt-5" v-if="editing==false">
-                <b-col class="text-right">
-                    <b-button class="mr-3" variant="primary" :pressed.sync="editing">Edit user data</b-button>
-                    <b-button class="mr-5"  v-b-toggle.ordersTable variant="primary">Show orders</b-button>   
-                </b-col>
-            </b-row>
-            <b-row class="mt-5" v-else>
-                <b-col class="text-right">
-                    <b-button class="mr-3" variant="primary" :pressed.sync="editing">Cancel changes</b-button>
-                    <b-button class="mr-3" variant="primary" :pressed.sync="editing">Save changes</b-button>  
-                </b-col>
-            </b-row>
         </b-container>
         <b-collapse class="mt-5 mb-5" id="ordersTable">
             <b-container>
@@ -170,7 +173,7 @@ export default {
                 return null;
             }
             return Date.parse(this.userCredentials.dateOfBirth) <= new Date();
-        },
+        }
     },
     created() {
         this.getUserData();
@@ -200,6 +203,23 @@ export default {
                 }).finally(() => {
                     this.loading = false;
                 });
+        },
+        updateUserInfo() {
+            api.updateUserInfo(this.userCredentials)
+                .then((result) => {
+                    this.makeToast("Successfully updated user data.");
+                }).catch((errors) => {
+                    this.makeToast("Couldn't edit user data on the server.");
+                });
+            this.changePressed();
+        },
+        changePressed() {
+            if(this.editing == false){
+                this.editing = true;
+            }
+            else {
+                this.editing = false;
+            }
         }
     },
     mounted() {

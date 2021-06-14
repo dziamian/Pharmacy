@@ -17,13 +17,16 @@
                         <tbody class="text-center">
                             <tr>
                                 <td>1</td>
-                                <td><select class="mdb-select md-form">
+                                <td>
+                                    <select class="mdb-select md-form">
                                         <option disabled selected>Choose your drug</option>
                                         <option v-for="(product, index) in products" :key="index" to="/">
-                                        {{product.name}}</option>
+                                            {{product.name}}
+                                        </option>
                                     </select>
                                 </td>
-                                <td><b-input-group class="ml-0">
+                                <td>
+                                    <b-input-group class="ml-0">
                                     <b-input-group-prepend>
                                     <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
                                 </b-input-group-prepend>

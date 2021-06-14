@@ -5,6 +5,21 @@
             <b-row class="justify-content-md-center">
                 <b-col class="col-sm-4 col-lg-5 text-center item mb-3">
                     <img v-bind:src="product.image" class="img-fluid borderless ">
+                    <b-row>
+                        <b-col>
+                            <div id="rete" v-if="rateRender">
+                                <AwesomeVueStarRating
+                                  :star="this.star"
+                                  :disabled="this.disabled"
+                                  :maxstars="this.maxstars"
+                                  :starsize="this.starsize"
+                                  :hasresults="this.hasresults"
+                                  :hasdescription="this.hasdescription"
+                                  :ratingdescription="this.ratingdescription"
+                                />
+                            </div>
+                        </b-col>
+                    </b-row>
                 </b-col>
                 <b-col class="col-sm-4 col-lg-6 text-center">
                     <h2 class="text-black">{{product.name}}</h2>
@@ -86,11 +101,13 @@ import api from '@/services/PharmacyApiService'
 import Footer from '@/components/Footer'
 import Loading from '@/components/Loading'
 import ProductsGallery from '@/components/ProductsGallery'
+import AwesomeVueStarRating from "awesome-vue-star-rating";
 
 export default {
     components:{
         ProductsGallery,
         Footer,
+        AwesomeVueStarRating,
         Loading
     },
     name: 'SingleProduct',
@@ -104,12 +121,43 @@ export default {
             product: Object,
             substitutes: [],
             minQuantity: minQuantity,
-            quantity: 1
+            quantity: 1,
+            star: 0,
+            rateRender: true,
+            ratingdescription: [
+            {
+                text: "Poor",
+                class: "star-poor",
+            },
+            {
+                text: "Below Average",
+                class: "star-belowAverage",
+            },
+            {
+                text: "Average",
+                class: "star-average",
+            },
+            {
+                text: "Good",
+                class: "star-good",
+            },
+            {
+                text: "Excellent",
+                class: "star-excellent",
+            },
+            ],
+            hasresults: true,
+            hasdescription: true,
+            starsize: "lg",
+            maxstars: 5,
+            disabled: false,
         }
     },
     created() {
         this.getProduct();
         this.getSubstitutes();
+        this.getRatings();
+        this.star;
     },
     methods: {
         getProduct() {
@@ -121,6 +169,18 @@ export default {
                     this.product.image = api._getBaseURL() + this.product.image;
                 }).catch((errors) => {
                     this.$router.push({name: 'store'});
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
+        getRatings(){
+            this.loading = true;
+            api.getAverageRatingsForProduct(this.id)
+                .then((result) => {
+                    this.star = result;
+                    console.log(this.star);
+                }).catch((errors) => {
+                    this.makeToast("Couldn't download ratings from server.");
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -193,6 +253,17 @@ export default {
         id() {
             this.getProduct();
             this.getSubstitutes();
+            this.getRatings();
+            this.star;
+        },
+        star: (x,y) =>{ console.log(y +"from update to"+ x);
+                this.rateRender = false;
+                this.$nextTick(() => {
+                    this.rateRender = false;
+                })
+                
+                //console.log("XDXDXDXD" +this.star);
+                //this.getRatings();
         }
     }
 }
