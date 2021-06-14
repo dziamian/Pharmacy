@@ -35,7 +35,12 @@ namespace Pharmacy.Models.Database.Repositories
 
 		public async Task<IEnumerable<Product>> GetNewestProducts(int count)
 		{
-			return await Task.Run(() => m_context.Products.OrderBy(product => product.CreationDate.Ticks).Take(count));
+			return await Task.Run(
+				() => m_context.Products
+					.OrderByDescending(product => product.CreationDate)
+					.Take(count)
+					.Include(product => product.ActiveSubstances).ThenInclude(substance => substance.ActiveSubstance)
+					.Include(product => product.PassiveSubstances).ThenInclude(substance => substance.PassiveSubstance));
 		}
 
 		public async Task<Product> GetProductById(int id)
