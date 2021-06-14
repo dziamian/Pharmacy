@@ -44,7 +44,13 @@ namespace Pharmacy.Models.Database.Repositories
 				return null;
 			}
 
-			return await m_context.Orders.Where(order => order.ClientId.Equals(userId)).ToListAsync();
+			return await m_context.Orders
+				.Where(order => order.ClientId.Equals(userId))
+				.Include(order => order.ShippingAddress)
+				.Include(order => order.BillingAddress)
+				.Include(order => order.Products)
+					.ThenInclude(orderProduct => orderProduct.Product)
+				.ToListAsync();
 		}
 
 		public void MarkForUpdate(Order order)

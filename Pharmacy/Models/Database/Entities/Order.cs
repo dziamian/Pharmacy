@@ -35,10 +35,9 @@ namespace Pharmacy.Models.Database.Entities
 		[ExternalApiItem(ApiName = "paypal")]
 		public string TransactionId { get; set; }
 
-		[Column(TypeName = "Date")]
-		public DateTime? CreationDate { get; set; }
+		[Required]
+		public DateTime CreationDate { get; set; }
 		
-		[Column(TypeName = "Date")]
 		public DateTime? CompletionDate { get; set; }
 
 		public string Notes { get; set; }

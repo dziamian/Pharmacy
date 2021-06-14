@@ -16,7 +16,9 @@ namespace Pharmacy.Models.Converters
 			OrderReadDto dto = new OrderReadDto
 			{
 				Id = order.Id,
-				CreationDate = order.CreationDate ?? DateTime.Now,
+				ShippingAddress = AddressConverter.ToAddressReadDto(order.ShippingAddress),
+				BillingAddress = AddressConverter.ToAddressReadDto(order.BillingAddress),
+				CreationDate = order.CreationDate,
 				CompletionDate = order.CompletionDate,
 				Items = items,
 				TotalCost = 0
