@@ -379,7 +379,6 @@ export default {
                         transactionId: order.id,
                         notes: (this.userAddressInfo.orderNotes == '') ? null : this.userAddressInfo.orderNotes
                     };
-                    console.log(orderObject);
                     api.makeOrder(orderObject)
                         .then(() => {
                             this.$emit('cart-size-change');
