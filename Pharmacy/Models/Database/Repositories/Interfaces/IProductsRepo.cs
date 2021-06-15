@@ -16,6 +16,8 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
         Task<Product> GetProductById(int id);
         Task<IEnumerable<Product>> GetSpecificProducts(
             string name,
+            string sortingPropertyName,
+            bool sortDescending,
             int minPrice, 
             int maxPrice, 
             IEnumerable<int> categories, 

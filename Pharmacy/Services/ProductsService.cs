@@ -119,6 +119,8 @@ namespace Pharmacy.Services
 
 			var products = await m_productsRepo.GetSpecificProducts(
 					filter.Name,
+					filter.SortingPropertyName,
+					filter.SortDescending,
 					filter.MinPrice,
 					filter.MaxPrice,
 					categories,

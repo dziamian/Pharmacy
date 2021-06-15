@@ -13,7 +13,11 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Product
 
 		public string Name { get; set; }
 
-		public int MinPrice { get; set; }
+        public string SortingPropertyName { get; set; }
+		
+		public bool SortDescending { get; set; }
+
+        public int MinPrice { get; set; }
 
 		public int MaxPrice { get; set; }
 

@@ -57,6 +57,8 @@ namespace Pharmacy.Models.Database.Repositories
 
 		public async Task<IEnumerable<Product>> GetSpecificProducts(
 			string name,
+			string sortingPropertyName,
+			bool sortDescending,
 			int minPrice,
 			int maxPrice,
 			IEnumerable<int> categories,
@@ -90,6 +92,19 @@ namespace Pharmacy.Models.Database.Repositories
 			products = products
 				.Include(product => product.ActiveSubstances).ThenInclude(substance => substance.ActiveSubstance)
 				.Include(product => product.PassiveSubstances).ThenInclude(substance => substance.PassiveSubstance);
+
+			if (sortingPropertyName != null)
+			{
+				var property = typeof(Product).GetProperty(sortingPropertyName);
+				if (property == null)
+                {
+					return products;
+                }
+
+				return (sortDescending) ?
+					products.AsEnumerable().OrderByDescending(product => property.GetValue(product)) :
+					products.AsEnumerable().OrderBy(product => property.GetValue(product));
+			}
 
 			return products;
 		}
