@@ -9,7 +9,7 @@ namespace Pharmacy.Models.Data_Transfrom_Objects.Product
 {
 	public class ProductsFilterDto
 	{
-		public IEnumerable<int> CategoryIds { get; set; }
+		public IEnumerable<string> Categories { get; set; }
 
 		public string Name { get; set; }
 

@@ -9,13 +9,16 @@
                             <b-icon icon="search"/>
                         </b-input-group-prepend>
                         <vue-bootstrap-typeahead
-                            :data="filter.products"
-                            v-model="filter.settings.query"
+                            :data="pagination.products"
+                            v-model="filter.query"
                             :serializer="p => p.name"
                             placeholder="Search for product..."
                         />
                         <b-input-group-append>
                             <b-button v-b-toggle.collapse-2>FILTERS</b-button>
+                        </b-input-group-append>
+                        <b-input-group-append>
+                            <b-button variant="success" @click="filterProducts(filter)">Apply</b-button>
                         </b-input-group-append>
                     </b-input-group>
                 </b-col>
@@ -27,7 +30,7 @@
                     <div class="col-lg-6">
                         <h3 class="label mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
                         <vue-slider 
-                            v-model="filter.settings.priceRange"
+                            v-model="filter.priceRange"
                             :min="init.minPrice" 
                             :max="init.maxPrice" 
                             :enable-cross="false" 
@@ -37,7 +40,7 @@
                         <div class="p-2">
                             <b-input-group class="price-input-group" :append="BILLING.CURRENCY.ABB" style="float: left;">
                                 <b-form-input 
-                                    v-model.number="filter.settings.priceRange[0]"
+                                    v-model.number="filter.priceRange[0]"
                                     type="number"  
                                     placeholder="Min" 
                                     :min="init.minPrice" 
@@ -47,7 +50,7 @@
                             </b-input-group>
                             <b-input-group class="price-input-group" :append="BILLING.CURRENCY.ABB" style="float: right;">
                                 <b-form-input 
-                                    v-model.number="filter.settings.priceRange[1]"
+                                    v-model.number="filter.priceRange[1]"
                                     type="number" 
                                     placeholder="Max" 
                                     :min="init.minPrice" 
@@ -61,7 +64,7 @@
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
                         <b-dropdown text="REFERENCE">
                             <template v-for="(reference, index) in params.references">
-                                <b-dropdown-item :active="index == filter.settings.reference" :key="index" @click="filter.settings.reference = index">
+                                <b-dropdown-item :active="index == filter.reference" :key="index" @click="filter.reference = index">
                                     {{reference.name}}
                                 </b-dropdown-item>
                                 <b-dropdown-divider v-if="reference.divider" :key="'0'+index" />
@@ -71,7 +74,7 @@
                     <div class="col-lg-3" style="text-align: center;">
                         <h3 class="categories-title h6 text-uppercase text-black d-block">Filter by Categories</h3>
                         <b-form-group>
-                            <b-form-tags id="tags" v-model="filter.settings.tags" style="text-align: left;">
+                            <b-form-tags id="tags" v-model="filter.tags" style="text-align: left;">
                                 <template v-slot="{ tags, disabled, addTag, removeTag }">
                                     <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
                                         <li v-for="tag in tags" :key="tag" class="list-inline-item">
@@ -108,7 +111,7 @@
             class='mt-5'
             v-model="pagination.settings.currentPage"
             @change="onPageChanged"
-            :total-rows="productRows"
+            :total-rows="pagination.settings.totalSize"
             :per-page="pagination.settings.perPage"
             align="center">
         </b-pagination>
@@ -127,7 +130,7 @@
             <b-pagination
                 v-model="pagination.settings.currentPage"
                 @change="onPageChanged"
-                :total-rows="productRows"
+                :total-rows="pagination.settings.totalSize"
                 :per-page="pagination.settings.perPage"
                 align="center">
             </b-pagination>
@@ -167,75 +170,132 @@ export default {
                 maxPrice: maxPrice
             },
             params: {
-                products: [],
                 tags: [],
                 references: [{
                     name: 'Name, A to Z',
-                    condition: (p1, p2) => (p1.name > p2.name) ? 1 : -1
+                    settings: {
+                        sortingPropertyName: "Name",
+                        sortDescending: false
+                    }
                 }, { 
                     name: 'Name, Z to A',
-                    condition: (p1, p2) => (p1.name < p2.name) ? 1 : -1,
+                    settings: {
+                        sortingPropertyName: "Name",
+                        sortDescending: true
+                    },
                     divider: true
                 }, {
                     name: 'Price, Low to High',
-                    condition: (p1, p2) => (p1.cost > p2.cost) ? 1 : -1
+                    settings: {
+                        sortingPropertyName: "Cost",
+                        sortDescending: false
+                    }
                 }, {
                     name: 'Price, High to Low',
-                    condition: (p1, p2) => (p1.cost < p2.cost) ? 1 : -1
+                    settings: {
+                        sortingPropertyName: "Cost",
+                        sortDescending: true
+                    }
                 }]
             },
             filter: {
-                products: [],
-                settings: {
-                    priceRange: [0, maxPrice],
-                    tags: [],
-                    reference: 0,
-                    query: ''
-                }
+                priceRange: [0, maxPrice],
+                tags: [],
+                reference: 0,
+                query: ''
             },
             pagination: {
                 products: [],
                 settings: {
                     perPage: 9,
-                    currentPage: 1
+                    currentPage: 1,
+                    totalSize: 0
                 }
             }
         };
     },
     created() {
         this.getCategories();
-        this.getAllProducts();
+        this.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, this.filter);
     },
     computed: {
         availableOptions() {
-            return this.params.tags.filter(opt => this.filter.settings.tags.indexOf(opt) === -1);
-        },
-        productRows() {
-            return this.filter.products.length;
+            return this.params.tags.filter(opt => this.filter.tags.indexOf(opt) === -1);
         }
     },
     methods: {
-        getAllProducts() {
+        getPaginatedProducts() {
             this.loading = true;
 
-            api.getAllProducts()
+            api.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, {
+                name: this.filter.query,
+                minPrice: this.filter.priceRange[0] * 100,
+                maxPrice: this.filter.priceRange[1] * 100,
+                categories: this.filter.tags,
+                sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
+                sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
+            })
                 .then((result) => {
-                    this.params.products = result;
-                    this.params.products.forEach(product => {
+                    this.pagination.settings.totalSize = result.info.totalSize;
+                    this.pagination.products = result.products;
+                    this.pagination.products.forEach(product => {
                         product.image = api._getBaseURL() + product.image;
                     });
-                }).catch((errors) => {
-                    this.params.products = [];
+                }).catch((error) => {
+                    this.pagination.settings.totalSize = 0;
+                    this.pagination.products = [];
                 }).finally(() => {
-                    this.initPagination();
-                    this.filterProducts(this.filter.settings);
                     this.loading = false;
                 });
         },
+        filterProducts() {
+            this.pagination.settings.currentPage = 1;
+            api.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, {
+                name: this.filter.query,
+                minPrice: this.filter.priceRange[0] * 100,
+                maxPrice: this.filter.priceRange[1] * 100,
+                categories: this.filter.tags,
+                sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
+                sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
+            })
+                .then((result) => {
+                    this.pagination.settings.totalSize = result.info.totalSize;
+                    this.pagination.products = result.products;
+                    this.pagination.products.forEach(product => {
+                        product.image = api._getBaseURL() + product.image;
+                    });
+                }).catch((error) => {
+                    this.pagination.settings.totalSize = 0;
+                    this.pagination.products = [];
+                });
+        },
+        async paginateProducts(page) {
+            try {
+                const result = await api.getPaginatedProducts(this.pagination.settings.perPage, page, {
+                    name: this.filter.query,
+                    minPrice: this.filter.priceRange[0] * 100,
+                    maxPrice: this.filter.priceRange[1] * 100,
+                    categories: this.filter.tags,
+                    sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
+                    sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
+                });
+                this.pagination.settings.totalSize = result.info.totalSize;
+                this.pagination.products = result.products;
+                this.pagination.products.forEach(product => {
+                    product.image = api._getBaseURL() + product.image;
+                });
+            } catch (e) {
+                this.pagination.settings.totalSize = 0;
+                this.pagination.products = [];
+            }
+        },
         getCategories() {
-            this.$parent.categories.forEach((category) => {
-                this.params.tags.push(category.name);
-            });
+            api.getCategories()
+                .then((result) => {
+                    result.forEach((category) => {
+                        this.params.tags.push(category.name);
+                    });
+                });
         },
         formatter(value) {
             if (!value || value < this.init.minPrice) {
@@ -246,53 +306,20 @@ export default {
             }
             return value;
         },
-        initPagination(){
-            this.filter.products = this.params.products;
-            this.paginate(this.pagination.settings.perPage, 0);
-        },
         onOptionClick({option, addTag}) {
             addTag(option);
         },
-        paginate(pageSize, pageNumber) {
-            let productsToParse = this.filter.products;
-            this.pagination.products = productsToParse.slice(
-                pageNumber * pageSize,
-                (pageNumber + 1) * pageSize
-            );
+        async onPageChanged(page) {
+            await this.paginateProducts(page);
         },
-        onPageChanged(page) {
-            this.paginate(this.pagination.settings.perPage, page - 1);
-        },
-        filterProducts(settings) {
-            this.filter.products = this.params.products.filter((product) => {
-                return settings.priceRange[0] * 100 <= product.cost 
-                    && settings.priceRange[1] * 100 >= product.cost
-                    && product.name.toLowerCase().includes(settings.query.toLowerCase());
-            });
-
-            this.filter.products.sort(this.params.references[settings.reference].condition);
-
-            let currentPage = 1;
-            this.pagination.settings.currentPage = currentPage;
-            this.paginate(this.pagination.settings.perPage, currentPage - 1);
-        }
     },
     mounted () {
         this.$parent.setActive('store');
-    },
-    watch: {
-        'filter.settings': {
-            handler(settings) {
-                this.filterProducts(settings);
-            },
-            deep: true
-        }
     }
 }
 </script>
 
 <style scoped>
-
 
 .filters {
     width: 75%;

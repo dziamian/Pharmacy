@@ -61,15 +61,15 @@ namespace Pharmacy.Models.Database.Repositories
 			bool sortDescending,
 			int minPrice,
 			int maxPrice,
-			IEnumerable<int> categories,
+			IEnumerable<string> categories,
 			IEnumerable<(int, int)> activeSubstances,
 			IEnumerable<(int, int)> passiveSubstances)
 		{
 			var products = await Task.Run(
-				() => m_context.Products
+				() => m_context.Products.Include(product => product.Category)
 					.Where(product => product.Cost >= minPrice && product.Cost <= maxPrice)
 					.Where(product => name == null || product.Name.ToLower().Contains(name.ToLower()))
-					.Where(product => categories.Count() == 0 || categories.Contains(product.CategoryId)));
+					.Where(product => categories.Count() == 0 || categories.Contains(product.Category.Name)));
 
 			foreach (var it in activeSubstances)
 			{
