@@ -89,13 +89,13 @@ namespace Pharmacy.Services
 
 		public async Task<IEnumerable<ProductReadDto>> GetSpecificProducts(ProductsFilterDto filter)
 		{
-			List<int> categories = new List<int>();
+			List<string> categories = new List<string>();
 			var actives = new List<(int, int)>();
 			var passives = new List<(int, int)>();
 
-			if (filter.CategoryIds != null)
+			if (filter.Categories != null)
 			{
-				foreach (var it in filter.CategoryIds)
+				foreach (var it in filter.Categories)
 				{
 					categories.Add(it);
 				}

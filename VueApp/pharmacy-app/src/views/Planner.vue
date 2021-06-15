@@ -15,7 +15,7 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr v-for="(element, index) in emptyArray" :key="index">
+                            <tr v-for="(element, index) in quantities" :key="index">
                                 <td>{{index + 1}}</td>
                                 <td>
                                     <select class="mdb-select md-form">
@@ -28,11 +28,11 @@
                                 <td width="220px !imporant">
                                     <b-input-group class="ml-0">
                                         <b-input-group-prepend>
-                                            <b-button variant="info" v-model.number="emptyArray.quantity" @click="setQuantity(-1)">-</b-button>
+                                            <b-button variant="info" v-model.number="element.value" @click="setQuantity(-1, index)">-</b-button>
                                         </b-input-group-prepend>
 
                                         <b-form-input
-                                            v-model.number="emptyArray.quantity"
+                                            v-model.number="element.value"
                                             type="number"
                                             placeholder="1"
                                             :min="minQuantity"
@@ -40,7 +40,7 @@
                                         />
                             
                                         <b-input-group-append>
-                                            <b-button variant="info" v-model.number="emptyArray.quantity" @click="setQuantity(1)">+</b-button>
+                                            <b-button variant="info" v-model.number="element.value" @click="setQuantity(1, index)">+</b-button>
                                         </b-input-group-append>
                                     </b-input-group>
                                 </td>
@@ -68,7 +68,7 @@
                         <b-col class="md-12">
                             <b-button size="lg" @click="print_table">Print</b-button>
                         </b-col>
-                        <b-col class="md-12">
+                        <b-col class="md-12 text-right">
                             <b-button size="lg" @click="addArrayElement">Add</b-button>
                         </b-col>
                     </b-row>
@@ -99,9 +99,7 @@ export default {
             loading: false,
             minQuantity: minQuantity,
             products: [],
-            emptyArray: [{
-                quantity: 1
-            }]
+            quantities: [{value: 1}]
         };
     },
     created() {
@@ -129,13 +127,12 @@ export default {
             window.print();
         },
         addArrayElement() {
-            var object = new Object({quantity: 1})
-            this.emptyArray.push(object);
+            this.quantities.push({value: 1});
         },
-        setQuantity(change) {
-            this.emptyArray.quantity += change;
-            if (this.emptyArray.quantity - 1 < this.minQuantity) {
-                this.emptyArray.quantity = this.minQuantity;
+        setQuantity(change, index) {
+            this.quantities[index].value += change;
+            if (this.quantities[index].value - 1 < this.minQuantity) {
+                this.quantities[index].value = this.minQuantity;
             }
         },
         formatter(value) {

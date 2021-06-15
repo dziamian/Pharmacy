@@ -77,13 +77,13 @@
                             <b-form-tags id="tags" v-model="filter.tags" style="text-align: left;">
                                 <template v-slot="{ tags, disabled, addTag, removeTag }">
                                     <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
-                                        <li v-for="tag in tags" :key="tag.name" class="list-inline-item">
+                                        <li v-for="tag in tags" :key="tag" class="list-inline-item">
                                             <b-form-tag 
                                                 @remove="removeTag(tag)" 
                                                 :title="tag" 
                                                 :disabled="disabled" 
                                                 variant="info">
-                                                    {{tag.name}}
+                                                    {{tag}}
                                             </b-form-tag>
                                         </li>
                                     </ul>
@@ -93,8 +93,8 @@
                                             <b-icon icon="tag-fill"></b-icon>
                                             CATEGORIES
                                         </template>
-                                        <b-dropdown-item-button v-for="option in availableOptions" :key="option.name" @click="onOptionClick({option, addTag})">
-                                            {{option.name}}
+                                        <b-dropdown-item-button v-for="option in availableOptions" :key="option" @click="onOptionClick({option, addTag})">
+                                            {{option}}
                                         </b-dropdown-item-button>
                                         <b-dropdown-text v-if="availableOptions.length === 0">
                                             No more categories...
@@ -217,7 +217,6 @@ export default {
     created() {
         this.getCategories();
         this.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, this.filter);
-        //this.getAllProducts();
     },
     computed: {
         availableOptions() {
@@ -225,36 +224,14 @@ export default {
         }
     },
     methods: {
-        /*getAllProducts() {
-            this.loading = true;
-
-            api.getAllProducts()
-                .then((result) => {
-                    this.params.products = result;
-                    this.params.products.forEach(product => {
-                        product.image = api._getBaseURL() + product.image;
-                    });
-                }).catch((errors) => {
-                    this.params.products = [];
-                }).finally(() => {
-                    //this.initPagination();
-                    this.filterProducts(this.filter.settings);
-                    this.loading = false;
-                });
-        },*/
         getPaginatedProducts() {
             this.loading = true;
-
-            const tagsIds = [];
-            this.filter.tags.forEach((tag) => {
-                tagsIds.push(tag.id);
-            })
 
             api.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, {
                 name: this.filter.query,
                 minPrice: this.filter.priceRange[0] * 100,
                 maxPrice: this.filter.priceRange[1] * 100,
-                categoryIds: tagsIds,
+                categories: this.filter.tags,
                 sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
                 sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
             })
@@ -272,17 +249,12 @@ export default {
                 });
         },
         filterProducts() {
-            const tagsIds = [];
-            this.filter.tags.forEach((tag) => {
-                tagsIds.push(tag.id);
-            })
-
             this.pagination.settings.currentPage = 1;
             api.getPaginatedProducts(this.pagination.settings.perPage, this.pagination.settings.currentPage, {
                 name: this.filter.query,
                 minPrice: this.filter.priceRange[0] * 100,
                 maxPrice: this.filter.priceRange[1] * 100,
-                categoryIds: tagsIds,
+                categories: this.filter.tags,
                 sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
                 sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
             })
@@ -298,17 +270,12 @@ export default {
                 });
         },
         async paginateProducts(page) {
-            const tagsIds = [];
-            this.filter.tags.forEach((tag) => {
-                tagsIds.push(tag.id);
-            })
-
             try {
                 const result = await api.getPaginatedProducts(this.pagination.settings.perPage, page, {
                     name: this.filter.query,
                     minPrice: this.filter.priceRange[0] * 100,
                     maxPrice: this.filter.priceRange[1] * 100,
-                    categoryIds: tagsIds,
+                    categories: this.filter.tags,
                     sortingPropertyName: this.params.references[this.filter.reference].settings.sortingPropertyName,
                     sortDescending: this.params.references[this.filter.reference].settings.sortDescending,
                 });
@@ -325,7 +292,9 @@ export default {
         getCategories() {
             api.getCategories()
                 .then((result) => {
-                    this.params.tags = result;
+                    result.forEach((category) => {
+                        this.params.tags.push(category.name);
+                    });
                 });
         },
         formatter(value) {
@@ -337,37 +306,12 @@ export default {
             }
             return value;
         },
-        /*initPagination(){
-            this.filter.products = this.params.products;
-            this.paginate(this.pagination.settings.perPage, 0);
-        },*/
         onOptionClick({option, addTag}) {
             addTag(option);
         },
-        /*paginate(pageSize, pageNumber) {
-            let productsToParse = this.filter.products;
-            this.pagination.products = productsToParse.slice(
-                pageNumber * pageSize,
-                (pageNumber + 1) * pageSize
-            );
-        },*/
         async onPageChanged(page) {
             await this.paginateProducts(page);
         },
-        /*filterProducts(settings) {
-
-            this.filter.products = this.params.products.filter((product) => {
-                return settings.priceRange[0] * 100 <= product.cost 
-                    && settings.priceRange[1] * 100 >= product.cost
-                    && product.name.toLowerCase().includes(settings.query.toLowerCase());
-            });
-
-            this.filter.products.sort(this.params.references[settings.reference].condition);
-
-            let currentPage = 1;
-            this.pagination.settings.currentPage = currentPage;
-            this.paginate(this.pagination.settings.perPage, currentPage - 1);
-        }*/
     },
     mounted () {
         this.$parent.setActive('store');
@@ -376,7 +320,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 .filters {
     width: 75%;
