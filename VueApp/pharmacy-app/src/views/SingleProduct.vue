@@ -172,21 +172,19 @@ export default {
                     this.loading = false;
                 });
         },
-         forceRerender() {
-            // Remove my-component from the DOM
+        forceRerender() {
             this.rateRender = false;
 
             this.$nextTick(() => {
-            // Add the component back in
-            this.rateRender = true;
+                this.rateRender = true;
             });
-         },
+        },
         getRatings(){
             this.loading = true;
             api.getAverageRatingsForProduct(this.id)
                 .then((result) => {
                     this.star = result;
-                    console.log(this.star);
+
                 }).catch((errors) => {
                     this.makeToast("Couldn't download ratings from server.");
                 }).finally(() => {

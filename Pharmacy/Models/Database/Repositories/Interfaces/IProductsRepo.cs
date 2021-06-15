@@ -20,7 +20,7 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
             bool sortDescending,
             int minPrice, 
             int maxPrice, 
-            IEnumerable<int> categories, 
+            IEnumerable<string> categories, 
             IEnumerable<(int, int)> activeSubstances, 
             IEnumerable<(int, int)> passiveSubstances);
         Task<IEnumerable<Product>> GetSubstitutes(int id);
