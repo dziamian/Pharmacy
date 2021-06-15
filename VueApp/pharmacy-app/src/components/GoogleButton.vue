@@ -41,7 +41,7 @@ export default {
                             gender: result.genders === undefined ? undefined : result.genders[0].value
                         });
                     }).catch((error) => {
-                        
+
                     }).finally(() => {
                         this.onSignedIn();
                     });
