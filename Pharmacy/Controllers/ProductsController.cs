@@ -84,7 +84,7 @@ namespace Pharmacy.Controllers
             return Ok(substitutes);
         }
 
-        [HttpGet("filter")]
+        [HttpPut("filter")]
         public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetPagedSpecificProducts(
             [FromQuery(Name = "pageIndex")] int pageIndex,
             [FromQuery(Name = "pageSize")] int pageSize,
@@ -107,9 +107,7 @@ namespace Pharmacy.Controllers
                 list.HasPrevious
             };
 
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(meta));
-
-            return Ok(list);
+            return Ok(new { Products = list, Info = meta});
 		}
 
         [HttpGet("filter/all")]

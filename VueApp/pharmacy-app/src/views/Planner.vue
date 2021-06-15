@@ -15,8 +15,8 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr>
-                                <td>1</td>
+                            <tr v-for="(element, index) in emptyArray" :key="index">
+                                <td>{{index + 1}}</td>
                                 <td>
                                     <select class="mdb-select md-form">
                                         <option disabled selected>Choose your drug</option>
@@ -25,24 +25,25 @@
                                         </option>
                                     </select>
                                 </td>
-                                <td>
+                                <td width="220px !imporant">
                                     <b-input-group class="ml-0">
-                                    <b-input-group-prepend>
-                                    <b-button variant="info" v-model.number="quantity" @click="setQuantity(-1)">-</b-button>
-                                </b-input-group-prepend>
+                                        <b-input-group-prepend>
+                                            <b-button variant="info" v-model.number="emptyArray.quantity" @click="setQuantity(-1)">-</b-button>
+                                        </b-input-group-prepend>
 
-                                <b-form-input
-                                    v-model.number="quantity"
-                                    type="number"
-                                    placeholder="1"
-                                    :min="minQuantity"
-                                    :formatter="formatter"
-                            />
+                                        <b-form-input
+                                            v-model.number="emptyArray.quantity"
+                                            type="number"
+                                            placeholder="1"
+                                            :min="minQuantity"
+                                            :formatter="formatter"
+                                        />
                             
-                            <b-input-group-append>
-                                <b-button variant="info" v-model.number="quantity" @click="setQuantity(1)">+</b-button>
-                            </b-input-group-append>
-                        </b-input-group></td>
+                                        <b-input-group-append>
+                                            <b-button variant="info" v-model.number="emptyArray.quantity" @click="setQuantity(1)">+</b-button>
+                                        </b-input-group-append>
+                                    </b-input-group>
+                                </td>
                                 <td>
                                     <select class="form-control" id="exampleFormControlSelect1">
                                         <option disabled selected>Choose time</option>
@@ -57,7 +58,9 @@
                                         <option>Evening</option>
                                     </select>
                                 </td>
-                                <td><textarea class="form-control" id="NoteText" rows="3"></textarea></td>
+                                <td>
+                                    <textarea class="form-control" id="NoteText" rows="3"></textarea>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -66,7 +69,7 @@
                             <b-button size="lg" @click="print_table">Print</b-button>
                         </b-col>
                         <b-col class="md-12">
-                            <b-button size="lg" @click="add">add</b-button>
+                            <b-button size="lg" @click="addArrayElement">Add</b-button>
                         </b-col>
                     </b-row>
                 </form>
@@ -95,31 +98,16 @@ export default {
         return {
             loading: false,
             minQuantity: minQuantity,
-            quantity: 1,
             products: [],
-            tabIndex: 1
+            emptyArray: [{
+                quantity: 1
+            }]
         };
     },
     created() {
         this.getAllProducts();
     },
     methods: {
-        setQuantity(change) {
-            this.quantity += change;
-            if (this.quantity - 1 < this.minQuantity) {
-                this.quantity = this.minQuantity;
-            }
-        },
-        add() {
-            this.tabIndex += 1;
-            console.log(this.tabIndex);
-        },
-        formatter(value) {
-            if (!value || value < this.minQuantity) {
-                return this.minQuantity;
-            }
-            return value;
-        },
         getAllProducts() {
             this.loading = true;
             api.getAllProducts()
@@ -127,6 +115,9 @@ export default {
                     this.products = result;
                     this.products.forEach(product => {
                         product.image = api._getBaseURL() + product.image;
+                    });
+                    this.products.forEach(product => {
+                        product.supply = 1;
                     });
                 }).catch((errors) => {
                     this.products = [];
@@ -136,7 +127,23 @@ export default {
         },
         print_table() {
             window.print();
-        }
+        },
+        addArrayElement() {
+            var object = new Object({quantity: 1})
+            this.emptyArray.push(object);
+        },
+        setQuantity(change) {
+            this.emptyArray.quantity += change;
+            if (this.emptyArray.quantity - 1 < this.minQuantity) {
+                this.emptyArray.quantity = this.minQuantity;
+            }
+        },
+        formatter(value) {
+            if (!value || value < this.minQuantity) {
+                return this.minQuantity;
+            }
+            return value;
+        },
         
     }
 }
@@ -148,6 +155,19 @@ export default {
 td {
     vertical-align: middle !important;
     text-align: center !important;
+}
+
+.input-group{
+    max-width: 160px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 </style>

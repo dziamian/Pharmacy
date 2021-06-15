@@ -15,6 +15,9 @@ export default {
     getAllProducts() {
         return axios.execute('get', '/api/products');
     },
+    getPaginatedProducts(pageSize, pageIndex, preferences) {
+        return axios.execute('put', '/api/products/filter?pageSize=' + pageSize + '&pageIndex=' + pageIndex, preferences);
+    },
     getNewestProducts(amount) {
         return axios.execute('get', '/api/products/newest?count=' + amount);
     },

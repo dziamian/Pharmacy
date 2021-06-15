@@ -104,7 +104,7 @@ import ProductsGallery from '@/components/ProductsGallery'
 import AwesomeVueStarRating from "awesome-vue-star-rating";
 
 export default {
-    components:{
+    components: {
         ProductsGallery,
         Footer,
         AwesomeVueStarRating,
@@ -157,7 +157,6 @@ export default {
         this.getProduct();
         this.getSubstitutes();
         this.getRatings();
-        this.star;
     },
     methods: {
         getProduct() {
@@ -173,6 +172,15 @@ export default {
                     this.loading = false;
                 });
         },
+         forceRerender() {
+            // Remove my-component from the DOM
+            this.rateRender = false;
+
+            this.$nextTick(() => {
+            // Add the component back in
+            this.rateRender = true;
+            });
+         },
         getRatings(){
             this.loading = true;
             api.getAverageRatingsForProduct(this.id)
@@ -195,7 +203,7 @@ export default {
                         substitute.image = api._getBaseURL() + substitute.image;
                     });
                 }).catch((errors) => {
-                    this.makeToast("Couldn't download substitutes from server.");
+                    this.star = 0;
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -256,16 +264,8 @@ export default {
             this.getRatings();
             this.star;
         },
-        star: (x,y) =>{ console.log(y +"from update to"+ x);
-                this.rateRender = false;
-                this.$nextTick(() => {
-                    this.rateRender = false;
-                })
-                
-                //console.log("XDXDXDXD" +this.star);
-                //this.getRatings();
+        star: (x,y) =>{this.forceRerender();}
         }
-    }
 }
 </script>
 
