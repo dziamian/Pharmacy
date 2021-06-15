@@ -25,8 +25,7 @@ namespace PharmacyTests
 		[InlineData("Ibuprofenum")]
 		public async Task CreateActiveSubstanceTest(string name)
 		{
-			var substanceJson = $"{{\"Name\": \"{name}\"}}";
-			var content = new StringContent(substanceJson);
+			var content = new StringContent($"{{\"Name\": \"{name}\"}}");
 			content.Headers.ContentType.MediaType = "application/json";
 			var response = await m_client.PostAsync(
 				"api/substances/active",
