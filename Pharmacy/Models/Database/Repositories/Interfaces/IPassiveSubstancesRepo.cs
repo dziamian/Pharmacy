@@ -6,7 +6,7 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
 {
 	public interface IPassiveSubstancesRepo
 	{
-		Task CreatePassiveSubstance(PassiveSubstance activeSubstance);
+		Task<PassiveSubstance> CreatePassiveSubstance(PassiveSubstance activeSubstance);
 		Task<IEnumerable<PassiveSubstance>> GetAllPassiveSubstances();
 		Task<PassiveSubstance> GetActiveSubstanceById(int id);
 		Task<bool> PassiveSubstanceExists(int id);

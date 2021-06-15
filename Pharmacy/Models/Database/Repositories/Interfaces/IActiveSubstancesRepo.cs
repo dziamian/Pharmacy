@@ -6,7 +6,7 @@ namespace Pharmacy.Models.Database.Repositories.Interfaces
 {
 	public interface IActiveSubstancesRepo
 	{
-		Task CreateActiveSubstance(ActiveSubstance activeSubstance);
+		Task<ActiveSubstance> CreateActiveSubstance(ActiveSubstance activeSubstance);
 		Task<IEnumerable<ActiveSubstance>> GetAllActiveSubstances();
 		Task<ActiveSubstance> GetActiveSubstanceById(int id);
 		void MarkForUpdate(ActiveSubstance activeSubstance);

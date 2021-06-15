@@ -11,7 +11,6 @@ namespace Pharmacy.Controllers
 	[ApiController]
 	public class SubstancesController : ControllerBase
 	{
-
 		private readonly SubstancesService m_substancesService;
 
 		public SubstancesController(SubstancesService substancesService)
@@ -19,23 +18,26 @@ namespace Pharmacy.Controllers
 			m_substancesService = substancesService;
 		}
 
-		[HttpPost]
-		[Route("active/")]
+		[HttpPost("active")]
 		public async Task<ActionResult> CreateActiveSubstance([FromBody] SubstanceCreateDto activeSubstanceCreateDto)
 		{
 			var substance = await m_substancesService.CreateActiveSubstance(activeSubstanceCreateDto);
+
+			if (substance == null)
+			{
+				return BadRequest();
+			}
+
 			return CreatedAtRoute(nameof(GetActiveSubstanceById), new { substance.Id }, null);
 		}
 
-		[HttpGet]
-		[Route("active/")]
+		[HttpGet("active")]
 		public async Task<ActionResult<IEnumerable<SubstanceReadDto>>> GetAllActiveSubstances()
 		{
 			return Ok(await m_substancesService.GetAllActiveSubstances());
 		}
 
-		[Route("active/")]
-		[HttpGet("{id}", Name = nameof(GetActiveSubstanceById))]
+		[HttpGet("active/{id}", Name = nameof(GetActiveSubstanceById))]
 		public async Task<ActionResult<SubstanceReadDto>> GetActiveSubstanceById(int id)
 		{
 			var substance = await m_substancesService.GetActiveSubstanceById(id);
