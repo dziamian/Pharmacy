@@ -102,16 +102,16 @@ namespace PharmacyTests
         }
 
         [Theory]
-        [InlineData(new int[] { 1 }, "", 0, 2000)]
-        [InlineData(new int[] { }, "Para", 0, 2000)]
-        public async Task GetSpecificProductsTest(int[] categoryIds, string name, int minPrice, int maxPrice)
+        [InlineData(new string[] { "Painkillers" }, "", 0, 2000)]
+        [InlineData(new string[] { }, "Para", 0, 2000)]
+        public async Task GetSpecificProductsTest(string[] categories, string name, int minPrice, int maxPrice)
         {
             var json = JsonSerializer.Serialize(new
             {
                 Name = name,
                 MinPrice = minPrice,
                 MaxPrice = maxPrice,
-                CategoryIds = categoryIds ?? new int[] { },
+                CategoryIds = categories ?? new string[] { },
                 ActiveSubstances = new int[] { },
                 PassiveSubstances = new int[] { },
             });
