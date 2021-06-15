@@ -17,9 +17,15 @@ namespace Pharmacy.Models.Database.Repositories
 			m_context = context;
 		}
 
-		public async Task CreatePassiveSubstance(PassiveSubstance activeSubstance)
+		public async Task<PassiveSubstance> CreatePassiveSubstance(PassiveSubstance passiveSubstance)
 		{
-			await m_context.PassiveSubstances.AddAsync(activeSubstance);
+			if (passiveSubstance.Name == null || m_context.ActiveSubstances.Any(substance => substance.Name.ToLower().Equals(passiveSubstance.Name.ToLower())))
+			{
+				return null;
+			}
+
+			await m_context.PassiveSubstances.AddAsync(passiveSubstance);
+			return passiveSubstance;
 		}
 
 		public async Task<PassiveSubstance> GetActiveSubstanceById(int id)

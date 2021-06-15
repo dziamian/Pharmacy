@@ -22,9 +22,15 @@ namespace Pharmacy.Models.Database.Repositories
 			return await m_context.ActiveSubstances.AnyAsync(a => a.Id == id);
 		}
 
-		public async Task CreateActiveSubstance(ActiveSubstance activeSubstance)
+		public async Task<ActiveSubstance> CreateActiveSubstance(ActiveSubstance activeSubstance)
 		{
+			if (activeSubstance.Name == null || m_context.ActiveSubstances.Any(substance => substance.Name.ToLower().Equals(activeSubstance.Name.ToLower())))
+			{
+				return null;
+			}
+
 			await m_context.ActiveSubstances.AddAsync(activeSubstance);
+			return activeSubstance;
 		}
 
 		public async Task<ActiveSubstance> GetActiveSubstanceById(int id)

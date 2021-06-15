@@ -28,8 +28,13 @@ namespace Pharmacy.Services
 		public async Task<ActiveSubstance> CreateActiveSubstance(SubstanceCreateDto substanceCreateDto)
 		{
 			var substance = new ActiveSubstance { Name = substanceCreateDto.Name };
-			await m_activeSubstanceRepo.CreateActiveSubstance(substance);
-			await m_activeSubstanceRepo.SaveChanges();
+			substance = await m_activeSubstanceRepo.CreateActiveSubstance(substance);
+			
+			if (substance != null)
+			{
+				await m_activeSubstanceRepo.SaveChanges();
+			}
+
 			return substance;
 		}
 
@@ -46,8 +51,14 @@ namespace Pharmacy.Services
 		public async Task<PassiveSubstance> CreatePassiveSubstance(SubstanceCreateDto substanceCreateDto)
 		{
 			var substance = new PassiveSubstance { Name = substanceCreateDto.Name };
-			await m_passiveSubstanceRepo.CreatePassiveSubstance(substance);
+			substance = await m_passiveSubstanceRepo.CreatePassiveSubstance(substance);
 			await m_passiveSubstanceRepo.SaveChanges();
+
+			if (substance != null)
+			{
+				await m_activeSubstanceRepo.SaveChanges();
+			}
+
 			return substance;
 		}
 
